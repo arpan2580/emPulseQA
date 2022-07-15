@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "829803655602",
+    "project_id": "empluse-b9457",
+    "storage_bucket": "empluse-b9457.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829803655602:android:1b3b3c80c11a566561f4ab",
+        "android_client_info": {
+          "package_name": "com.smis.empulse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829803655602-qmj0370ioos64qg8ouneujf29jq631ar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD4G0ub75QAQpVoKZzDB9sD-lk6Afx8hM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829803655602-qmj0370ioos64qg8ouneujf29jq631ar.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "829803655602-i0bgd80n5hbf7a0uams8fat4qf8ad4n4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.smis.empluse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
