@@ -300,14 +300,29 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                         onTap: () {
                                           reactListController.fetchReactList(
                                               widget.feedback[widget.index].id);
-
-                                          showModalBottomSheet(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (builder) {
-                                                return const CustomLikeList();
-                                              });
+                                          var totLike = (BaseController
+                                                      .likedFeedbackId
+                                                      .isNotEmpty &&
+                                                  BaseController.likedFeedbackId
+                                                      .contains(widget
+                                                          .feedback[
+                                                              widget.index]
+                                                          .id))
+                                              ? BaseController.postLikedCount[
+                                                  BaseController.likedFeedbackId
+                                                      .indexOf(widget
+                                                          .feedback[widget.index]
+                                                          .id)]
+                                              : int.parse(widget.feedback[widget.index].liked);
+                                          if (totLike > 0) {
+                                            showModalBottomSheet(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (builder) {
+                                                  return const CustomLikeList();
+                                                });
+                                          }
                                         },
                                         child: RichText(
                                           text: TextSpan(
@@ -779,14 +794,29 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                         onTap: () {
                                           reactListController.fetchReactList(
                                               widget.feedback[widget.index].id);
-
-                                          showModalBottomSheet(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (builder) {
-                                                return const CustomLikeList();
-                                              });
+                                          var totLike = (BaseController
+                                                      .likedFeedbackId
+                                                      .isNotEmpty &&
+                                                  BaseController.likedFeedbackId
+                                                      .contains(widget
+                                                          .feedback[
+                                                              widget.index]
+                                                          .id))
+                                              ? BaseController.postLikedCount[
+                                                  BaseController.likedFeedbackId
+                                                      .indexOf(widget
+                                                          .feedback[widget.index]
+                                                          .id)]
+                                              : int.parse(widget.feedback[widget.index].liked);
+                                          if (totLike > 0) {
+                                            showModalBottomSheet(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (builder) {
+                                                  return const CustomLikeList();
+                                                });
+                                          }
                                         },
                                         child: RichText(
                                           text: TextSpan(

@@ -51,7 +51,7 @@ class CommentController extends GetxController {
     isLoading(true);
     AddCommentsModel commentModel = AddCommentsModel(
         feedbackId: feedbackId.toString(),
-        usercomment: usercomment.text,
+        usercomment: usercomment.text.trim(),
         parent: commentId,
         repliedId: repliedId,
         type: type);

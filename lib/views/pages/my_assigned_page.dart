@@ -57,12 +57,12 @@ class _MyAssignedPageState extends State<MyAssignedPage> {
               child: CircularProgressIndicator.adaptive(),
             )
           : feedbackController.myAssignedList.isNotEmpty
-              ? RefreshWidget(
-                  onRefresh: () async {
-                    await feedbackController.fetchAssignedFeedback();
-                  },
-                  child: SizedBox(
-                    height: Get.height - 1,
+              ? SizedBox(
+                  height: Get.height,
+                  child: RefreshWidget(
+                    onRefresh: () async {
+                      await feedbackController.fetchAssignedFeedback();
+                    },
                     child: ListView.builder(
                       controller: scrollController,
                       shrinkWrap: true,

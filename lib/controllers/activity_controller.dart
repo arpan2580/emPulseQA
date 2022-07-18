@@ -10,7 +10,7 @@ class ActivityController extends GetxController {
 
   Future<void> fetchActivityData(feedbackId) async {
     isLoading(true);
-
+    activityList.clear();
     var response =
         await BaseClient().dioPost('/feedback/$feedbackId/timeline', null);
     if (response != null) {

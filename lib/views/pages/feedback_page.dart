@@ -60,6 +60,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
   final _cameraController1 = ImageController(quality: 70);
   final _cameraController2 = ImageController(quality: 70);
   List<String> marketList = [];
+
+  bool _autoValidate = false;
+
   @override
   void initState() {
     super.initState();
@@ -187,23 +190,31 @@ class _FeedbackPageState extends State<FeedbackPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomTextfield(
-                    hintText: "Enter Outlet name *",
-                    textEditingController: insertFeedbackController.outletName,
-                    keyboardType: TextInputType.name,
-                    obsecureTxt: false,
-                    suffixIcon: false,
-                    fullBorder: false,
-                    centerText: false,
-                    validation: () {
-                      insertFeedbackController.outletName.text =
-                          insertFeedbackController.outletName.text.trim();
-                      if (insertFeedbackController.outletName.text.isEmpty) {
-                        return "Outlet name is required";
-                      } else {
-                        return null;
+                  Focus(
+                    onFocusChange: (isFocus) {
+                      if (!isFocus && _autoValidate) {
+                        _formKey.currentState!.validate();
                       }
                     },
+                    child: CustomTextfield(
+                      hintText: "Enter Outlet name *",
+                      textEditingController:
+                          insertFeedbackController.outletName,
+                      keyboardType: TextInputType.name,
+                      obsecureTxt: false,
+                      suffixIcon: false,
+                      fullBorder: false,
+                      centerText: false,
+                      validation: () {
+                        insertFeedbackController.outletName.text =
+                            insertFeedbackController.outletName.text.trim();
+                        if (insertFeedbackController.outletName.text.isEmpty) {
+                          return "Outlet name is required";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
                   ),
                   TypeAheadFormField(
                     hideSuggestionsOnKeyboardHide: true,
@@ -609,64 +620,75 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     ],
                   ),
                   (isBtn1Active == true)
-                      ? TypeAheadFormField<ProductModel>(
-                          suggestionsBoxController: _suggestionsBoxController,
-                          debounceDuration: const Duration(milliseconds: 700),
-                          keepSuggestionsOnLoading: false,
-                          suggestionsCallback:
-                              _productController.getProductList,
-                          itemBuilder: (context, suggestions) {
-                            final product = suggestions;
-                            return ListTile(
-                              title: Text(
-                                product.product.trim(),
-                                style: TextStyle(
-                                  // fontFamily: AppFonts.regularFont,
-                                  fontFamily: "RobotoCondensed",
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                              subtitle: Text(product.caregoryDesc +
-                                  " || " +
-                                  product.subCategoryDesc),
-                            );
-                          },
-                          onSuggestionSelected: (product) {
-                            setState(() {});
-                            _txtProductValue.text = product.product;
-                            selectedProductValue = product.id;
-                            insertFeedbackController.category.text =
-                                product.caregoryDesc;
-                            insertFeedbackController.subCategory.text =
-                                product.subCategoryDesc;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty && isBtn1Active) {
-                              return 'Please select a product';
-                            } else {
-                              return null;
+                      ? Focus(
+                          onFocusChange: (isFocus) {
+                            if (!isFocus && _autoValidate) {
+                              _formKey.currentState!.validate();
                             }
                           },
-                          noItemsFoundBuilder: (context) {
-                            return SizedBox(
-                              height: 100.h,
-                              child: const Center(
-                                child: Text("Product not found"),
+                          child: TypeAheadFormField<ProductModel>(
+                            suggestionsBoxController: _suggestionsBoxController,
+                            debounceDuration: const Duration(milliseconds: 700),
+                            keepSuggestionsOnLoading: false,
+                            suggestionsCallback:
+                                _productController.getProductList,
+                            itemBuilder: (context, suggestions) {
+                              final product = suggestions;
+                              return ListTile(
+                                title: Text(
+                                  product.product.trim(),
+                                  style: TextStyle(
+                                    // fontFamily: AppFonts.regularFont,
+                                    fontFamily: "RobotoCondensed",
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                                subtitle: Text(product.caregoryDesc +
+                                    " || " +
+                                    product.subCategoryDesc),
+                              );
+                            },
+                            onSuggestionSelected: (product) {
+                              setState(() {});
+                              _txtProductValue.text = product.product;
+                              selectedProductValue = product.id;
+                              insertFeedbackController.category.text =
+                                  product.caregoryDesc;
+                              insertFeedbackController.subCategory.text =
+                                  product.subCategoryDesc;
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty && isBtn1Active) {
+                                return 'Please select a product';
+                              } else {
+                                if (selectedProductValue == null) {
+                                  return 'Please select a product';
+                                } else {
+                                  return null;
+                                }
+                              }
+                            },
+                            noItemsFoundBuilder: (context) {
+                              return SizedBox(
+                                height: 100.h,
+                                child: const Center(
+                                  child: Text("Product not found"),
+                                ),
+                              );
+                            },
+                            suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                constraints:
+                                    const BoxConstraints(maxHeight: 400)),
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: _txtProductValue,
+                              decoration: InputDecoration(
+                                hintText: "Search Product",
+                                hintStyle: TextStyle(
+                                    fontFamily: AppFonts.regularFont,
+                                    fontSize: 16.sp,
+                                    color: Colors.black12.withOpacity(0.5)),
                               ),
-                            );
-                          },
-                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              constraints:
-                                  const BoxConstraints(maxHeight: 400)),
-                          textFieldConfiguration: TextFieldConfiguration(
-                            controller: _txtProductValue,
-                            decoration: InputDecoration(
-                              hintText: "Search Product",
-                              hintStyle: TextStyle(
-                                  fontFamily: AppFonts.regularFont,
-                                  fontSize: 16.sp,
-                                  color: Colors.black12.withOpacity(0.5)),
                             ),
                           ),
                         )
@@ -736,71 +758,85 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  DropdownButtonFormField(
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                      hintText: "Select genre of feedback",
-                      hintStyle: TextStyle(
-                        fontFamily: AppFonts.regularFont,
-                        fontSize: 16.sp,
-                      ),
-                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          // style: BorderStyle.none,
-                        ),
-                      ),
-                    ),
-                    style: TextStyle(
-                      fontFamily: AppFonts.regularFont,
-                      fontSize: 16.sp,
-                      color: Colors.black87,
-                    ),
-                    validator: (value) =>
-                        value == null || selectedGenreOfFeedback == null
-                            ? "Select a genre of feedback"
-                            : null,
-                    value: selectedGenreOfFeedback,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedGenreOfFeedback = newValue!;
-                      });
-                    },
-                    items: genreOfFeedback
-                        .map<DropdownMenuItem<String>>((Genre value) {
-                      return DropdownMenuItem(
-                        child: Text(value.genre.toString()),
-                        value: value.genre,
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomTextfield(
-                    hintText: (selectedGenreOfFeedback != '' &&
-                            selectedGenreOfFeedback != null)
-                        ? "Enter Your Feedback on " +
-                            selectedGenreOfFeedback! +
-                            " *"
-                        : "Enter Your Feedback *",
-                    textEditingController: insertFeedbackController.feedback,
-                    keyboardType: TextInputType.text,
-                    obsecureTxt: false,
-                    suffixIcon: false,
-                    maxLine: 5,
-                    maxLength: 500,
-                    fullBorder: true,
-                    centerText: false,
-                    validation: () {
-                      insertFeedbackController.feedback.text =
-                          insertFeedbackController.feedback.text.trim();
-                      if (insertFeedbackController.feedback.text.isEmpty) {
-                        return "Your feedback is required";
-                      } else {
-                        return null;
+                  Focus(
+                    onFocusChange: (isFocus) {
+                      if (!isFocus && _autoValidate) {
+                        _formKey.currentState!.validate();
                       }
                     },
+                    child: DropdownButtonFormField(
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        hintText: "Select genre of feedback",
+                        hintStyle: TextStyle(
+                          fontFamily: AppFonts.regularFont,
+                          fontSize: 16.sp,
+                        ),
+                        contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            // style: BorderStyle.none,
+                          ),
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontFamily: AppFonts.regularFont,
+                        fontSize: 16.sp,
+                        color: Colors.black87,
+                      ),
+                      validator: (value) =>
+                          value == null || selectedGenreOfFeedback == null
+                              ? "Select a genre of feedback"
+                              : null,
+                      value: selectedGenreOfFeedback,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedGenreOfFeedback = newValue!;
+                        });
+                      },
+                      items: genreOfFeedback
+                          .map<DropdownMenuItem<String>>((Genre value) {
+                        return DropdownMenuItem(
+                          child: Text(value.genre.toString()),
+                          value: value.genre,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Focus(
+                    onFocusChange: (isFocus) {
+                      if (!isFocus && _autoValidate) {
+                        _formKey.currentState!.validate();
+                      }
+                    },
+                    child: CustomTextfield(
+                      hintText: (selectedGenreOfFeedback != '' &&
+                              selectedGenreOfFeedback != null)
+                          ? "Enter Your Feedback on " +
+                              selectedGenreOfFeedback! +
+                              " *"
+                          : "Enter Your Feedback *",
+                      textEditingController: insertFeedbackController.feedback,
+                      keyboardType: TextInputType.text,
+                      obsecureTxt: false,
+                      suffixIcon: false,
+                      maxLine: 5,
+                      maxLength: 500,
+                      fullBorder: true,
+                      centerText: false,
+                      validation: () {
+                        insertFeedbackController.feedback.text =
+                            insertFeedbackController.feedback.text.trim();
+                        if (insertFeedbackController.feedback.text.isEmpty) {
+                          return "Your feedback is required";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   Row(
@@ -833,6 +869,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       }
                       if (validate) {
                         insertData(context);
+                      } else {
+                        setState(() => _autoValidate = true);
                       }
                     },
                     color: const Color(0xff108ab3),

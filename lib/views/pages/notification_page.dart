@@ -72,6 +72,10 @@ class _NotificationPageState extends State<NotificationPage> {
                   ),
                   label: const Text('Mark all as read'),
                 ),
+                onTap: () {
+                  notificationController.readAllNotifications();
+                  setState(() {});
+                },
               ),
               PopupMenuItem(
                 child: TextButton.icon(
@@ -90,6 +94,10 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                   ),
                 ),
+                onTap: () {
+                  notificationController.deleteAllNotifications();
+                  setState(() {});
+                },
               ),
             ];
           }),

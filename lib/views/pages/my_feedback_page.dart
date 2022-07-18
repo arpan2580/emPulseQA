@@ -55,12 +55,12 @@ class _MyFeedbackPageState extends State<MyFeedbackPage> {
               child: CircularProgressIndicator.adaptive(),
             )
           : feedbackController.myFeedbackList.isNotEmpty
-              ? RefreshWidget(
-                  onRefresh: () async {
-                    await feedbackController.fetchMyFeedback();
-                  },
-                  child: SizedBox(
-                    height: Get.height - 1,
+              ? SizedBox(
+                  height: Get.height,
+                  child: RefreshWidget(
+                    onRefresh: () async {
+                      await feedbackController.fetchMyFeedback();
+                    },
                     child: ListView.builder(
                       controller: scrollController,
                       shrinkWrap: true,

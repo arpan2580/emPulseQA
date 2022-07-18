@@ -72,12 +72,13 @@ class _UserFeedbackState extends State<UserFeedback> {
             ? const Center(
                 child: CircularProgressIndicator.adaptive(),
               )
-            : RefreshWidget(
-                onRefresh: () async {
-                  await userFeedbackController.fetchUserFeedback(widget.userId);
-                },
-                child: SizedBox(
-                  height: Get.height - 1,
+            : SizedBox(
+                height: Get.height,
+                child: RefreshWidget(
+                  onRefresh: () async {
+                    await userFeedbackController
+                        .fetchUserFeedback(widget.userId);
+                  },
                   child: ListView(
                     controller: scrollController,
                     shrinkWrap: true,

@@ -185,24 +185,24 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                                     top: 0.0,
                                     left: 0.0,
                                     right: 5.0,
-                                    bottom: 245.0)
+                                    bottom: 255.0)
                                 : (isExpanded)
                                     ? const EdgeInsets.only(
                                         top: 0.0,
                                         left: 0.0,
                                         right: 5.0,
-                                        bottom: 200.0)
+                                        bottom: 210.0)
                                     : (widget.isClose)
                                         ? const EdgeInsets.only(
                                             top: 0.0,
                                             left: 0.0,
                                             right: 5.0,
-                                            bottom: 127.0)
+                                            bottom: 137.0)
                                         : const EdgeInsets.only(
                                             top: 0.0,
                                             left: 0.0,
                                             right: 5.0,
-                                            bottom: 81.0),
+                                            bottom: 91.0),
                             child: Obx(() {
                               if (BaseController.commentReload.isTrue) {
                                 commentController
