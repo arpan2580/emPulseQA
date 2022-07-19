@@ -36,6 +36,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   bool isSearch = false;
   bool searching = false;
+  bool isFilterClicked = false;
 
   RxInt index = 0.obs;
   // int active = 0; // FOR CHANGING THE BOTTOM ICON COLOR
@@ -720,691 +721,469 @@ class _BottomNavBarState extends State<BottomNavBar> {
           child: IconButton(
             onPressed: () {
               feedbackController.txtSearch.text = '';
+              getData();
               setState(() {
                 isSearch = !isSearch;
+                _enabled.value = true;
               });
               showGeneralDialog(
-                barrierLabel: "search",
-                barrierDismissible: true,
-                barrierColor: Colors.black.withOpacity(0.5),
-                transitionDuration: const Duration(milliseconds: 400),
-                context: context,
-                pageBuilder: (context, anim1, anim2) {
-                  return Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 61.h,
-                      child: Material(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Search feedback",
-                            contentPadding: const EdgeInsets.all(5),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5.0),
-                              child: InkWell(
-                                onTap: () {
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  getData();
-
-                                  // setState(() {
-                                  //   searching = !searching;
-                                  // });
-                                  // feedbackController.search(index);
-
-                                  // FilterDialog().openFilterDialog(
-                                  //     context,
-                                  //     genreOfFeedback,
-                                  //     feedbackType,
-                                  //     company,
-                                  //     tradeType,
-                                  //     postStatus);
-
-                                  showGeneralDialog(
-                                    barrierLabel: "filter",
-                                    barrierDismissible: false,
-                                    barrierColor: Colors.black.withOpacity(0.1),
-                                    transitionDuration:
-                                        const Duration(milliseconds: 400),
-                                    context: context,
-                                    pageBuilder: (context, anim1, anim2) {
-                                      return Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Container(
-                                          height: Get.height * 0.55,
-                                          width: Get.width,
-                                          child: Form(
-                                            key: _formKey,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(13.0),
+                  barrierDismissible: false,
+                  barrierColor: Colors.transparent.withOpacity(0.1),
+                  context: context,
+                  pageBuilder: (context, a1, a2) {
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: StatefulBuilder(
+                        builder: (context, setState) {
+                          return Wrap(
+                            children: [
+                              Container(
+                                height: isFilterClicked ? 480 : 140,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                                ),
+                                margin: const EdgeInsets.only(top: 40),
+                                // SEARCH BOX
+                                child: Column(
+                                  children: [
+                                    Material(
+                                      child: Padding(
+                                        // PROVIDES PADDING TO THE SEARCH BOX
+                                        padding: const EdgeInsets.fromLTRB(
+                                          16,
+                                          20,
+                                          16.0,
+                                          0.0,
+                                        ),
+                                        child: TextFormField(
+                                          decoration: InputDecoration(
+                                            hintText: "Search feedback",
+                                            contentPadding:
+                                                const EdgeInsets.all(5),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                width: 1,
+                                                style: BorderStyle.none,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    isFilterClicked
+                                        ? Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                              10,
+                                              20,
+                                              10.0,
+                                              0.0,
+                                            ),
+                                            child: SizedBox(
+                                              height:
+                                                  320, // THIS WILL AFFECT THE FILTER AND SEARCH BUTTON TOP GAP
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Material(
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 10.0),
-                                                      child: Text(
-                                                        "Apply Filter",
-                                                        style: TextStyle(
-                                                          fontFamily: AppFonts
-                                                              .regularFont,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 18.sp,
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Material(
+                                                        child:
+                                                            DropdownButtonFormField(
+                                                          isExpanded: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            enabled: true,
+                                                            hintText:
+                                                                "Choose genre of feedback",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily: AppFonts
+                                                                  .regularFont,
+                                                              fontSize: 16.sp,
+                                                            ),
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    10,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          style: TextStyle(
+                                                            fontFamily: AppFonts
+                                                                .regularFont,
+                                                            fontSize: 16.sp,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                          value:
+                                                              selectedGenreOfFeedback,
+                                                          onChanged: (String?
+                                                              newValue) {
+                                                            setState(() {
+                                                              selectedGenreOfFeedback =
+                                                                  newValue!;
+                                                            });
+                                                          },
+                                                          items: genreOfFeedback.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((Genre
+                                                              value) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(value
+                                                                  .genre
+                                                                  .toString()),
+                                                              value:
+                                                                  value.genre,
+                                                            );
+                                                          }).toList(),
+                                                          disabledHint:
+                                                              selectedGenreOfFeedback !=
+                                                                      null
+                                                                  ? Text(selectedGenreOfFeedback
+                                                                      .toString())
+                                                                  : null,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  Expanded(
-                                                    child: MediaQuery
-                                                        .removePadding(
-                                                      context: context,
-                                                      removeTop: true,
-                                                      child: Obx(
-                                                        () => ListView(
-                                                          children: [
-                                                            Material(
-                                                              child: Text(
-                                                                "Genre of Feedback",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  // fontWeight: FontWeight.w700,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Material(
+                                                        child:
+                                                            DropdownButtonFormField(
+                                                          isExpanded: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Choose type of feedback",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily: AppFonts
+                                                                  .regularFont,
+                                                              fontSize: 16.sp,
+                                                            ),
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    15,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0,
+                                                                // style: BorderStyle.none,
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 10.h,
+                                                          ),
+                                                          style: TextStyle(
+                                                            fontFamily: AppFonts
+                                                                .regularFont,
+                                                            fontSize: 16.sp,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                          value:
+                                                              selectedTypeOfFeedback,
+                                                          onChanged: _enabled
+                                                                  .value
+                                                              ? (String?
+                                                                  newValue) {
+                                                                  setState(() {
+                                                                    selectedTypeOfFeedback =
+                                                                        newValue!;
+                                                                  });
+                                                                }
+                                                              : null,
+                                                          items: feedbackType.map<
+                                                                  DropdownMenuItem<
+                                                                      String>>(
+                                                              (value) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(value
+                                                                  .toString()),
+                                                              value: value,
+                                                            );
+                                                          }).toList(),
+                                                          disabledHint:
+                                                              selectedTypeOfFeedback !=
+                                                                      null
+                                                                  ? Text(selectedTypeOfFeedback
+                                                                      .toString())
+                                                                  : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Material(
+                                                        child:
+                                                            DropdownButtonFormField(
+                                                          isExpanded: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Choose Company",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily: AppFonts
+                                                                  .regularFont,
+                                                              fontSize: 16.sp,
                                                             ),
-                                                            Material(
-                                                              child:
-                                                                  DropdownButtonFormField(
-                                                                isExpanded:
-                                                                    true,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  hintText:
-                                                                      "Choose genre of feedback",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        AppFonts
-                                                                            .regularFont,
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                  ),
-                                                                  contentPadding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          15,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  border:
-                                                                      OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    borderSide:
-                                                                        const BorderSide(
-                                                                      width: 0,
-                                                                      // style: BorderStyle.none,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                                value:
-                                                                    selectedGenreOfFeedback,
-                                                                onChanged: _enabled
-                                                                        .value
-                                                                    ? (String?
-                                                                        newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedGenreOfFeedback =
-                                                                              newValue!;
-                                                                        });
-                                                                      }
-                                                                    : null,
-                                                                items: genreOfFeedback.map<
-                                                                    DropdownMenuItem<
-                                                                        String>>((Genre
-                                                                    value) {
-                                                                  return DropdownMenuItem(
-                                                                    child: Text(value
-                                                                        .genre
-                                                                        .toString()),
-                                                                    value: value
-                                                                        .genre,
-                                                                  );
-                                                                }).toList(),
-                                                                disabledHint:
-                                                                    selectedGenreOfFeedback !=
-                                                                            null
-                                                                        ? Text(selectedGenreOfFeedback
-                                                                            .toString())
-                                                                        : null,
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    15,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0,
+                                                                // style: BorderStyle.none,
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 10.h,
+                                                          ),
+                                                          style: TextStyle(
+                                                            fontFamily: AppFonts
+                                                                .regularFont,
+                                                            fontSize: 16.sp,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                          value:
+                                                              selectedCompanyType,
+                                                          onChanged: _enabled
+                                                                  .value
+                                                              ? (String?
+                                                                  newValue) {
+                                                                  setState(() {
+                                                                    selectedCompanyType =
+                                                                        newValue!;
+                                                                  });
+                                                                }
+                                                              : null,
+                                                          items: company.map<
+                                                                  DropdownMenuItem<
+                                                                      String>>(
+                                                              (value) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(value
+                                                                  .toString()),
+                                                              value: value,
+                                                            );
+                                                          }).toList(),
+                                                          disabledHint:
+                                                              selectedCompanyType !=
+                                                                      null
+                                                                  ? Text(selectedCompanyType
+                                                                      .toString())
+                                                                  : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Material(
+                                                        child:
+                                                            DropdownButtonFormField(
+                                                          isExpanded: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Choose trade type",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily: AppFonts
+                                                                  .regularFont,
+                                                              fontSize: 16.sp,
                                                             ),
-                                                            Material(
-                                                              child: Text(
-                                                                "Feedback Type",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  // fontWeight: FontWeight.w700,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                ),
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    15,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0,
+                                                                // style: BorderStyle.none,
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 10.h,
+                                                          ),
+                                                          style: TextStyle(
+                                                            fontFamily: AppFonts
+                                                                .regularFont,
+                                                            fontSize: 16.sp,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                          value:
+                                                              selectedTradeType,
+                                                          onChanged: _enabled
+                                                                  .value
+                                                              ? (String?
+                                                                  newValue) {
+                                                                  setState(() {
+                                                                    selectedTradeType =
+                                                                        newValue!;
+                                                                  });
+                                                                }
+                                                              : null,
+                                                          items: tradeType.map<
+                                                                  DropdownMenuItem<
+                                                                      String>>(
+                                                              (value) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(value
+                                                                  .toString()),
+                                                              value: value,
+                                                            );
+                                                          }).toList(),
+                                                          disabledHint:
+                                                              selectedTradeType !=
+                                                                      null
+                                                                  ? Text(selectedTradeType
+                                                                      .toString())
+                                                                  : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Material(
+                                                        child:
+                                                            DropdownButtonFormField(
+                                                          isExpanded: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Choose feedback status",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontFamily: AppFonts
+                                                                  .regularFont,
+                                                              fontSize: 16.sp,
                                                             ),
-                                                            Material(
-                                                              child:
-                                                                  DropdownButtonFormField(
-                                                                isExpanded:
-                                                                    true,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  hintText:
-                                                                      "Choose type of feedback",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        AppFonts
-                                                                            .regularFont,
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                  ),
-                                                                  contentPadding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          15,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  border:
-                                                                      OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    borderSide:
-                                                                        const BorderSide(
-                                                                      width: 0,
-                                                                      // style: BorderStyle.none,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                                value:
-                                                                    selectedTypeOfFeedback,
-                                                                onChanged: _enabled
-                                                                        .value
-                                                                    ? (String?
-                                                                        newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedTypeOfFeedback =
-                                                                              newValue!;
-                                                                        });
-                                                                      }
-                                                                    : null,
-                                                                items: feedbackType.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>(
-                                                                    (value) {
-                                                                  return DropdownMenuItem(
-                                                                    child: Text(
-                                                                        value
-                                                                            .toString()),
-                                                                    value:
-                                                                        value,
-                                                                  );
-                                                                }).toList(),
-                                                                disabledHint:
-                                                                    selectedTypeOfFeedback !=
-                                                                            null
-                                                                        ? Text(selectedTypeOfFeedback
-                                                                            .toString())
-                                                                        : null,
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    15,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0,
+                                                                // style: BorderStyle.none,
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child: Text(
-                                                                "Company",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  // fontWeight: FontWeight.w700,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child:
-                                                                  DropdownButtonFormField(
-                                                                isExpanded:
-                                                                    true,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  hintText:
-                                                                      "Choose Company",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        AppFonts
-                                                                            .regularFont,
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                  ),
-                                                                  contentPadding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          15,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  border:
-                                                                      OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    borderSide:
-                                                                        const BorderSide(
-                                                                      width: 0,
-                                                                      // style: BorderStyle.none,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                                value:
-                                                                    selectedCompanyType,
-                                                                onChanged: _enabled
-                                                                        .value
-                                                                    ? (String?
-                                                                        newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedCompanyType =
-                                                                              newValue!;
-                                                                        });
-                                                                      }
-                                                                    : null,
-                                                                items: company.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>(
-                                                                    (value) {
-                                                                  return DropdownMenuItem(
-                                                                    child: Text(
-                                                                        value
-                                                                            .toString()),
-                                                                    value:
-                                                                        value,
-                                                                  );
-                                                                }).toList(),
-                                                                disabledHint:
-                                                                    selectedCompanyType !=
-                                                                            null
-                                                                        ? Text(selectedCompanyType
-                                                                            .toString())
-                                                                        : null,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child: Text(
-                                                                "Trade Type",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  // fontWeight: FontWeight.w700,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child:
-                                                                  DropdownButtonFormField(
-                                                                isExpanded:
-                                                                    true,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  hintText:
-                                                                      "Choose trade type",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        AppFonts
-                                                                            .regularFont,
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                  ),
-                                                                  contentPadding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          15,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  border:
-                                                                      OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    borderSide:
-                                                                        const BorderSide(
-                                                                      width: 0,
-                                                                      // style: BorderStyle.none,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                                value:
-                                                                    selectedTradeType,
-                                                                onChanged: _enabled
-                                                                        .value
-                                                                    ? (String?
-                                                                        newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedTradeType =
-                                                                              newValue!;
-                                                                        });
-                                                                      }
-                                                                    : null,
-                                                                items: tradeType.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>(
-                                                                    (value) {
-                                                                  return DropdownMenuItem(
-                                                                    child: Text(
-                                                                        value
-                                                                            .toString()),
-                                                                    value:
-                                                                        value,
-                                                                  );
-                                                                }).toList(),
-                                                                disabledHint:
-                                                                    selectedTradeType !=
-                                                                            null
-                                                                        ? Text(selectedTradeType
-                                                                            .toString())
-                                                                        : null,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child: Text(
-                                                                "Feedback Status",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  // fontWeight: FontWeight.w700,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Material(
-                                                              child:
-                                                                  DropdownButtonFormField(
-                                                                isExpanded:
-                                                                    true,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  hintText:
-                                                                      "Choose feedback status",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        AppFonts
-                                                                            .regularFont,
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                  ),
-                                                                  contentPadding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          15,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  border:
-                                                                      OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    borderSide:
-                                                                        const BorderSide(
-                                                                      width: 0,
-                                                                      // style: BorderStyle.none,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      AppFonts
-                                                                          .regularFont,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                                value:
-                                                                    selectedPostStatus,
-                                                                onChanged: _enabled
-                                                                        .value
-                                                                    ? (String?
-                                                                        newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedPostStatus =
-                                                                              newValue!;
-                                                                        });
-                                                                      }
-                                                                    : null,
-                                                                items: postStatus.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>(
-                                                                    (value) {
-                                                                  return DropdownMenuItem(
-                                                                    child: Text(
-                                                                        value
-                                                                            .toString()),
-                                                                    value:
-                                                                        value,
-                                                                  );
-                                                                }).toList(),
-                                                                disabledHint:
-                                                                    selectedPostStatus !=
-                                                                            null
-                                                                        ? Text(selectedPostStatus
-                                                                            .toString())
-                                                                        : null,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                MaterialButton(
-                                                                  // minWidth: MediaQuery.of(context).size.width,
-                                                                  height: 47.h,
-                                                                  onPressed:
-                                                                      () {
-                                                                    FocusManager
-                                                                        .instance
-                                                                        .primaryFocus
-                                                                        ?.unfocus();
-                                                                    setState(
-                                                                        () {
-                                                                      selectedGenreOfFeedback =
-                                                                          null;
-                                                                      selectedTypeOfFeedback =
-                                                                          null;
-                                                                      selectedCompanyType =
-                                                                          null;
-                                                                      selectedTradeType =
-                                                                          null;
-                                                                      selectedPostStatus =
-                                                                          null;
-                                                                      _enabled.value =
-                                                                          true;
-                                                                    });
-                                                                  },
-                                                                  color: const Color(
-                                                                      0xff108ab3),
-                                                                  child: Text(
-                                                                    "Clear",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontFamily:
-                                                                          AppFonts
-                                                                              .regularFont,
-                                                                      fontSize:
-                                                                          16.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: const Color(
-                                                                          0xffffffff),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 15.h,
-                                                                ),
-                                                                MaterialButton(
-                                                                  // minWidth: MediaQuery.of(context).size.width,
-                                                                  height: 47.h,
-                                                                  onPressed:
-                                                                      () {
-                                                                    FocusManager
-                                                                        .instance
-                                                                        .primaryFocus
-                                                                        ?.unfocus();
-                                                                    setState(
-                                                                        () {
-                                                                      _enabled.value =
-                                                                          false;
-                                                                    });
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                    DialogHelper.showInfoToast(
-                                                                        description:
-                                                                            'Filter Applied');
-                                                                  },
-                                                                  color: const Color(
-                                                                      0xff108ab3),
-                                                                  child: Text(
-                                                                    "Apply",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontFamily:
-                                                                          AppFonts
-                                                                              .regularFont,
-                                                                      fontSize:
-                                                                          16.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: const Color(
-                                                                          0xffffffff),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          ],
+                                                          ),
+                                                          style: TextStyle(
+                                                            fontFamily: AppFonts
+                                                                .regularFont,
+                                                            fontSize: 16.sp,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                          value:
+                                                              selectedPostStatus,
+                                                          onChanged: _enabled
+                                                                  .value
+                                                              ? (String?
+                                                                  newValue) {
+                                                                  setState(() {
+                                                                    selectedPostStatus =
+                                                                        newValue!;
+                                                                  });
+                                                                }
+                                                              : null,
+                                                          items: postStatus.map<
+                                                                  DropdownMenuItem<
+                                                                      String>>(
+                                                              (value) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(value
+                                                                  .toString()),
+                                                              value: value,
+                                                            );
+                                                          }).toList(),
+                                                          disabledHint:
+                                                              selectedPostStatus !=
+                                                                      null
+                                                                  ? Text(selectedPostStatus
+                                                                      .toString())
+                                                                  : null,
                                                         ),
                                                       ),
                                                     ),
@@ -1412,152 +1191,88 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                                 ],
                                               ),
                                             ),
-                                          ),
-                                          margin: const EdgeInsets.only(
-                                              bottom: 0, left: 3, right: 3),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    transitionBuilder:
-                                        (context, anim1, anim2, child) {
-                                      return SlideTransition(
-                                        position: Tween(
-                                                begin: const Offset(0, 1),
-                                                end: const Offset(0, 0))
-                                            .animate(anim1),
-                                        child: child,
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width: 30.0,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xff24aaff),
-                                  ),
-                                  child: Center(
-                                    // child: Icon(
-                                    //   Icons.filter_alt_rounded,
-                                    //   color: Colors.white,
-                                    // ),
-                                    child: Obx(
-                                      () => _enabled.value
-                                          ? SvgPicture.asset(
-                                              'assets/icons/filter-icon.svg',
-                                              height: 25.h,
-                                              width: 25.w,
-                                              color: Colors.white,
-                                            )
-                                          : Stack(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  'assets/icons/filter-icon.svg',
-                                                  height: 25.h,
-                                                  width: 25.w,
-                                                  color: Colors.black,
-                                                ),
-                                                Positioned(
-                                                  top: 0,
-                                                  bottom: 0,
-                                                  left: 0,
-                                                  child: CircleAvatar(
-                                                    radius: 60.w,
-                                                    // child: Text(
-                                                    //   BaseController.unreadNotification.value.toString(),
-                                                    //   style: TextStyle(fontSize: 12.sp),
-                                                    // ),
-                                                    backgroundColor: Colors.red,
+                                          )
+                                        : Container(),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16.0, 8.0, 16.0, 0.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            isFilterClicked
+                                                ? SearchFilterButton(
+                                                    text: "Cancel Filter",
+                                                    icon: Icons.filter_alt_off,
+                                                    onPressed: () {
+                                                      print("Fliter clicked");
+                                                      setState(() {
+                                                        isFilterClicked = false;
+                                                        FocusManager.instance
+                                                            .primaryFocus
+                                                            ?.unfocus();
+                                                        setState(() {
+                                                          selectedGenreOfFeedback =
+                                                              null;
+                                                          selectedTypeOfFeedback =
+                                                              null;
+                                                          selectedCompanyType =
+                                                              null;
+                                                          selectedTradeType =
+                                                              null;
+                                                          selectedPostStatus =
+                                                              null;
+                                                          _enabled.value = true;
+                                                        });
+                                                      });
+                                                    },
+                                                  )
+                                                : SearchFilterButton(
+                                                    text: "Apply Filter",
+                                                    icon: Icons.filter_alt,
+                                                    onPressed: () {
+                                                      print("Fliter clicked");
+                                                      setState(() {
+                                                        _enabled.value = true;
+                                                        isFilterClicked = true;
+                                                      });
+                                                    },
                                                   ),
-                                                ),
-                                              ],
+                                            const SizedBox(
+                                              width: 10,
                                             ),
+                                            SearchFilterButton(
+                                              text: "Search",
+                                              icon: Icons.search,
+                                              onPressed: () {
+                                                FocusManager
+                                                    .instance.primaryFocus
+                                                    ?.unfocus();
+                                                setState(() {
+                                                  // isFilterClicked = false;
+                                                  searching = !searching;
+                                                });
+                                                feedbackController
+                                                    .txtSearch.text = '';
+                                                feedbackController
+                                                    .search(index);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: searching
-                                  ? InkWell(
-                                      onTap: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        setState(() {
-                                          searching = !searching;
-                                        });
-                                        feedbackController.txtSearch.text = '';
-                                        feedbackController.search(index);
-                                      },
-                                      child: Container(
-                                        width: 30.0,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xff24aaff),
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.clear_rounded,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : InkWell(
-                                      onTap: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        setState(() {
-                                          searching = !searching;
-                                        });
-                                        feedbackController.search(index);
-                                        // FilterDialog.openFilterDialog(context);
-                                      },
-                                      child: Container(
-                                        width: 30.0,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xff24aaff),
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.search,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          controller: feedbackController.txtSearch,
-                          onChanged: (text) {
-                            setState(() {
-                              searching = false;
-                            });
-                          },
-                        ),
+                            ],
+                          );
+                        },
                       ),
-                      margin:
-                          const EdgeInsets.only(top: 120, left: 0, right: 0),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                    ),
-                  );
-                },
-                transitionBuilder: (context, anim1, anim2, child) {
-                  return SlideTransition(
-                    position: Tween(
-                            begin: const Offset(0, -0.3),
-                            end: const Offset(0, 0))
-                        .animate(anim1),
-                    child: child,
-                  );
-                },
-              );
+                    );
+                  });
             },
             icon: SvgPicture.asset(
               'assets/icons/Search.svg',
@@ -1632,6 +1347,46 @@ class _BottomNavBarState extends State<BottomNavBar> {
           child: const CustomNotificationIcon(),
         ),
       ],
+    );
+  }
+}
+
+class SearchFilterButton extends StatelessWidget {
+  final String? text;
+  final IconData? icon;
+  final Function() onPressed;
+  const SearchFilterButton({
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 3 + 10,
+        child: MaterialButton(
+          color: const Color(0xff24aaff),
+          onPressed: onPressed,
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                text == null ? "NULL" : text!,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
