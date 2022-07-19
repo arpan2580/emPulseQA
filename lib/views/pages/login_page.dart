@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(height: 15.h),
                               CustomTextfield(
-                                hintText: "someone@example.com",
+                                hintText: "someone@itc.in",
                                 textEditingController: loginController.txtEmail,
                                 labelText: "E-mail Address",
                                 keyboardType: TextInputType.emailAddress,
@@ -197,6 +197,8 @@ class _LoginPageState extends State<LoginPage> {
                                                 BaseController.captchaUrl +
                                                     '?v=$counter';
                                             counter += 1;
+                                            // loginController.txtEmail.clear();
+                                            loginController.txtCaptcha.clear();
                                           }));
                                 },
                               ),

@@ -112,7 +112,7 @@ class _OtpPageState extends State<OtpPage> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true),
-                              obsecureTxt: true,
+                              obsecureTxt: false,
                               suffixIcon: true,
                               maxLength: 6,
                               counterText: "",
@@ -143,6 +143,7 @@ class _OtpPageState extends State<OtpPage> {
                                   _formKey.currentState!.save();
                                   otpController.otpCheck(
                                       widget.email, deviceToken);
+                                  // otpController.txtOtp.clear();
                                 }
                               },
                             )

@@ -55,6 +55,7 @@ class OtpController extends GetxController {
                 ),
               ));
         } else {
+          print(response);
           DialogHelper.showErrorToast(description: response['message']);
         }
       } else {
