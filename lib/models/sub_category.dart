@@ -1,9 +1,9 @@
 class SubCategory {
-  final String categoryName;
-  final List subCategoryName;
+  final String subCategoryName;
+  // final List subCategoryName;
 
   SubCategory(
-    this.categoryName,
+    // this.categoryName,
     this.subCategoryName,
   );
 }
