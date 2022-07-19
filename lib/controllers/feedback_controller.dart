@@ -19,12 +19,60 @@ class FeedbackController extends GetxController {
   late FeedbackModel feedbackModel;
   TextEditingController txtSearch = TextEditingController();
 
-  void search(isMyFeedback) async {
-    var data = {
-      's': txtSearch.text.trim(),
-    };
+  bool isFilterApplied = false;
+  List selectedGenreOfFeedback = [].obs,
+      selectedTypeOfFeedback = [].obs,
+      selectedCompanyType = [].obs,
+      selectedTradeType = [].obs,
+      selectedPostStatus = [].obs,
+      selectedCategory = [].obs,
+      selectedSubCategory = [].obs;
+
+  void search(bool isMyFeedback) async {
+    Map<String, dynamic> data = {};
+
+    if (txtSearch.text.trim() != '') {
+      data['s'] = txtSearch.text.trim();
+    }
+    if (selectedGenreOfFeedback.isNotEmpty) {
+      data['genre'] = selectedGenreOfFeedback;
+    }
+    if (selectedTypeOfFeedback.isNotEmpty) {
+      data['type'] = selectedTypeOfFeedback;
+    }
+    if (selectedCompanyType.isNotEmpty) {
+      data['company'] = selectedCompanyType;
+    }
+    if (selectedTradeType.isNotEmpty) {
+      data['trade_type'] = selectedTradeType;
+    }
+    if (selectedPostStatus.isNotEmpty) {
+      data['status'] = selectedPostStatus;
+    }
+    if (selectedCategory.isNotEmpty) {
+      data['category'] = selectedCategory;
+    }
+    if (selectedSubCategory.isNotEmpty) {
+      data['sub_category'] = selectedSubCategory;
+    }
+
+    if (selectedGenreOfFeedback.isNotEmpty ||
+        selectedTypeOfFeedback.isNotEmpty ||
+        selectedCompanyType.isNotEmpty ||
+        selectedTradeType.isNotEmpty ||
+        selectedPostStatus.isNotEmpty ||
+        selectedCategory.isNotEmpty ||
+        selectedSubCategory.isNotEmpty) {
+      isFilterApplied = true;
+    } else {
+      isFilterApplied = false;
+    }
+
+    print(isMyFeedback.toString());
+    print(data.toString());
+
     BaseController.showLoading('Searching...');
-    if (isMyFeedback == 1) {
+    if (isMyFeedback) {
       var response =
           await BaseClient().dioPost('/my-feedbacks', json.encode(data));
       myFeedbackList.clear();

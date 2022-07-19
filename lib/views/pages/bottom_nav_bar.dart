@@ -82,10 +82,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   getData() {
     if (mounted) {
-      _genreController.getGenre();
-      setState(() {
-        genreOfFeedback = _genreController.genreTypes;
-      });
+      _genreController.getAllData();
     }
   }
 
@@ -720,8 +717,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           child: IconButton(
             onPressed: () {
-              feedbackController.txtSearch.text = '';
-              getData();
+              // feedbackController.txtSearch.text = '';
+              if (feedbackController.isFilterApplied == false) getData();
               setState(() {
                 isSearch = !isSearch;
                 _enabled.value = true;
@@ -732,7 +729,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 context: context,
                 transitionDuration: const Duration(milliseconds: 350),
                 pageBuilder: (context, a1, a2) {
-                  return CustomSearchDialog();
+                  return CustomSearchDialog(
+                    isMyFeedback: (index == 1) ? true : false,
+                    isFilterApplied:
+                        feedbackController.isFilterApplied ? true : false,
+                    genreController: _genreController,
+                    feedbackController: feedbackController,
+                    dialogContext: context,
+                  );
                 },
                 transitionBuilder: (context, anim1, anim2, child) {
                   return SlideTransition(

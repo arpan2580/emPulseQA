@@ -1,50 +1,44 @@
+import 'package:empulse/models/feedback_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../controllers/feedback_controller.dart';
 import '../../controllers/genre_controller.dart';
 import '../../models/category.dart';
 import '../../models/genre.dart';
+import '../../models/sub_category.dart';
 
 class CustomSearchDialog extends StatefulWidget {
-  const CustomSearchDialog({Key? key}) : super(key: key);
+  final bool isMyFeedback;
+  final bool isFilterApplied;
+  final GenreController genreController;
+  final FeedbackController feedbackController;
+  final dynamic dialogContext;
+  const CustomSearchDialog({
+    Key? key,
+    required this.isMyFeedback,
+    required this.isFilterApplied,
+    required this.genreController,
+    required this.feedbackController,
+    required this.dialogContext,
+  }) : super(key: key);
 
   @override
   State<CustomSearchDialog> createState() => _CustomSearchDialogState();
 }
 
 class _CustomSearchDialogState extends State<CustomSearchDialog> {
-  final _genreController = Get.put(GenreController());
-  final feedbackController = Get.put(FeedbackController());
-  List<Genre> genreOfFeedback = [];
-  List<MultiSelectItem> feedbackType = ['Observation', 'Action'].map((data) {
-    return MultiSelectItem(data, data);
-  }).toList();
-  List<MultiSelectItem> company =
-      ['ITC', 'Direct Competitor', 'Other Player'].map((comp) {
-    return MultiSelectItem(comp, comp);
-  }).toList();
-  List<MultiSelectItem> tradeType =
-      ['General Trade', 'Modern Trade'].map((tradeTyp) {
-    return MultiSelectItem(tradeTyp, tradeTyp);
-  }).toList();
-  List<MultiSelectItem> postStatus = ['In Progress', 'Closed'].map((tradeTyp) {
-    return MultiSelectItem(tradeTyp, tradeTyp);
-  }).toList();
-  List<Category> categoryList = [];
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List selectedGenreOfFeedback = [],
-      selectedTypeOfFeedback = [],
-      selectedCompanyType = [],
-      selectedTradeType = [],
-      selectedPostStatus = [],
-      selectedCategory = [];
-  final RxBool _enabled = true.obs;
+  late GenreController _genreController;
+  late FeedbackController feedbackController;
+
+  final RxBool _enabled = true.obs,
+      isObservationType = false.obs,
+      isActionType = false.obs;
 
   bool searching = false;
 
@@ -52,18 +46,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
 
   @override
   void initState() {
-    getData();
-  }
-
-  getData() {
-    if (mounted) {
-      _genreController.getGenreData();
-      _genreController.getCategory();
-
-      setState(() {
-        // genreOfFeedback = _genreController.genreTypes;
-        // categoryList = _genreController.categoryTypes;
-      });
+    super.initState();
+    _genreController = widget.genreController;
+    feedbackController = widget.feedbackController;
+    if (widget.isFilterApplied) {
+      isFilterClicked = true;
     }
   }
 
@@ -92,6 +79,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                 15.0,
               ),
               child: TextFormField(
+                controller: feedbackController.txtSearch,
                 decoration: InputDecoration(
                   hintText: "Search using keywords from feedback",
                   contentPadding: const EdgeInsets.all(10),
@@ -121,9 +109,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                               5.0,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MultiSelectDialogField(
-                                  dialogHeight: 200,
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  dialogHeight: 300,
                                   items: _genreController.dropDownData,
                                   title: Text(
                                     "Choose genre",
@@ -132,7 +122,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       fontSize: 18.sp,
                                     ),
                                   ),
-                                  selectedColor: Colors.black87,
+                                  // initialValue: feedbackController
+                                  //     .selectedGenreOfFeedback
+                                  //     .map((e) => Genre(e))
+                                  //     .toList(),
+                                  selectedColor: Colors.blue,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey,
@@ -153,20 +147,50 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     ),
                                   ),
                                   onConfirm: (results) {
-                                    selectedGenreOfFeedback = [];
+                                    feedbackController.selectedGenreOfFeedback
+                                        .clear();
                                     for (var data in results) {
                                       Genre str = data as Genre;
-                                      selectedGenreOfFeedback.add(str.genre);
+                                      feedbackController.selectedGenreOfFeedback
+                                          .add(str.genre);
                                     }
-                                    print("data $selectedGenreOfFeedback");
                                   },
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedGenreOfFeedback.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedGenreOfFeedback
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: Text(feedbackController
+                                                            .selectedGenreOfFeedback[
+                                                        index]),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
                                 ),
                                 SizedBox(
                                   height: 10.h,
                                 ),
                                 MultiSelectDialogField(
-                                  dialogHeight: 200,
-                                  items: feedbackType,
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  dialogHeight: 120,
+                                  items:
+                                      _genreController.feedbackTypeDropDownData,
                                   title: Text(
                                     "Choose type of feedback",
                                     style: TextStyle(
@@ -174,7 +198,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       fontSize: 18.sp,
                                     ),
                                   ),
-                                  selectedColor: Colors.black87,
+                                  // initialValue: feedbackController
+                                  //     .selectedTypeOfFeedback
+                                  //     .map((e) => e)
+                                  //     .toList(),
+                                  selectedColor: Colors.blue,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey,
@@ -195,60 +223,139 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     ),
                                   ),
                                   onConfirm: (results) {
-                                    selectedTypeOfFeedback = [];
+                                    feedbackController.selectedTypeOfFeedback
+                                        .clear();
                                     for (var data in results) {
-                                      selectedTypeOfFeedback.add(data);
+                                      feedbackController.selectedTypeOfFeedback
+                                          .add(data);
                                     }
-                                    print("data $selectedTypeOfFeedback");
+                                    if (feedbackController
+                                        .selectedTypeOfFeedback
+                                        .contains('1')) {
+                                      isObservationType.value = true;
+                                    } else {
+                                      isObservationType.value = false;
+                                    }
+                                    if (feedbackController
+                                        .selectedTypeOfFeedback
+                                        .contains('2')) {
+                                      isActionType.value = true;
+                                    } else {
+                                      isActionType.value = false;
+                                    }
                                   },
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedTypeOfFeedback.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedTypeOfFeedback
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: (feedbackController
+                                                                    .selectedTypeOfFeedback[
+                                                                index] ==
+                                                            '1')
+                                                        ? const Text(
+                                                            "Observation")
+                                                        : const Text("Action"),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Obx(
+                                  () => MultiSelectDialogField(
+                                    chipDisplay: MultiSelectChipDisplay.none(),
+                                    dialogHeight: 200,
+                                    items: isActionType.value
+                                        ? _genreController.companyForActionData
+                                        : _genreController.companyDropDownData,
+                                    title: Text(
+                                      "Choose type of company",
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                    selectedColor: Colors.blue,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1,
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5)),
+                                    ),
+                                    buttonIcon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.blue,
+                                    ),
+                                    buttonText: Text(
+                                      "Choose one or more company",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                    onConfirm: (results) {
+                                      feedbackController.selectedCompanyType
+                                          .clear();
+                                      for (var data in results) {
+                                        feedbackController.selectedCompanyType
+                                            .add(data);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedCompanyType.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedCompanyType.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: Text(feedbackController
+                                                            .selectedCompanyType[
+                                                        index]),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
                                 ),
                                 SizedBox(
                                   height: 10.h,
                                 ),
                                 MultiSelectDialogField(
-                                  dialogHeight: 200,
-                                  items: company,
-                                  title: Text(
-                                    "Choose type of company",
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 18.sp,
-                                    ),
-                                  ),
-                                  selectedColor: Colors.black87,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5)),
-                                  ),
-                                  buttonIcon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.blue,
-                                  ),
-                                  buttonText: Text(
-                                    "Choose one or more company",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                  onConfirm: (results) {
-                                    selectedCompanyType = [];
-                                    for (var data in results) {
-                                      selectedCompanyType.add(data);
-                                    }
-                                    print("data $selectedCompanyType");
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                MultiSelectDialogField(
-                                  dialogHeight: 200,
-                                  items: tradeType,
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  dialogHeight: 120,
+                                  items: _genreController.tradeTypeDropDownData,
                                   title: Text(
                                     "Choose type of trade",
                                     style: TextStyle(
@@ -256,7 +363,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       fontSize: 18.sp,
                                     ),
                                   ),
-                                  selectedColor: Colors.black87,
+                                  selectedColor: Colors.blue,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey,
@@ -277,59 +384,137 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     ),
                                   ),
                                   onConfirm: (results) {
-                                    selectedTradeType = [];
+                                    feedbackController.selectedTradeType
+                                        .clear();
                                     for (var data in results) {
-                                      selectedTradeType.add(data);
+                                      feedbackController.selectedTradeType
+                                          .add(data);
                                     }
-                                    print("data $selectedTradeType");
                                   },
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedTradeType.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedTradeType.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: (feedbackController
+                                                                    .selectedTradeType[
+                                                                index] ==
+                                                            '1')
+                                                        ? const Text(
+                                                            "General Trade")
+                                                        : const Text(
+                                                            "Modern Trade"),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
+                                ),
+                                Obx(
+                                  () => isObservationType.value
+                                      ? Container()
+                                      : SizedBox(
+                                          height: 10.h,
+                                        ),
+                                ),
+                                Obx(
+                                  () => isObservationType.value
+                                      ? Container()
+                                      : MultiSelectDialogField(
+                                          chipDisplay:
+                                              MultiSelectChipDisplay.none(),
+                                          dialogHeight: 120,
+                                          items: _genreController
+                                              .statusTypeDropDownData,
+                                          title: Text(
+                                            "Choose status of feedback",
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 18.sp,
+                                            ),
+                                          ),
+                                          selectedColor: Colors.blue,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(5)),
+                                          ),
+                                          buttonIcon: const Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Colors.blue,
+                                          ),
+                                          buttonText: Text(
+                                            "Choose one or more status",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16.sp,
+                                            ),
+                                          ),
+                                          onConfirm: (results) {
+                                            feedbackController
+                                                .selectedPostStatus
+                                                .clear();
+                                            for (var data in results) {
+                                              feedbackController
+                                                  .selectedPostStatus
+                                                  .add(data);
+                                            }
+                                          },
+                                        ),
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedPostStatus.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedPostStatus.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: (feedbackController
+                                                                    .selectedPostStatus[
+                                                                index] ==
+                                                            '200')
+                                                        ? const Text(
+                                                            "In Progress")
+                                                        : const Text("Closed"),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
                                 ),
                                 SizedBox(
                                   height: 10.h,
                                 ),
                                 MultiSelectDialogField(
-                                  dialogHeight: 200,
-                                  items: postStatus,
-                                  title: Text(
-                                    "Choose status of feedback",
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 18.sp,
-                                    ),
-                                  ),
-                                  selectedColor: Colors.black87,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5)),
-                                  ),
-                                  buttonIcon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.blue,
-                                  ),
-                                  buttonText: Text(
-                                    "Choose one or more status",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                  onConfirm: (results) {
-                                    selectedPostStatus = [];
-                                    for (var data in results) {
-                                      selectedPostStatus.add(data);
-                                    }
-                                    print("data $selectedPostStatus");
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                MultiSelectDialogField(
-                                  dialogHeight: 200,
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  dialogHeight: 300,
                                   items: _genreController.categoryDropDownData,
                                   title: Text(
                                     "Choose category",
@@ -338,7 +523,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       fontSize: 18.sp,
                                     ),
                                   ),
-                                  selectedColor: Colors.black87,
+                                  selectedColor: Colors.blue,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey,
@@ -359,13 +544,122 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     ),
                                   ),
                                   onConfirm: (results) {
-                                    selectedCategory = [];
+                                    feedbackController.selectedCategory.clear();
                                     for (var data in results) {
                                       Category str = data as Category;
-                                      selectedCategory.add(str.categoryName);
+                                      feedbackController.selectedCategory
+                                          .add(str.categoryName);
                                     }
-                                    print("data $selectedCategory");
+                                    _genreController.getSubCategory(
+                                        feedbackController.selectedCategory);
                                   },
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedCategory.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedCategory.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: Text(feedbackController
+                                                            .selectedCategory[
+                                                        index]),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Obx(
+                                  () => _genreController
+                                          .subCategoryTypes.isNotEmpty
+                                      ? MultiSelectDialogField(
+                                          chipDisplay:
+                                              MultiSelectChipDisplay.none(),
+                                          dialogHeight: 300,
+                                          items: _genreController
+                                              .subCategoryDropDownData,
+                                          title: Text(
+                                            "Choose sub category",
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 18.sp,
+                                            ),
+                                          ),
+                                          selectedColor: Colors.blue,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(5)),
+                                          ),
+                                          buttonIcon: const Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Colors.blue,
+                                          ),
+                                          buttonText: Text(
+                                            "Choose one or more sub category",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16.sp,
+                                            ),
+                                          ),
+                                          onConfirm: (results) {
+                                            feedbackController
+                                                .selectedSubCategory
+                                                .clear();
+                                            for (var data in results) {
+                                              SubCategory str =
+                                                  data as SubCategory;
+                                              feedbackController
+                                                  .selectedSubCategory
+                                                  .add(str.subCategoryName);
+                                            }
+                                          },
+                                        )
+                                      : Container(),
+                                ),
+                                Obx(
+                                  () => (feedbackController
+                                          .selectedSubCategory.isNotEmpty)
+                                      ? SizedBox(
+                                          height: 50.0,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: feedbackController
+                                                  .selectedSubCategory.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: ActionChip(
+                                                    label: Text(feedbackController
+                                                            .selectedSubCategory[
+                                                        index]),
+                                                    onPressed: () {},
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      : Container(),
                                 ),
                               ],
                             ),
@@ -383,19 +677,20 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                   isFilterClicked
                       ? SearchFilterButton(
                           text: "Cancel Filter",
-                          icon: Icons.filter_alt_off,
+                          icon: Icons.filter_alt_off_outlined,
                           onPressed: () {
                             setState(() {
                               isFilterClicked = false;
                               FocusManager.instance.primaryFocus?.unfocus();
-                              setState(() {
-                                selectedGenreOfFeedback = [];
-                                selectedTypeOfFeedback = [];
-                                selectedCompanyType = [];
-                                selectedTradeType = [];
-                                selectedPostStatus = [];
-                                _enabled.value = true;
-                              });
+                              feedbackController.selectedGenreOfFeedback
+                                  .clear();
+                              feedbackController.selectedTypeOfFeedback.clear();
+                              feedbackController.selectedCompanyType.clear();
+                              feedbackController.selectedTradeType.clear();
+                              feedbackController.selectedPostStatus.clear();
+                              feedbackController.selectedCategory.clear();
+                              feedbackController.selectedSubCategory.clear();
+                              _genreController.getAllData();
                             });
                           },
                         )
@@ -404,7 +699,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                           icon: Icons.filter_alt_outlined,
                           onPressed: () {
                             setState(() {
-                              _enabled.value = true;
+                              // _enabled.value = true;
                               isFilterClicked = true;
                             });
                           },
@@ -417,13 +712,12 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                     icon: Icons.search,
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
+                      feedbackController.search(widget.isMyFeedback);
                       setState(() {
                         // isFilterClicked = false;
                         searching = !searching;
                       });
-                      feedbackController.txtSearch.text = '';
-                      // feedbackController
-                      //     .search(index);
+                      Navigator.pop(widget.dialogContext);
                     },
                   ),
                 ],

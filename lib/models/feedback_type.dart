@@ -1,5 +1,5 @@
 class FeedbackType {
-  final int feedbackTypeId;
+  final String feedbackTypeId;
   final String feedbackName;
 
   FeedbackType(

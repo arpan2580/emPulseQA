@@ -105,23 +105,36 @@ class _SplashPageState extends State<SplashPage> {
     );
 
     if (isLoggedIn.read("refreshToken") != null) {
-      BaseController().fetchGlobalData().then(
-            (value) => (mounted)
-                ? setState(() {
-                    _defaultHome = const BottomNavBar(index: 0);
-                  })
-                : null,
+      BaseController().fetchGlobalData().then((value) {
+        if (mounted) {
+          setState(() {
+            _defaultHome = const BottomNavBar(index: 0);
+          });
+          Get.offAll(
+            () => FeatureDiscovery(
+              recordStepsInSharedPreferences: false,
+              child: _defaultHome,
+            ),
           );
-    }
-
-    Timer(const Duration(milliseconds: 3500), () {
+        }
+      });
+    } else {
       Get.offAll(
         () => FeatureDiscovery(
           recordStepsInSharedPreferences: false,
           child: _defaultHome,
         ),
       );
-    });
+    }
+
+    // Timer(const Duration(milliseconds: 4000), () {
+    //   Get.offAll(
+    //     () => FeatureDiscovery(
+    //       recordStepsInSharedPreferences: false,
+    //       child: _defaultHome,
+    //     ),
+    //   );
+    // });
   }
 
   @override
