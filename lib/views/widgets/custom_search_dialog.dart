@@ -2,7 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
@@ -32,8 +31,6 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
   late GenreController _genreController;
   late FeedbackController feedbackController;
 
-  final RxBool isObservationType = false.obs, isActionType = false.obs;
-
   bool isFilterClicked = false;
 
   @override
@@ -53,7 +50,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
       alignment: Alignment.topCenter,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        height: isFilterClicked ? Get.height * 0.65 : 150,
+        height: isFilterClicked ? Get.height * 0.63 : 150,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -159,6 +156,12 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       feedbackController
                                           .showSelectedTypeOfFeedback
                                           .clear();
+
+                                      feedbackController.selectedPostStatus
+                                          .clear();
+                                      feedbackController.showSelectedPostStatus
+                                          .clear();
+
                                       for (var data in values) {
                                         var id = '';
                                         if (data == 'Observation') {
@@ -177,16 +180,20 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       if (feedbackController
                                           .selectedTypeOfFeedback
                                           .contains('1')) {
-                                        isObservationType.value = true;
+                                        feedbackController
+                                            .isObservationType.value = true;
                                       } else {
-                                        isObservationType.value = false;
+                                        feedbackController
+                                            .isObservationType.value = false;
                                       }
                                       if (feedbackController
                                           .selectedTypeOfFeedback
                                           .contains('2')) {
-                                        isActionType.value = true;
+                                        feedbackController.isActionType.value =
+                                            true;
                                       } else {
-                                        isActionType.value = false;
+                                        feedbackController.isActionType.value =
+                                            false;
                                       }
                                     },
                                   ),
@@ -203,7 +210,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       isDense: true,
                                       border: OutlineInputBorder(),
                                     ),
-                                    items: isActionType.value
+                                    items: feedbackController.isActionType.value
                                         ? _genreController.companyForActionType
                                             .map((element) =>
                                                 element.companyName)
@@ -266,12 +273,12 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                       }
                                     },
                                   ),
-                                  isObservationType.value
+                                  feedbackController.isObservationType.value
                                       ? Container()
                                       : SizedBox(
                                           height: 10.h,
                                         ),
-                                  isObservationType.value
+                                  feedbackController.isObservationType.value
                                       ? Container()
                                       : DropdownSearch<String>.multiSelection(
                                           mode: Mode.MENU,
@@ -413,20 +420,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                           icon: Icons.filter_alt_off_outlined,
                           onPressed: () {
                             FocusManager.instance.primaryFocus?.unfocus();
-                            feedbackController.selectedGenreOfFeedback.clear();
-                            feedbackController.selectedTypeOfFeedback.clear();
-                            feedbackController.showSelectedTypeOfFeedback
-                                .clear();
-                            feedbackController.selectedCompanyType.clear();
-                            feedbackController.selectedTradeType.clear();
-                            feedbackController.showSelectedTradeType.clear();
-                            feedbackController.selectedPostStatus.clear();
-                            feedbackController.showSelectedPostStatus.clear();
-                            feedbackController.selectedCategory.clear();
-                            feedbackController.selectedSubCategory.clear();
-                            _genreController.subCategoryTypes.clear();
-                            isObservationType.value = false;
-                            isActionType.value = false;
+                            _genreController.clearAllData(feedbackController);
                             _genreController.getAllData();
                             setState(() {
                               isFilterClicked = false;
@@ -451,6 +445,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                       feedbackController.search(widget.isMyFeedback);
+                      setState(() {});
                       Navigator.pop(widget.dialogContext);
                     },
                   ),

@@ -20,6 +20,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../controllers/genre_controller.dart';
 import '../../models/genre.dart';
+import '../widgets/custom_search_icon.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int index;
@@ -381,10 +382,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               ),
                               onPressed: () {
                                 index.value = 1;
+                                _genreController
+                                    .clearAllData(feedbackController);
                               },
                             ),
                             GestureDetector(
-                              onTap: () => index.value = 1,
+                              onTap: () {
+                                index.value = 1;
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: Text(
@@ -706,43 +711,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
             height: 29.h,
             width: 29.w,
           ),
-          child: IconButton(
-            onPressed: () {
-              // feedbackController.txtSearch.text = '';
-              if (feedbackController.isFilterApplied == false) getData();
-              setState(() {
-                isSearch = !isSearch;
-              });
-              showGeneralDialog(
-                barrierDismissible: false,
-                barrierColor: Colors.transparent.withOpacity(0.1),
-                context: context,
-                transitionDuration: const Duration(milliseconds: 350),
-                pageBuilder: (context, a1, a2) {
-                  return CustomSearchDialog(
-                    isMyFeedback: (index == 1) ? true : false,
-                    isFilterApplied:
-                        feedbackController.isFilterApplied ? true : false,
-                    genreController: _genreController,
-                    feedbackController: feedbackController,
-                    dialogContext: context,
-                  );
-                },
-                transitionBuilder: (context, anim1, anim2, child) {
-                  return SlideTransition(
-                    position: Tween(
-                            begin: const Offset(0, -1), end: const Offset(0, 0))
-                        .animate(anim1),
-                    child: child,
-                  );
-                },
-              );
-            },
-            icon: SvgPicture.asset(
-              'assets/icons/Search.svg',
-              height: 29.h,
-              width: 29.w,
-            ),
+          child: CustomSearchIcon(
+            feedbackController: feedbackController,
+            genreController: _genreController,
+            getData: getData,
+            index: index,
           ),
         ),
         DescribedFeatureOverlay(

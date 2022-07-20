@@ -11,6 +11,7 @@ import '../models/status_type.dart';
 import '../models/sub_category.dart';
 import '../models/trade_type.dart';
 import '../services/base_client.dart';
+import 'feedback_controller.dart';
 
 class GenreController extends GetxController {
   var genreTypes = <Genre>[].obs;
@@ -120,5 +121,21 @@ class GenreController extends GetxController {
   getCompanyForAction() {
     companyForActionType.clear();
     companyForActionType.add(Company("ITC"));
+  }
+
+  clearAllData(FeedbackController feedbackController) {
+    feedbackController.selectedGenreOfFeedback.clear();
+    feedbackController.selectedTypeOfFeedback.clear();
+    feedbackController.showSelectedTypeOfFeedback.clear();
+    feedbackController.selectedCompanyType.clear();
+    feedbackController.selectedTradeType.clear();
+    feedbackController.showSelectedTradeType.clear();
+    feedbackController.selectedPostStatus.clear();
+    feedbackController.showSelectedPostStatus.clear();
+    feedbackController.selectedCategory.clear();
+    feedbackController.selectedSubCategory.clear();
+    subCategoryTypes.clear();
+    feedbackController.isObservationType.value = false;
+    feedbackController.isActionType.value = false;
   }
 }

@@ -12,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'controllers/base_controller.dart';
+
 Future<void> backgroundHandler(RemoteMessage message) async {
   // print(message.data.toString());
   // print(message.notification!.title);
@@ -36,19 +38,39 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
     NotificationService.requestPermission();
-    // BaseController.tokenExpiryTime().then((value) {
-    //   startTimer(isGenerate: true);
-    // });
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final storageCount = GetStorage();
+    super.didChangeAppLifecycleState(state);
+    final isBackground = state == AppLifecycleState.paused;
+    final isResumed = state == AppLifecycleState.resumed;
+    final isClosed = state == AppLifecycleState.detached;
+    if (isBackground || isClosed) {
+      print("resumed");
+    }
+    if (isResumed) {
+      print("resumed");
+      // if (mounted) {
+      setState(() {
+        BaseController.unreadNotification.value =
+            storageCount.read('unreadNotification');
+      });
+      // }
+    }
   }
 
   @override

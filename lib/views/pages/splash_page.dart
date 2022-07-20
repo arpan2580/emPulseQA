@@ -33,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
       (message) {
         if (message != null) {
           if (message.notification != null) {
-            if (message.data['feedback_id'] != '' &&
+            if (message.data['feedback_id'] != '' ||
                 message.data['notification_id'] != '') {
               var id = message.data['feedback_id'];
               var notificationId = message.data['notification_id'];
@@ -82,7 +82,7 @@ class _SplashPageState extends State<SplashPage> {
               storageCount.read('unreadNotification');
         }
         if (message.notification != null) {
-          if (message.data['feedback_id'] != '' &&
+          if (message.data['feedback_id'] != '' ||
               message.data['notification_id'] != '') {
             var id = message.data['feedback_id'];
             var notificationId = message.data['notification_id'];
