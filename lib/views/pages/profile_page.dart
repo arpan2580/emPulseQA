@@ -840,7 +840,7 @@ class _CustomProfileState extends State<CustomProfile> {
         setState(() {
           _imageFile = File(path);
         });
-        print("Cropped File =========> ${_imageFile!.path}");
+        // print("Cropped File =========> ${_imageFile!.path}");
 
         widget.controller.updateProfileImage(_imageFile);
       }

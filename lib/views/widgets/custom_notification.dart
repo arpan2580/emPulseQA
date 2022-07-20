@@ -27,7 +27,6 @@ class _CustomNotificationState extends State<CustomNotification> {
           NotificationController().readNotification(
               widget.notification[widget.index].notificationId);
         }
-        print(widget.notification[widget.index].status);
         Get.off(() => FeedbackComment(
               feedbackId:
                   int.parse(widget.notification[widget.index].feedbackId),

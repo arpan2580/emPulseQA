@@ -18,10 +18,8 @@ import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../../consts/app_fonts.dart';
 import '../../controllers/genre_controller.dart';
 import '../../models/genre.dart';
-import '../dialogs/dialog_helper.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int index;
@@ -48,13 +46,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   List company = ['ITC', 'Direct Competitor', 'Other Player'];
   List tradeType = ['General Trade', 'Modern Trade'];
   List postStatus = ['In Progress', 'Closed', 'Observation'];
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? selectedGenreOfFeedback,
-      selectedTypeOfFeedback,
-      selectedCompanyType,
-      selectedTradeType,
-      selectedPostStatus;
-  final RxBool _enabled = true.obs;
 
   bool? shouldPop;
   @override
@@ -721,7 +712,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
               if (feedbackController.isFilterApplied == false) getData();
               setState(() {
                 isSearch = !isSearch;
-                _enabled.value = true;
               });
               showGeneralDialog(
                 barrierDismissible: false,

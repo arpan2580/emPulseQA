@@ -104,7 +104,7 @@ class InsertFeedbackController extends GetxController {
       }
 
       response = await BaseClient().dioPost('/insert-feedback', formData);
-      print(response.toString());
+
       BaseController.hideLoading();
 
       if (response != null) {

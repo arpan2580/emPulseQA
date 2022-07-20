@@ -350,7 +350,6 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                     var currentFeedback =
                                         widget.feedback[widget.index].id;
 
-                                    print(isLiked.toString());
                                     if (isLiked == false) {
                                       if (BaseController.likedFeedbackId
                                           .contains(currentFeedback)) {
@@ -397,14 +396,6 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                         BaseController.isLikedPost.add(false);
                                       }
                                     }
-                                    print('Liked feedback id: ' +
-                                        BaseController.likedFeedbackId
-                                            .toString());
-                                    print('Like Count of feedback: ' +
-                                        BaseController.postLikedCount
-                                            .toString());
-                                    print('Like display: ' +
-                                        BaseController.isLikedPost.toString());
 
                                     onLikeButtonTapped(isLiked);
                                     return !isLiked;
@@ -844,7 +835,6 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                     var currentFeedback =
                                         widget.feedback[widget.index].id;
 
-                                    print(isLiked.toString());
                                     if (isLiked == false) {
                                       if (BaseController.likedFeedbackId
                                           .contains(currentFeedback)) {
@@ -891,14 +881,6 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                         BaseController.isLikedPost.add(false);
                                       }
                                     }
-                                    print('Liked feedback id: ' +
-                                        BaseController.likedFeedbackId
-                                            .toString());
-                                    print('Like Count of feedback: ' +
-                                        BaseController.postLikedCount
-                                            .toString());
-                                    print('Like display: ' +
-                                        BaseController.isLikedPost.toString());
 
                                     onLikeButtonTapped(isLiked);
                                     return !isLiked;

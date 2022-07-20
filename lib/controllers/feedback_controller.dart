@@ -28,6 +28,10 @@ class FeedbackController extends GetxController {
       selectedCategory = [].obs,
       selectedSubCategory = [].obs;
 
+  List showSelectedTypeOfFeedback = [].obs,
+      showSelectedTradeType = [].obs,
+      showSelectedPostStatus = [].obs;
+
   void search(bool isMyFeedback) async {
     Map<String, dynamic> data = {};
 
@@ -67,9 +71,7 @@ class FeedbackController extends GetxController {
     } else {
       isFilterApplied = false;
     }
-
-    print(isMyFeedback.toString());
-    print(data.toString());
+    // print(data.toString());
 
     // BaseController.showLoading('Searching...');
     isLoading(true);

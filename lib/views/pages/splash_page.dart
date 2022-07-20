@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
 import 'package:empulse/services/notification_service.dart';

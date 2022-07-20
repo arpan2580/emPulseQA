@@ -1,19 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:empulse/models/feedback_type.dart';
-import 'package:empulse/models/trade_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../controllers/feedback_controller.dart';
 import '../../controllers/genre_controller.dart';
-import '../../models/category.dart';
-import '../../models/genre.dart';
-import '../../models/sub_category.dart';
 
 class CustomSearchDialog extends StatefulWidget {
   final bool isMyFeedback;
@@ -38,11 +32,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
   late GenreController _genreController;
   late FeedbackController feedbackController;
 
-  final RxBool _enabled = true.obs,
-      isObservationType = false.obs,
-      isActionType = false.obs;
-
-  bool searching = false;
+  final RxBool isObservationType = false.obs, isActionType = false.obs;
 
   bool isFilterClicked = false;
 
@@ -116,6 +106,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                 children: [
                                   DropdownSearch<String>.multiSelection(
                                     mode: Mode.MENU,
+                                    maxHeight: 350,
                                     dropdownSearchDecoration:
                                         const InputDecoration(
                                       contentPadding: EdgeInsets.only(
@@ -127,13 +118,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     items: _genreController.genreTypes
                                         .map((element) => element.genre)
                                         .toList(),
-                                    enabled: _enabled.value,
                                     showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedGenreOfFeedback
                                         .cast(),
                                     onChanged: (values) {
-                                      print(values);
                                       feedbackController.selectedGenreOfFeedback
                                           .clear();
                                       for (var data in values) {
@@ -160,13 +149,15 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     items: _genreController.feedbackType
                                         .map((element) => element.feedbackName)
                                         .toList(),
-                                    enabled: _enabled.value,
                                     showSelectedItems: true,
                                     selectedItems: feedbackController
-                                        .selectedTypeOfFeedback
+                                        .showSelectedTypeOfFeedback
                                         .cast(),
                                     onChanged: (values) {
                                       feedbackController.selectedTypeOfFeedback
+                                          .clear();
+                                      feedbackController
+                                          .showSelectedTypeOfFeedback
                                           .clear();
                                       for (var data in values) {
                                         var id = '';
@@ -180,6 +171,9 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                             .selectedTypeOfFeedback
                                             .add(id);
                                       }
+                                      feedbackController
+                                          .showSelectedTypeOfFeedback
+                                          .addAll(values);
                                       if (feedbackController
                                           .selectedTypeOfFeedback
                                           .contains('1')) {
@@ -218,13 +212,11 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                             .map((element) =>
                                                 element.companyName)
                                             .toList(),
-                                    enabled: _enabled.value,
                                     showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedCompanyType
                                         .cast(),
                                     onChanged: (values) {
-                                      print(values);
                                       feedbackController.selectedCompanyType
                                           .clear();
                                       for (var data in values) {
@@ -250,13 +242,14 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     items: _genreController.tradeType
                                         .map((element) => element.tradeName)
                                         .toList(),
-                                    enabled: _enabled.value,
                                     showSelectedItems: true,
                                     selectedItems: feedbackController
-                                        .selectedTradeType
+                                        .showSelectedTradeType
                                         .cast(),
                                     onChanged: (values) {
                                       feedbackController.selectedTradeType
+                                          .clear();
+                                      feedbackController.showSelectedTradeType
                                           .clear();
                                       for (var data in values) {
                                         var id = '';
@@ -268,9 +261,9 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                         }
                                         feedbackController.selectedTradeType
                                             .add(id);
+                                        feedbackController.showSelectedTradeType
+                                            .add(data);
                                       }
-                                      print(feedbackController.selectedTradeType
-                                          .toString());
                                     },
                                   ),
                                   isObservationType.value
@@ -297,14 +290,16 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                               .map((element) =>
                                                   element.statusName)
                                               .toList(),
-                                          enabled: _enabled.value,
                                           showSelectedItems: true,
                                           selectedItems: feedbackController
-                                              .selectedPostStatus
+                                              .showSelectedPostStatus
                                               .cast(),
                                           onChanged: (values) {
                                             feedbackController
                                                 .selectedPostStatus
+                                                .clear();
+                                            feedbackController
+                                                .showSelectedPostStatus
                                                 .clear();
                                             for (var data in values) {
                                               var id = '';
@@ -317,10 +312,10 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                               feedbackController
                                                   .selectedPostStatus
                                                   .add(id);
+                                              feedbackController
+                                                  .showSelectedPostStatus
+                                                  .add(data);
                                             }
-                                            print(feedbackController
-                                                .selectedPostStatus
-                                                .toString());
                                           },
                                         ),
                                   SizedBox(
@@ -328,6 +323,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                   ),
                                   DropdownSearch<String>.multiSelection(
                                     mode: Mode.MENU,
+                                    maxHeight: 350,
                                     dropdownSearchDecoration:
                                         const InputDecoration(
                                       contentPadding: EdgeInsets.only(
@@ -339,15 +335,15 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     items: _genreController.categoryTypes
                                         .map((element) => element.categoryName)
                                         .toList(),
-                                    enabled: _enabled.value,
                                     showSearchBox: true,
                                     showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedCategory
                                         .cast(),
                                     onChanged: (values) {
-                                      print(values);
                                       feedbackController.selectedCategory
+                                          .clear();
+                                      feedbackController.selectedSubCategory
                                           .clear();
                                       for (var data in values) {
                                         feedbackController.selectedCategory
@@ -363,6 +359,7 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                   _genreController.subCategoryTypes.isNotEmpty
                                       ? DropdownSearch<String>.multiSelection(
                                           mode: Mode.MENU,
+                                          maxHeight: 400,
                                           dropdownSearchDecoration:
                                               const InputDecoration(
                                             contentPadding: EdgeInsets.only(
@@ -379,14 +376,12 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                               .map((element) =>
                                                   element.subCategoryName)
                                               .toList(),
-                                          enabled: _enabled.value,
                                           showSearchBox: true,
                                           showSelectedItems: true,
                                           selectedItems: feedbackController
-                                              .selectedCategory
+                                              .selectedSubCategory
                                               .cast(),
                                           onChanged: (values) {
-                                            print(values);
                                             feedbackController
                                                 .selectedSubCategory
                                                 .clear();
@@ -420,11 +415,16 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                             FocusManager.instance.primaryFocus?.unfocus();
                             feedbackController.selectedGenreOfFeedback.clear();
                             feedbackController.selectedTypeOfFeedback.clear();
+                            feedbackController.showSelectedTypeOfFeedback
+                                .clear();
                             feedbackController.selectedCompanyType.clear();
                             feedbackController.selectedTradeType.clear();
+                            feedbackController.showSelectedTradeType.clear();
                             feedbackController.selectedPostStatus.clear();
+                            feedbackController.showSelectedPostStatus.clear();
                             feedbackController.selectedCategory.clear();
                             feedbackController.selectedSubCategory.clear();
+                            _genreController.subCategoryTypes.clear();
                             isObservationType.value = false;
                             isActionType.value = false;
                             _genreController.getAllData();
@@ -438,7 +438,6 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                           icon: Icons.filter_alt_outlined,
                           onPressed: () {
                             setState(() {
-                              // _enabled.value = true;
                               isFilterClicked = true;
                             });
                           },
@@ -452,10 +451,6 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                       feedbackController.search(widget.isMyFeedback);
-                      _enabled.value = false;
-                      setState(() {
-                        searching = !searching;
-                      });
                       Navigator.pop(widget.dialogContext);
                     },
                   ),
