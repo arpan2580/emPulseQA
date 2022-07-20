@@ -71,7 +71,8 @@ class FeedbackController extends GetxController {
     print(isMyFeedback.toString());
     print(data.toString());
 
-    BaseController.showLoading('Searching...');
+    // BaseController.showLoading('Searching...');
+    isLoading(true);
     if (isMyFeedback) {
       var response =
           await BaseClient().dioPost('/my-feedbacks', json.encode(data));
@@ -109,7 +110,7 @@ class FeedbackController extends GetxController {
         // DialogHelper.showErrorToast(description: 'Something went wrong!');
       }
     }
-    BaseController.hideLoading();
+    isLoading(false);
   }
 
   Future<void> fetchFeedback() async {

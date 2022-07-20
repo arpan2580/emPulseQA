@@ -15,28 +15,28 @@ import '../services/base_client.dart';
 
 class GenreController extends GetxController {
   var genreTypes = <Genre>[].obs;
-  List<MultiSelectItem> dropDownData = [];
+  // List<MultiSelectItem> dropDownData = [];
 
   var categoryTypes = <Category>[].obs;
-  List<MultiSelectItem> categoryDropDownData = [];
+  // List<MultiSelectItem> categoryDropDownData = [];
 
   var subCategoryTypes = <SubCategory>[].obs;
-  List<MultiSelectItem> subCategoryDropDownData = [];
+  // List<MultiSelectItem> subCategoryDropDownData = [];
 
   var feedbackType = <FeedbackType>[].obs;
-  List<MultiSelectItem> feedbackTypeDropDownData = [];
+  // List<MultiSelectItem> feedbackTypeDropDownData = [];
 
   var tradeType = <TradeType>[].obs;
-  List<MultiSelectItem> tradeTypeDropDownData = [];
+  // List<MultiSelectItem> tradeTypeDropDownData = [];
 
   var statusType = <StatusType>[].obs;
-  List<MultiSelectItem> statusTypeDropDownData = [];
+  // List<MultiSelectItem> statusTypeDropDownData = [];
 
   var companyType = <Company>[].obs;
-  List<MultiSelectItem> companyDropDownData = [];
+  // List<MultiSelectItem> companyDropDownData = [];
 
   var companyForActionType = <Company>[].obs;
-  List<MultiSelectItem> companyForActionData = [];
+  // List<MultiSelectItem> companyForActionData = [];
 
   getAllData() {
     getGenreData();
@@ -61,7 +61,7 @@ class GenreController extends GetxController {
 
   getGenreData() {
     genreTypes.clear();
-    dropDownData.clear();
+    // dropDownData.clear();
 
     final storeMasterData = GetStorage();
     var genreOfFeedbacks = storeMasterData.read('genre');
@@ -71,31 +71,31 @@ class GenreController extends GetxController {
           .split(':')
           .forEach((data) => genreTypes.add(Genre(data)));
 
-      dropDownData = genreTypes.map((data) {
-        return MultiSelectItem(data, data.genre);
-      }).toList();
+      // dropDownData = genreTypes.map((data) {
+      //   return MultiSelectItem(data, data.genre);
+      // }).toList();
     }
   }
 
   getCategory() async {
     categoryTypes.clear();
-    categoryDropDownData.clear();
+    // categoryDropDownData.clear();
 
     var response = await BaseClient().dioPost('/search-category', null);
     if (response != null) {
       if (response['success']) {
         response['data']
             .forEach((data) => categoryTypes.add(Category(data.toString())));
-        categoryDropDownData = categoryTypes.map((data) {
-          return MultiSelectItem(data, data.categoryName);
-        }).toList();
+        // categoryDropDownData = categoryTypes.map((data) {
+        //   return MultiSelectItem(data, data.categoryName);
+        // }).toList();
       }
     }
   }
 
   getSubCategory(List selectedCategory) async {
     subCategoryTypes.clear();
-    subCategoryDropDownData.clear();
+    // subCategoryDropDownData.clear();
 
     var data = {
       'category': selectedCategory,
@@ -107,62 +107,62 @@ class GenreController extends GetxController {
       if (response['success']) {
         response['data'].forEach(
             (data) => subCategoryTypes.add(SubCategory(data.toString())));
-        subCategoryDropDownData = subCategoryTypes.map((data) {
-          return MultiSelectItem(data, data.subCategoryName);
-        }).toList();
-        update();
+        // subCategoryDropDownData = subCategoryTypes.map((data) {
+        //   return MultiSelectItem(data, data.subCategoryName);
+        // }).toList();
+        // update();
       }
     }
   }
 
   getFeedbackType() {
     feedbackType.clear();
-    feedbackTypeDropDownData.clear();
+    // feedbackTypeDropDownData.clear();
     feedbackType.add(FeedbackType("1", "Observation"));
     feedbackType.add(FeedbackType("2", "Action"));
-    feedbackTypeDropDownData = feedbackType.map((data) {
-      return MultiSelectItem(data.feedbackTypeId, data.feedbackName);
-    }).toList();
+    // feedbackTypeDropDownData = feedbackType.map((data) {
+    //   return MultiSelectItem(data.feedbackTypeId, data.feedbackName);
+    // }).toList();
   }
 
   getTradeType() {
     tradeType.clear();
-    tradeTypeDropDownData.clear();
+    // tradeTypeDropDownData.clear();
     tradeType.add(TradeType("1", "General Trade"));
     tradeType.add(TradeType("2", "Modern Trade"));
-    tradeTypeDropDownData = tradeType.map((data) {
-      return MultiSelectItem(data.tradeTypeId, data.tradeName);
-    }).toList();
+    // tradeTypeDropDownData = tradeType.map((data) {
+    //   return MultiSelectItem(data.tradeTypeId, data.tradeName);
+    // }).toList();
   }
 
   getStatusType() {
     statusType.clear();
-    statusTypeDropDownData.clear();
+    // statusTypeDropDownData.clear();
     statusType.add(StatusType("200", "In Progress"));
     statusType.add(StatusType("300", "Closed"));
-    statusTypeDropDownData = statusType.map((data) {
-      return MultiSelectItem(data.statusTypeId, data.statusName);
-    }).toList();
+    // statusTypeDropDownData = statusType.map((data) {
+    //   return MultiSelectItem(data.statusTypeId, data.statusName);
+    // }).toList();
   }
 
   getCompany() {
     companyType.clear();
-    companyDropDownData.clear();
+    // companyDropDownData.clear();
     companyType.add(Company("ITC"));
     companyType.add(Company("Direct Competitor"));
     companyType.add(Company("Other Player"));
 
-    companyDropDownData = companyType.map((data) {
-      return MultiSelectItem(data.companyName, data.companyName);
-    }).toList();
+    // companyDropDownData = companyType.map((data) {
+    //   return MultiSelectItem(data.companyName, data.companyName);
+    // }).toList();
   }
 
   getCompanyForAction() {
     companyForActionType.clear();
-    companyForActionData.clear();
+    // companyForActionData.clear();
     companyForActionType.add(Company("ITC"));
-    companyForActionData = companyForActionType.map((data) {
-      return MultiSelectItem(data.companyName, data.companyName);
-    }).toList();
+    // companyForActionData = companyForActionType.map((data) {
+    //   return MultiSelectItem(data.companyName, data.companyName);
+    // }).toList();
   }
 }
