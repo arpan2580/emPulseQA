@@ -47,7 +47,7 @@ class CommentController extends GetxController {
   }
 
   Future<void> addComment(
-      int feedbackId, String type, int commentId, int repliedId) async {
+      String feedbackId, String type, int commentId, int repliedId) async {
     isLoading(true);
     AddCommentsModel commentModel = AddCommentsModel(
         feedbackId: feedbackId.toString(),
@@ -70,7 +70,7 @@ class CommentController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> showComment(int feedbackId, bool showLoading) async {
+  Future<void> showComment(String feedbackId, bool showLoading) async {
     ShowCommentModel commentModel =
         ShowCommentModel(feedbackId: feedbackId.toString());
 
@@ -92,7 +92,7 @@ class CommentController extends GetxController {
   }
 
   Future<void> addCommentWithImage(
-      int feedbackId, String type, int commentId, int repliedId) async {
+      String feedbackId, String type, int commentId, int repliedId) async {
     isLoading(true);
     dynamic response;
     dynamic formData;

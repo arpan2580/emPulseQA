@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
 import 'package:empulse/services/notification_service.dart';
@@ -8,8 +10,10 @@ import 'package:empulse/views/pages/notification_page.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:uni_links/uni_links.dart';
 
 import '../../controllers/notification_controller.dart';
 
@@ -23,6 +27,9 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   late Widget _defaultHome = const LoginPage();
   final isLoggedIn = GetStorage();
+
+  StreamSubscription? _sub;
+  bool openFromLink = false;
 
   @override
   void initState() {
@@ -41,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
               message.data['notification_id'] = '';
               NotificationController().readNotification(notificationId);
               Get.to(() => FeedbackComment(
-                    feedbackId: int.parse(id),
+                    feedbackId: id.toString(),
                     isClose: false,
                   ));
             } else {
@@ -90,7 +97,7 @@ class _SplashPageState extends State<SplashPage> {
             message.data['notification_id'] = '';
             NotificationController().readNotification(notificationId);
             Get.to(() => FeedbackComment(
-                  feedbackId: int.parse(id),
+                  feedbackId: id.toString(),
                   isClose: false,
                 ));
           } else {
@@ -104,6 +111,7 @@ class _SplashPageState extends State<SplashPage> {
 
     if (isLoggedIn.read("refreshToken") != null) {
       BaseController().fetchGlobalData().then((value) {
+        initUniLinks();
         if (mounted) {
           setState(() {
             _defaultHome = const BottomNavBar(index: 0);
@@ -124,15 +132,43 @@ class _SplashPageState extends State<SplashPage> {
         ),
       );
     }
+  }
 
-    // Timer(const Duration(milliseconds: 4000), () {
-    //   Get.offAll(
-    //     () => FeatureDiscovery(
-    //       recordStepsInSharedPreferences: false,
-    //       child: _defaultHome,
-    //     ),
-    //   );
-    // });
+  Future<void> initUniLinks() async {
+    dynamic uri;
+    try {
+      final initialLink = await getInitialLink();
+      if (initialLink != null) {
+        uri = Uri.parse(initialLink);
+      }
+      // else {
+      _sub = linkStream.listen((String? link) {
+        if (link != null) {
+          uri = Uri.parse(link);
+        }
+      }, onError: (err) {});
+      // }
+      setState(() {
+        openFromLink = true;
+      });
+      if (uri != null) {
+        print(uri.pathSegments.last.toString());
+        Get.to(() => FeedbackComment(
+              feedbackId: uri.pathSegments.last.toString(),
+              isClose: false,
+            ));
+      }
+    } on PlatformException catch (e) {
+      print("platform exception: $e");
+    } on MissingPluginException catch (e) {
+      print("plugin exception: $e");
+    }
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 
   @override

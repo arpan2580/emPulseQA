@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomPopupMenu extends StatefulWidget {
@@ -125,7 +126,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   void popUpItemAction(String value, double lat, double lon) async {
     if (value == 'close') {
       Get.to(() => FeedbackComment(
-            feedbackId: widget.feedbackId,
+            feedbackId: widget.feedbackId.toString(),
             isClose: true,
             checked: true,
           ));
@@ -147,8 +148,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
       }
     }
     if (value == 'share') {
-      searchUserDialog("Choose user to Share this Post",
-          "Please select user to share this post", "Share", true);
+      // searchUserDialog("Choose user to Share this Post",
+      //     "Please select user to share this post", "Share", true);
+      onShare(
+          "Check out this post on emPulse https://premierclub.itc.in/EmPulseQA/public/feedback/${widget.feedbackId}",
+          "Check out this post from emPulse");
     }
     if (value == 'assign_to') {
       searchUserDialog("Choose user to Assign this Post",
@@ -322,6 +326,16 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> onShare(String url, String subject) async {
+    final box = widget.context.findRenderObject() as RenderBox?;
+
+    await Share.share(
+      url,
+      subject: subject,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
   }
 }

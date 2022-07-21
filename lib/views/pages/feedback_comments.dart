@@ -22,7 +22,7 @@ import 'package:get/get.dart';
 import '../../consts/regex.dart';
 
 class FeedbackComment extends StatefulWidget {
-  final int feedbackId;
+  final String feedbackId;
   final bool isClose;
   final dynamic checked;
   const FeedbackComment({
@@ -58,7 +58,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
   void initState() {
     super.initState();
     // commentController.fetchFeedbackDetails(widget.feedbackId);
-    commentController.showComment(widget.feedbackId, true);
+    commentController.showComment(widget.feedbackId.toString(), true);
     if (widget.checked != null && widget.checked) {
       value = true;
     }
@@ -99,7 +99,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
   Future refresh() async {
     comment.clear();
     // commentController.fetchFeedbackDetails(widget.feedbackId);
-    commentController.showComment(widget.feedbackId, true);
+    commentController.showComment(widget.feedbackId.toString(), true);
   }
 
   @override
@@ -208,7 +208,8 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                             child: Obx(() {
                               if (BaseController.commentReload.isTrue) {
                                 commentController
-                                    .showComment(widget.feedbackId, false)
+                                    .showComment(
+                                        widget.feedbackId.toString(), false)
                                     .then((value) {
                                   WidgetsBinding.instance.addPostFrameCallback(
                                       (_) => _scrollDown());

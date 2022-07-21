@@ -30,7 +30,7 @@ class NotificationService {
       payload = '';
       NotificationController().readNotification(notificationId);
       Get.to(() => FeedbackComment(
-            feedbackId: int.parse(id),
+            feedbackId: id.toString(),
             isClose: false,
           ));
     } else {

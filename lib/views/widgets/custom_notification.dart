@@ -29,7 +29,7 @@ class _CustomNotificationState extends State<CustomNotification> {
         }
         Get.off(() => FeedbackComment(
               feedbackId:
-                  int.parse(widget.notification[widget.index].feedbackId),
+                  widget.notification[widget.index].feedbackId.toString(),
               isClose: false,
             ));
       },
