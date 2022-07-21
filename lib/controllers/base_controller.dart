@@ -18,6 +18,8 @@ class BaseController {
   static dynamic assignedPosts = 0.obs;
   static RxBool commentReload = false.obs;
 
+  static RxBool isSearchApplied = false.obs;
+
   static RxList isLikedPost = [].obs;
   static RxList likedFeedbackId = [].obs;
   static RxList postLikedCount = [].obs;

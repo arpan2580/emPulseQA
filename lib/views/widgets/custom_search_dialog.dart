@@ -102,20 +102,29 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   DropdownSearch<String>.multiSelection(
-                                    mode: Mode.MENU,
-                                    maxHeight: 350,
-                                    dropdownSearchDecoration:
-                                        const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 12.0, top: 6.0, bottom: 6.0),
-                                      hintText: "Choose one or more genre",
-                                      isDense: true,
-                                      border: OutlineInputBorder(),
+                                    popupProps:
+                                        const PopupPropsMultiSelection.menu(
+                                      showSelectedItems: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 12.0, top: 6.0, bottom: 6.0),
+                                        hintText: "Choose one or more genre",
+                                        isDense: true,
+                                        border: OutlineInputBorder(),
+                                      ),
                                     ),
                                     items: _genreController.genreTypes
                                         .map((element) => element.genre)
                                         .toList(),
-                                    showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedGenreOfFeedback
                                         .cast(),
@@ -133,20 +142,33 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     height: 10.h,
                                   ),
                                   DropdownSearch<String>.multiSelection(
-                                    mode: Mode.MENU,
-                                    dropdownSearchDecoration:
-                                        const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 12.0, top: 6.0, bottom: 6.0),
-                                      hintText:
-                                          "Choose one or more feedback type",
-                                      isDense: true,
-                                      border: OutlineInputBorder(),
+                                    popupProps:
+                                        const PopupPropsMultiSelection.menu(
+                                      showSelectedItems: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        maxHeight: 180,
+                                      ),
+                                    ),
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 12.0, top: 6.0, bottom: 6.0),
+                                        hintText:
+                                            "Choose one or more feedback type",
+                                        isDense: true,
+                                        border: OutlineInputBorder(),
+                                      ),
                                     ),
                                     items: _genreController.feedbackType
                                         .map((element) => element.feedbackName)
                                         .toList(),
-                                    showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .showSelectedTypeOfFeedback
                                         .cast(),
@@ -201,14 +223,28 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     height: 10.h,
                                   ),
                                   DropdownSearch<String>.multiSelection(
-                                    mode: Mode.MENU,
-                                    dropdownSearchDecoration:
-                                        const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 12.0, top: 6.0, bottom: 6.0),
-                                      hintText: "Choose one or more company",
-                                      isDense: true,
-                                      border: OutlineInputBorder(),
+                                    popupProps:
+                                        const PopupPropsMultiSelection.menu(
+                                      showSelectedItems: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        maxHeight: 230,
+                                      ),
+                                    ),
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 12.0, top: 6.0, bottom: 6.0),
+                                        hintText: "Choose one or more company",
+                                        isDense: true,
+                                        border: OutlineInputBorder(),
+                                      ),
                                     ),
                                     items: feedbackController.isActionType.value
                                         ? _genreController.companyForActionType
@@ -219,7 +255,6 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                             .map((element) =>
                                                 element.companyName)
                                             .toList(),
-                                    showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedCompanyType
                                         .cast(),
@@ -236,20 +271,33 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     height: 10.h,
                                   ),
                                   DropdownSearch<String>.multiSelection(
-                                    mode: Mode.MENU,
-                                    dropdownSearchDecoration:
-                                        const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 12.0, top: 6.0, bottom: 6.0),
-                                      hintText:
-                                          "Choose one or more type of trade",
-                                      isDense: true,
-                                      border: OutlineInputBorder(),
+                                    popupProps:
+                                        const PopupPropsMultiSelection.menu(
+                                      showSelectedItems: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        maxHeight: 180,
+                                      ),
+                                    ),
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 12.0, top: 6.0, bottom: 6.0),
+                                        hintText:
+                                            "Choose one or more type of trade",
+                                        isDense: true,
+                                        border: OutlineInputBorder(),
+                                      ),
                                     ),
                                     items: _genreController.tradeType
                                         .map((element) => element.tradeName)
                                         .toList(),
-                                    showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .showSelectedTradeType
                                         .cast(),
@@ -281,23 +329,38 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                   feedbackController.isObservationType.value
                                       ? Container()
                                       : DropdownSearch<String>.multiSelection(
-                                          mode: Mode.MENU,
-                                          dropdownSearchDecoration:
-                                              const InputDecoration(
-                                            contentPadding: EdgeInsets.only(
-                                                left: 12.0,
-                                                top: 6.0,
-                                                bottom: 6.0),
-                                            hintText:
-                                                "Choose one or more status of feedback",
-                                            isDense: true,
-                                            border: OutlineInputBorder(),
+                                          popupProps:
+                                              const PopupPropsMultiSelection
+                                                  .menu(
+                                            showSelectedItems: true,
+                                            searchFieldProps: TextFieldProps(
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                            constraints: BoxConstraints(
+                                              maxHeight: 180,
+                                            ),
+                                          ),
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 12.0,
+                                                  top: 6.0,
+                                                  bottom: 6.0),
+                                              hintText:
+                                                  "Choose one or more status of feedback",
+                                              isDense: true,
+                                              border: OutlineInputBorder(),
+                                            ),
                                           ),
                                           items: _genreController.statusType
                                               .map((element) =>
                                                   element.statusName)
                                               .toList(),
-                                          showSelectedItems: true,
                                           selectedItems: feedbackController
                                               .showSelectedPostStatus
                                               .cast(),
@@ -329,21 +392,30 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                     height: 10.h,
                                   ),
                                   DropdownSearch<String>.multiSelection(
-                                    mode: Mode.MENU,
-                                    maxHeight: 350,
-                                    dropdownSearchDecoration:
-                                        const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 12.0, top: 6.0, bottom: 6.0),
-                                      hintText: "Choose one or more category",
-                                      isDense: true,
-                                      border: OutlineInputBorder(),
+                                    popupProps:
+                                        const PopupPropsMultiSelection.menu(
+                                      showSelectedItems: true,
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 12.0, top: 6.0, bottom: 6.0),
+                                        hintText: "Choose one or more category",
+                                        isDense: true,
+                                        border: OutlineInputBorder(),
+                                      ),
                                     ),
                                     items: _genreController.categoryTypes
                                         .map((element) => element.categoryName)
                                         .toList(),
-                                    showSearchBox: true,
-                                    showSelectedItems: true,
                                     selectedItems: feedbackController
                                         .selectedCategory
                                         .cast(),
@@ -365,26 +437,37 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
                                   ),
                                   _genreController.subCategoryTypes.isNotEmpty
                                       ? DropdownSearch<String>.multiSelection(
-                                          mode: Mode.MENU,
-                                          maxHeight: 400,
-                                          dropdownSearchDecoration:
-                                              const InputDecoration(
-                                            contentPadding: EdgeInsets.only(
-                                                left: 12.0,
-                                                top: 6.0,
-                                                bottom: 6.0),
-                                            hintText:
-                                                "Choose one or more sub category",
-                                            isDense: true,
-                                            border: OutlineInputBorder(),
+                                          popupProps:
+                                              const PopupPropsMultiSelection
+                                                  .menu(
+                                            showSelectedItems: true,
+                                            showSearchBox: true,
+                                            searchFieldProps: TextFieldProps(
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                          ),
+                                          dropdownDecoratorProps:
+                                              const DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 12.0,
+                                                  top: 6.0,
+                                                  bottom: 6.0),
+                                              hintText:
+                                                  "Choose one or more sub category",
+                                              isDense: true,
+                                              border: OutlineInputBorder(),
+                                            ),
                                           ),
                                           items: _genreController
                                               .subCategoryTypes
                                               .map((element) =>
                                                   element.subCategoryName)
                                               .toList(),
-                                          showSearchBox: true,
-                                          showSelectedItems: true,
                                           selectedItems: feedbackController
                                               .selectedSubCategory
                                               .cast(),
@@ -411,45 +494,65 @@ class _CustomSearchDialogState extends State<CustomSearchDialog> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isFilterClicked
-                      ? SearchFilterButton(
-                          text: "Cancel Filter",
-                          icon: Icons.filter_alt_off_outlined,
-                          onPressed: () {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            _genreController.clearAllData(feedbackController);
-                            _genreController.getAllData();
-                            setState(() {
-                              isFilterClicked = false;
-                            });
-                          },
-                        )
-                      : SearchFilterButton(
-                          text: "Apply Filter",
-                          icon: Icons.filter_alt_outlined,
-                          onPressed: () {
-                            setState(() {
-                              isFilterClicked = true;
-                            });
-                          },
-                        ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SearchFilterButton(
-                    text: "Search",
-                    icon: Icons.search,
-                    onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      feedbackController.search(widget.isMyFeedback);
-                      setState(() {});
-                      Navigator.pop(widget.dialogContext);
-                    },
-                  ),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SearchFilterButton(
+                      text: "Clear All",
+                      icon: null,
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        feedbackController.txtSearch.text = '';
+                        _genreController.clearAllData(feedbackController);
+                        _genreController.getAllData();
+                        feedbackController.search(widget.isMyFeedback);
+                        setState(() {
+                          isFilterClicked = false;
+                        });
+                        Navigator.pop(widget.dialogContext);
+                      },
+                    ),
+                    const SizedBox(
+                      width: 7,
+                    ),
+                    isFilterClicked
+                        ? SearchFilterButton(
+                            text: "Cancel Filter",
+                            icon: Icons.filter_alt_off_outlined,
+                            onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              _genreController.clearAllData(feedbackController);
+                              _genreController.getAllData();
+                              setState(() {
+                                isFilterClicked = false;
+                              });
+                            },
+                          )
+                        : SearchFilterButton(
+                            text: "Apply Filter",
+                            icon: Icons.filter_alt_outlined,
+                            onPressed: () {
+                              setState(() {
+                                isFilterClicked = true;
+                              });
+                            },
+                          ),
+                    const SizedBox(
+                      width: 7,
+                    ),
+                    SearchFilterButton(
+                      text: "Search",
+                      icon: Icons.search,
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        feedbackController.search(widget.isMyFeedback);
+                        Navigator.pop(widget.dialogContext);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -473,21 +576,24 @@ class SearchFilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 3 + 10,
       child: MaterialButton(
         color: const Color(0xff24aaff),
         onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-            ),
-            // Text("A"),
-            const SizedBox(
-              width: 5,
-            ),
+            (icon != null)
+                ? Icon(
+                    icon,
+                    color: Colors.white,
+                    size: 20.sp,
+                  )
+                : Container(),
+            (icon != null)
+                ? SizedBox(
+                    width: 2.w,
+                  )
+                : Container(),
             Text(
               text == null ? "NULL" : text!,
               style: const TextStyle(color: Colors.white),

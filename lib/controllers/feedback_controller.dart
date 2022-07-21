@@ -32,9 +32,7 @@ class FeedbackController extends GetxController {
       showSelectedTradeType = [].obs,
       showSelectedPostStatus = [].obs;
 
-  RxBool isObservationType = false.obs,
-      isActionType = false.obs,
-      isSearchApplied = false.obs;
+  RxBool isObservationType = false.obs, isActionType = false.obs;
 
   void search(bool isMyFeedback) async {
     Map<String, dynamic> data = {};
@@ -72,12 +70,16 @@ class FeedbackController extends GetxController {
         selectedCategory.isNotEmpty ||
         selectedSubCategory.isNotEmpty) {
       isFilterApplied = true;
-      isSearchApplied = true.obs;
     } else {
       isFilterApplied = false;
-      isSearchApplied = false.obs;
     }
-    print(data.toString());
+    // print(data.toString());
+
+    if (data.isNotEmpty) {
+      BaseController.isSearchApplied.value = true;
+    } else {
+      BaseController.isSearchApplied.value = false;
+    }
 
     // BaseController.showLoading('Searching...');
     isLoading(true);
