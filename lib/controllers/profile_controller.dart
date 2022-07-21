@@ -97,6 +97,24 @@ class ProfileController extends GetxController {
     } else {}
   }
 
+  Future<void> shareFeedback(feedbackId, userId) async {
+    BaseController.showLoading('Please wait while we try to share');
+
+    var data = {
+      'user_to': userId,
+    };
+    var response = await BaseClient()
+        .dioPost('/feedback/$feedbackId/share', json.encode(data));
+    BaseController.hideLoading();
+    if (response != null) {
+      if (response['success']) {
+        DialogHelper.showSuccessToast(description: response['message']);
+      } else {
+        DialogHelper.showErrorToast(description: response['message']);
+      }
+    } else {}
+  }
+
   void updateProfileBio() async {
     isLoading(true);
     var data = {

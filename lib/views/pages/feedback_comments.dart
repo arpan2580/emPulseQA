@@ -89,9 +89,11 @@ class _FeedbackCommentState extends State<FeedbackComment> {
     //   duration: const Duration(seconds: 1),
     //   curve: Curves.fastOutSlowIn,
     // );
-    if (_controller.hasClients) {
+    // if (_controller.hasClients) {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       _controller.jumpTo(_controller.position.maxScrollExtent);
-    }
+    });
+    // }
   }
 
   Future refresh() async {

@@ -18,6 +18,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../controllers/base_controller.dart';
 import '../../controllers/genre_controller.dart';
 import '../../models/genre.dart';
 import '../widgets/custom_search_icon.dart';
@@ -283,10 +284,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               ),
                               onPressed: () {
                                 index.value = 0;
+                                feedbackController.txtSearch.text = '';
+                                BaseController.isSearchApplied.value = false;
+                                _genreController
+                                    .clearAllData(feedbackController);
                               },
                             ),
                             GestureDetector(
-                              onTap: () => index.value = 0,
+                              onTap: () {
+                                index.value = 0;
+                                feedbackController.txtSearch.text = '';
+                                BaseController.isSearchApplied.value = false;
+                                _genreController
+                                    .clearAllData(feedbackController);
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: Text(
@@ -382,6 +393,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               ),
                               onPressed: () {
                                 index.value = 1;
+                                feedbackController.txtSearch.text = '';
+                                BaseController.isSearchApplied.value = false;
                                 _genreController
                                     .clearAllData(feedbackController);
                               },
@@ -389,6 +402,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                             GestureDetector(
                               onTap: () {
                                 index.value = 1;
+                                feedbackController.txtSearch.text = '';
+                                BaseController.isSearchApplied.value = false;
+                                _genreController
+                                    .clearAllData(feedbackController);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5.0),

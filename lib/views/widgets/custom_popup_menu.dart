@@ -78,6 +78,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
             itemBuilder: (context) {
               return [
                 popupMenuItem(
+                  value: 'share',
+                  label: 'Share',
+                  icon: Icons.share,
+                ),
+                popupMenuItem(
                   value: 'open_map',
                   label: 'Open in map',
                   icon: Icons.location_on_rounded,
@@ -141,125 +146,13 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
         );
       }
     }
+    if (value == 'share') {
+      searchUserDialog("Choose user to Share this Post",
+          "Please select user to share this post", "Share", true);
+    }
     if (value == 'assign_to') {
-      showDialog(
-        context: widget.context,
-        builder: (context) {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            elevation: 16,
-            child: SizedBox(
-              height: Get.height / 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    const Center(child: Text('Choose user to Assign Post')),
-                    const SizedBox(height: 20),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TypeAheadFormField<ProfileModel>(
-                            hideSuggestionsOnKeyboardHide: false,
-                            suggestionsBoxController: _suggestionsBoxController,
-                            debounceDuration: const Duration(milliseconds: 200),
-                            suggestionsCallback:
-                                ProfileController().getUserList,
-                            itemBuilder: (context, suggestions) {
-                              final user = suggestions;
-                              return ListTile(
-                                title: Text(
-                                  user.name!.trim(),
-                                  style: TextStyle(
-                                    fontFamily: "RobotoCondensed",
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                                subtitle: (user.mobile != null)
-                                    ? Text(user.email.trim() +
-                                        ",  " +
-                                        user.mobile.toString())
-                                    : Text(user.email.trim()),
-                              );
-                            },
-                            onSuggestionSelected: (user) {
-                              userId.text = user.name!;
-                              selectedUserId = user.id.toString();
-                              txtFeedbackId.text = widget.feedbackId.toString();
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please select user to assign the post';
-                              }
-                              return null;
-                            },
-                            noItemsFoundBuilder: (context) {
-                              return SizedBox(
-                                height: 100.h,
-                                child: const Center(
-                                  child: Text("User not found"),
-                                ),
-                              );
-                            },
-                            suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                constraints:
-                                    const BoxConstraints(maxHeight: 300)),
-                            textFieldConfiguration: TextFieldConfiguration(
-                              controller: userId,
-                              decoration: InputDecoration(
-                                hintText: "Search user",
-                                hintStyle: TextStyle(
-                                    fontFamily: AppFonts.regularFont,
-                                    fontSize: 16.sp,
-                                    color: Colors.black12.withOpacity(0.5)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          MaterialButton(
-                            minWidth: MediaQuery.of(context).size.width,
-                            height: 47.h,
-                            onPressed: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              var validate = _formKey.currentState!.validate();
-                              if (validate) {
-                                Get.back();
-                                ProfileController().assignFeedback(
-                                    txtFeedbackId.text.trim(), selectedUserId);
-                                setState(() {
-                                  userId.clear();
-                                  txtFeedbackId.clear();
-                                });
-                              }
-                            },
-                            color: const Color(0xff108ab3),
-                            child: Text(
-                              "Assign",
-                              style: TextStyle(
-                                fontFamily: AppFonts.regularFont,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xffffffff),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      );
+      searchUserDialog("Choose user to Assign this Post",
+          "Please select user to assign this post", "Assign", false);
     }
     if (value == 'activity_log') {
       showGeneralDialog(
@@ -303,5 +196,132 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
             );
           });
     }
+  }
+
+  void searchUserDialog(
+      String title, String validatorTxt, String btnTxt, bool isShare) {
+    showDialog(
+      context: widget.context,
+      builder: (context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          elevation: 16,
+          child: SizedBox(
+            height: Get.height / 3,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  const SizedBox(height: 20),
+                  Center(child: Text(title)),
+                  const SizedBox(height: 20),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TypeAheadFormField<ProfileModel>(
+                          hideSuggestionsOnKeyboardHide: false,
+                          suggestionsBoxController: _suggestionsBoxController,
+                          debounceDuration: const Duration(milliseconds: 200),
+                          suggestionsCallback: ProfileController().getUserList,
+                          itemBuilder: (context, suggestions) {
+                            final user = suggestions;
+                            return ListTile(
+                              title: Text(
+                                user.name!.trim(),
+                                style: TextStyle(
+                                  fontFamily: "RobotoCondensed",
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                              subtitle: (user.mobile != null)
+                                  ? Text(user.email.trim() +
+                                      ",  " +
+                                      user.mobile.toString())
+                                  : Text(user.email.trim()),
+                            );
+                          },
+                          onSuggestionSelected: (user) {
+                            userId.text = user.name!;
+                            selectedUserId = user.id.toString();
+                            txtFeedbackId.text = widget.feedbackId.toString();
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return validatorTxt;
+                            }
+                            return null;
+                          },
+                          noItemsFoundBuilder: (context) {
+                            return SizedBox(
+                              height: 100.h,
+                              child: const Center(
+                                child: Text("User not found"),
+                              ),
+                            );
+                          },
+                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              constraints:
+                                  const BoxConstraints(maxHeight: 300)),
+                          textFieldConfiguration: TextFieldConfiguration(
+                            controller: userId,
+                            decoration: InputDecoration(
+                              hintText: "Search user",
+                              hintStyle: TextStyle(
+                                  fontFamily: AppFonts.regularFont,
+                                  fontSize: 16.sp,
+                                  color: Colors.black12.withOpacity(0.5)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            var validate = _formKey.currentState!.validate();
+                            if (validate) {
+                              Get.back();
+                              if (isShare) {
+                                ProfileController().shareFeedback(
+                                    txtFeedbackId.text.trim(), selectedUserId);
+                              } else {
+                                ProfileController().assignFeedback(
+                                    txtFeedbackId.text.trim(), selectedUserId);
+                              }
+
+                              setState(() {
+                                userId.clear();
+                                txtFeedbackId.clear();
+                              });
+                            }
+                          },
+                          color: const Color(0xff108ab3),
+                          child: Text(
+                            btnTxt,
+                            style: TextStyle(
+                              fontFamily: AppFonts.regularFont,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              // letterSpacing: 0.8,
+                              color: const Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -81,7 +81,10 @@ class _CustomNotificationState extends State<CustomNotification> {
                             ? const Color(0xff009400)
                             : (widget.notification[widget.index].type == "3")
                                 ? const Color(0xffff0808)
-                                : const Color(0xffa300a3),
+                                : (widget.notification[widget.index].type ==
+                                        "4")
+                                    ? const Color(0xffa300a3)
+                                    : Colors.deepOrange,
                     child: Center(
                       child: Padding(
                         padding: (widget.notification[widget.index].type == "1")
@@ -95,14 +98,21 @@ class _CustomNotificationState extends State<CustomNotification> {
                                       widget.notification[widget.index].type ==
                                           "4")
                                   ? 'assets/icons/like.svg'
-                                  : 'assets/icons/pin.svg',
-                          height:
-                              (widget.notification[widget.index].type == "2")
-                                  ? 17
+                                  : (widget.notification[widget.index].type ==
+                                          "3")
+                                      ? 'assets/icons/pin.svg'
+                                      : 'assets/icons/Share.svg',
+                          height: (widget.notification[widget.index].type ==
+                                  "2")
+                              ? 17
+                              : (widget.notification[widget.index].type == "5")
+                                  ? 15
                                   : 12,
                           width: (widget.notification[widget.index].type == "2")
                               ? 17
-                              : 12,
+                              : (widget.notification[widget.index].type == "5")
+                                  ? 15
+                                  : 12,
                           allowDrawingOutsideViewBox: true,
                           color: Colors.white,
                         ),
