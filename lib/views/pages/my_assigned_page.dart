@@ -59,7 +59,7 @@ class _MyAssignedPageState extends State<MyAssignedPage> {
           : feedbackController.myAssignedList.isNotEmpty
               ? SizedBox(
                   height: Get.height,
-                  child: RefreshWidget(
+                  child: RefreshIndicator(
                     onRefresh: () async {
                       await feedbackController.fetchAssignedFeedback();
                     },

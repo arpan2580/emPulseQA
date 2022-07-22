@@ -112,46 +112,9 @@ class _NotificationPageState extends State<NotificationPage> {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Padding(
-                      //       padding: const EdgeInsets.only(left: 5.0),
-                      //       child: TextButton.icon(
-                      //         onPressed: () {
-                      //           notificationController.readAllNotifications();
-                      //           setState(() {});
-                      //         },
-                      //         icon: const Icon(
-                      //           Icons.done_all_rounded,
-                      //         ),
-                      //         label: const Text('Mark all as read'),
-                      //       ),
-                      //     ),
-                      //     Padding(
-                      //       padding: const EdgeInsets.only(right: 5.0),
-                      //       child: TextButton.icon(
-                      //         onPressed: () {
-                      //           notificationController.deleteAllNotifications();
-                      //           setState(() {});
-                      //         },
-                      //         icon: const Icon(
-                      //           Icons.delete_forever_rounded,
-                      //           color: Colors.red,
-                      //         ),
-                      //         label: const Text(
-                      //           'Delete all',
-                      //           style: TextStyle(
-                      //             color: Colors.red,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       Expanded(
                         child: SizedBox(
-                          height: Get.height - 1,
+                          height: Get.height,
                           child: ListView.builder(
                             controller: scrollController,
                             shrinkWrap: true,

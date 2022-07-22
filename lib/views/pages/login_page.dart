@@ -32,6 +32,8 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       color: Colors.grey[200],
       child: SafeArea(
+        top: false,
+        bottom: false,
         child: Container(
           height: Get.height,
           width: Get.width,

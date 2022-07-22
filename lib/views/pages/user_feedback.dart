@@ -74,7 +74,7 @@ class _UserFeedbackState extends State<UserFeedback> {
               )
             : SizedBox(
                 height: Get.height,
-                child: RefreshWidget(
+                child: RefreshIndicator(
                   onRefresh: () async {
                     await userFeedbackController
                         .fetchUserFeedback(widget.userId);

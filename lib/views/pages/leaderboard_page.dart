@@ -36,7 +36,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               child: CircularProgressIndicator.adaptive(),
             )
           : leaderboardController.topUsersList.isNotEmpty
-              ? RefreshWidget(
+              ? RefreshIndicator(
                   onRefresh: () async {
                     await leaderboardController.fetchLeaderboard();
                   },

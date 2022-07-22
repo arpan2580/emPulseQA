@@ -800,6 +800,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           child: const CustomNotificationIcon(),
         ),
+        SizedBox(
+          width: 10.w,
+        ),
       ],
     );
   }

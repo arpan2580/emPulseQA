@@ -176,13 +176,13 @@ class _SplashPageState extends State<SplashPage> {
     return Container(
       color: Colors.grey[200],
       child: SafeArea(
-        child: Scaffold(
-          body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/splash_background.png'),
-                fit: BoxFit.fill,
-              ),
+        top: false,
+        bottom: false,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/splash_background.png'),
+              fit: BoxFit.fill,
             ),
           ),
         ),

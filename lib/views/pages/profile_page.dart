@@ -651,60 +651,6 @@ class _CustomProfileState extends State<CustomProfile> {
                         ),
                       ),
                       const Divider(),
-                      // MaterialButton(
-                      //   splashColor: Colors.transparent,
-                      //   highlightColor: Colors.transparent,
-                      //   onPressed: () {
-                      //     showGeneralDialog(
-                      //         context: context,
-                      //         barrierDismissible: true,
-                      //         barrierLabel: MaterialLocalizations.of(context)
-                      //             .modalBarrierDismissLabel,
-                      //         barrierColor: Colors.black54,
-                      //         transitionDuration:
-                      //             const Duration(milliseconds: 200),
-                      //         pageBuilder: (BuildContext buildContext,
-                      //             Animation animation,
-                      //             Animation secondaryAnimation) {
-                      //           return Center(
-                      //             child: Container(
-                      //               decoration: BoxDecoration(
-                      //                 borderRadius: BorderRadius.circular(9.0),
-                      //                 color: Colors.white,
-                      //               ),
-                      //               width:
-                      //                   MediaQuery.of(context).size.width - 20,
-                      //               height: MediaQuery.of(context).size.height -
-                      //                   230,
-                      //               padding: const EdgeInsets.all(2),
-                      //               child: const CustomAboutDialog(),
-                      //             ),
-                      //           );
-                      //         });
-                      //   },
-                      //   child: Row(
-                      //     children: [
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(left: 5.0),
-                      //         child: Image.asset(
-                      //           'assets/images/aboutAppIcon.png',
-                      //           height: 20,
-                      //           width: 20,
-                      //         ),
-                      //       ),
-                      //       SizedBox(width: 15.w),
-                      //       Text(
-                      //         "ABOUT APP",
-                      //         style: TextStyle(
-                      //           fontSize: 19.sp,
-                      //           fontFamily: AppFonts.lightFont,
-                      //           fontWeight: FontWeight.normal,
-                      //           color: const Color(0xff424242),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

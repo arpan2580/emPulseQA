@@ -68,7 +68,7 @@ class _AllFeedbackPageState extends State<AllFeedbackPage> {
           : feedbackController.feedbackList.isNotEmpty
               ? SizedBox(
                   height: Get.height,
-                  child: RefreshWidget(
+                  child: RefreshIndicator(
                     onRefresh: () async {
                       await feedbackController.fetchFeedback();
                     },

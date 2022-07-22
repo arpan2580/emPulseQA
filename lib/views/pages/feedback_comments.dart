@@ -134,7 +134,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
           return true;
         },
         child: SafeArea(
-          child: RefreshWidget(
+          child: RefreshIndicator(
             onRefresh: refresh,
             child: Obx(
               () => commentController.isLoading.value

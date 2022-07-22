@@ -75,6 +75,8 @@ class _OtpPageState extends State<OtpPage> {
     return Container(
       color: Colors.grey[200],
       child: SafeArea(
+        top: false,
+        bottom: false,
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -109,9 +111,10 @@ class _OtpPageState extends State<OtpPage> {
                             CustomTextfield(
                               textEditingController: otpController.txtOtp,
                               hintText: "Type your OTP here",
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true),
+                              keyboardType: TextInputType.number,
+                              // keyboardType:
+                              //     const TextInputType.numberWithOptions(
+                              //         signed: true),
                               obsecureTxt: false,
                               suffixIcon: true,
                               maxLength: 6,
