@@ -38,7 +38,7 @@ class _OtpPageState extends State<OtpPage> {
 
   final storeUserMail = GetStorage();
 
-  bool isCountdownEnd = false;
+  RxBool isCountdownEnd = false.obs;
   late Timer _timer;
   void otpCountdown() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -47,7 +47,7 @@ class _OtpPageState extends State<OtpPage> {
         timerCountdown.value = timerCountdown.value - 1;
         // });
       } else {
-        isCountdownEnd = true;
+        isCountdownEnd.value = true;
         _timer.cancel();
         // setState(() {});
       }
@@ -183,35 +183,35 @@ class _OtpPageState extends State<OtpPage> {
                               },
                             ),
                             SizedBox(height: 29.h),
-                            !isCountdownEnd
-                                ? SizedBox(
-                                    child: Obx(
-                                      () => Text(
+                            Obx(
+                              () => !isCountdownEnd.value
+                                  ? SizedBox(
+                                      child: Text(
                                         "You can regenerate the OTP after ${timerCountdown.toString()}s",
                                       ),
-                                    ),
-                                  )
-                                : TextButton(
-                                    onPressed: () {
-                                      resendOtpController.resendOtp(
-                                          storeUserMail.read("otpKey"));
-                                      timerCountdown = 60.obs;
-                                      isCountdownEnd = false;
-                                      otpCountdown();
-                                      setState(() {});
-                                    },
-                                    child: Text(
-                                      "Resend OTP",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: AppFonts.regularFont,
-                                        fontSize: 14.sp,
-                                        color:
-                                            const Color.fromARGB(255, 4, 4, 4),
-                                        fontWeight: FontWeight.bold,
+                                    )
+                                  : TextButton(
+                                      onPressed: () {
+                                        resendOtpController.resendOtp(
+                                            storeUserMail.read("otpKey"));
+                                        timerCountdown = 60.obs;
+                                        isCountdownEnd.value = false;
+                                        otpCountdown();
+                                        setState(() {});
+                                      },
+                                      child: Text(
+                                        "Resend OTP",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: AppFonts.regularFont,
+                                          fontSize: 14.sp,
+                                          color: const Color.fromARGB(
+                                              255, 4, 4, 4),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                            ),
                           ],
                         ),
                       ),
