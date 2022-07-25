@@ -141,6 +141,7 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
                                             style: const TextStyle(
                                               fontFamily: AppFonts.regularFont,
                                               fontWeight: FontWeight.w500,
+                                              color: Colors.black87,
                                             ),
                                           )
                                         : (index == 1)
@@ -173,6 +174,7 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
                                                               .regularFont,
                                                           fontWeight:
                                                               FontWeight.w500,
+                                                          color: Colors.black87,
                                                         ),
                                                       ),
                                                     );
