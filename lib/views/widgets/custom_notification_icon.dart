@@ -28,6 +28,7 @@ class CustomNotificationIcon extends StatelessWidget {
               'assets/icons/Notification.svg',
               height: 29.h,
               width: 29.w,
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ),
@@ -47,7 +48,7 @@ class CustomNotificationIcon extends StatelessWidget {
                       radius: 10.w,
                       child: Text(
                         BaseController.unreadNotification.value.toString(),
-                        style: TextStyle(fontSize: 12.sp),
+                        style: TextStyle(fontSize: 12.sp, color: Colors.white),
                       ),
                       backgroundColor: Colors.red,
                     )

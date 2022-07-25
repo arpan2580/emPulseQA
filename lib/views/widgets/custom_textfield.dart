@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../consts/regex.dart';
+import '../../controllers/dark_theme_controller.dart';
 
 class CustomTextfield extends StatelessWidget {
   final String hintText;
@@ -19,6 +20,8 @@ class CustomTextfield extends StatelessWidget {
   final bool centerText;
   final String? counterText;
   final dynamic Function() validation;
+  final dynamic hStyle;
+  final dynamic tStyle;
   const CustomTextfield({
     Key? key,
     required this.textEditingController,
@@ -33,6 +36,8 @@ class CustomTextfield extends StatelessWidget {
     required this.fullBorder,
     required this.centerText,
     required this.validation,
+    this.hStyle,
+    this.tStyle,
   }) : super(key: key);
 
   @override
@@ -42,7 +47,11 @@ class CustomTextfield extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           fontFamily: AppFonts.regularFont,
-          color: Colors.black12.withOpacity(0.5),
+          color: (hStyle != null && hStyle == false)
+              ? Colors.black12.withOpacity(0.5)
+              : DarkThemeController.isDarkThemeEnabled.value
+                  ? Theme.of(context).primaryColor.withOpacity(0.5)
+                  : Colors.black12.withOpacity(0.5),
         ),
         counterText: counterText,
         labelText: labelText,
@@ -80,6 +89,9 @@ class CustomTextfield extends StatelessWidget {
       style: TextStyle(
         fontFamily: "RobotoCondensed",
         fontSize: 16.sp,
+        color: (tStyle != null && tStyle == false)
+            ? Colors.black87
+            : Theme.of(context).primaryColor,
       ),
       controller: textEditingController,
       keyboardType: keyboardType,

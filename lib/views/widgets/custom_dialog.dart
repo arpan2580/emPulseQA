@@ -1,4 +1,5 @@
 import 'package:empulse/consts/app_fonts.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:flutter/material.dart';
 
 PersistentBottomSheetController customDialog(
@@ -29,7 +30,7 @@ Widget myCustomDialog(BuildContext context, Function() onDelete) {
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       width: MediaQuery.of(context).size.width - 30,
       height: 130,
@@ -53,9 +54,10 @@ Widget myCustomDialog(BuildContext context, Function() onDelete) {
               ),
             ),
           ),
-          const Divider(
+          Divider(
             indent: 50,
             endIndent: 50,
+            color: Theme.of(context).primaryColor.withOpacity(0.7),
           ),
           GestureDetector(
             onTap: () {},
@@ -65,11 +67,14 @@ Widget myCustomDialog(BuildContext context, Function() onDelete) {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   "CANCEL",
                   style: TextStyle(
                     fontSize: AppFonts.fontSize,
                     fontFamily: AppFonts.appFont,
+                    color: DarkThemeController.isDarkThemeEnabled.value
+                        ? Colors.cyan
+                        : Colors.deepPurple,
                   ),
                 ),
               ),

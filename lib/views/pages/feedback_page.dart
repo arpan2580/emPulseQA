@@ -21,6 +21,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/instance_manager.dart';
 import 'package:location/location.dart';
 
+import '../../controllers/dark_theme_controller.dart';
+
 class FeedbackPage extends StatefulWidget {
   final Function callback;
   const FeedbackPage({
@@ -149,14 +151,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
-        title: const Text(
+        title: Text(
           "Feedback",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         actions: [
           IconButton(
@@ -164,7 +168,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return Dialog(child: feedbackInfo());
+                  return Dialog(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    child: feedbackInfo(context),
+                  );
                 },
               );
             },
@@ -219,6 +226,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   TypeAheadFormField(
                     hideSuggestionsOnKeyboardHide: true,
                     suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.circular(7),
                         constraints: const BoxConstraints(maxHeight: 300)),
                     textFieldConfiguration: TextFieldConfiguration(
@@ -226,9 +234,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       decoration: InputDecoration(
                         hintText: "Search Market",
                         hintStyle: TextStyle(
-                            fontFamily: AppFonts.regularFont,
-                            fontSize: 16.sp,
-                            color: Colors.black12.withOpacity(0.5)),
+                          fontFamily: AppFonts.regularFont,
+                          fontSize: 16.sp,
+                          color: DarkThemeController.isDarkThemeEnabled.value
+                              ? Theme.of(context).primaryColor.withOpacity(0.5)
+                              : Colors.black12.withOpacity(0.5),
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     suggestionsBoxController: _suggestionsBoxController,
@@ -252,6 +266,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           style: TextStyle(
                             fontFamily: "RobotoCondensed",
                             fontSize: 16.sp,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       );
@@ -264,28 +279,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       insertFeedbackController.isMarketSelected.text = '0';
                       return SizedBox(
                         height: 50.h,
-                        child: const Center(
-                          child: Text("Market not found"),
+                        child: Center(
+                          child: Text(
+                            "Market not found",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
                         ),
                       );
                     },
                   ),
-                  // CustomTextfield(
-                  //   hintText: "Enter Market name",
-                  //   textEditingController: insertFeedbackController.marketName,
-                  //   keyboardType: TextInputType.name,
-                  //   obsecureTxt: false,
-                  //   suffixIcon: false,
-                  //   fullBorder: false,
-                  //   centerText: false,
-                  //   validation: () {
-                  //     // if (insertFeedbackController.marketName.text.isEmpty) {
-                  //     //   return "Market name is required";
-                  //     // } else {
-                  //     return null;
-                  //     // }
-                  //   },
-                  // ),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -329,7 +333,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   : FontWeight.normal,
                               color: isGeneralTrade == true
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -373,7 +379,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   : FontWeight.normal,
                               color: isModernTrade == true
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -394,6 +402,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             fontWeight: FontWeight.w700,
                             fontSize: 18.sp,
                             fontFamily: AppFonts.regularFont,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         SizedBox(width: 20.w),
@@ -487,7 +496,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   : FontWeight.normal,
                               color: isBtn1Active == true
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -549,7 +560,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   : FontWeight.normal,
                               color: isBtn2Active == true
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -612,7 +625,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                   : FontWeight.normal,
                               color: isBtn3Active == true
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -641,11 +656,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                     // fontFamily: AppFonts.regularFont,
                                     fontFamily: "RobotoCondensed",
                                     fontSize: 16.sp,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
-                                subtitle: Text(product.caregoryDesc +
-                                    " || " +
-                                    product.subCategoryDesc),
+                                subtitle: Text(
+                                  product.caregoryDesc +
+                                      " || " +
+                                      product.subCategoryDesc,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
                               );
                             },
                             onSuggestionSelected: (product) {
@@ -671,25 +692,38 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             noItemsFoundBuilder: (context) {
                               return SizedBox(
                                 height: 100.h,
-                                child: const Center(
-                                  child: Text("Product not found"),
+                                child: Center(
+                                  child: Text(
+                                    "Product not found",
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
                                 ),
                               );
                             },
                             suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                constraints:
-                                    const BoxConstraints(maxHeight: 400)),
-                            textFieldConfiguration: TextFieldConfiguration(
-                              controller: _txtProductValue,
-                              decoration: InputDecoration(
-                                hintText: "Search Product",
-                                hintStyle: TextStyle(
-                                    fontFamily: AppFonts.regularFont,
-                                    fontSize: 16.sp,
-                                    color: Colors.black12.withOpacity(0.5)),
-                              ),
+                              borderRadius: BorderRadius.circular(7),
+                              constraints: const BoxConstraints(maxHeight: 400),
+                              color: Theme.of(context).scaffoldBackgroundColor,
                             ),
+                            textFieldConfiguration: TextFieldConfiguration(
+                                controller: _txtProductValue,
+                                decoration: InputDecoration(
+                                  hintText: "Search Product",
+                                  hintStyle: TextStyle(
+                                      fontFamily: AppFonts.regularFont,
+                                      fontSize: 16.sp,
+                                      color: DarkThemeController
+                                              .isDarkThemeEnabled.value
+                                          ? Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.5)
+                                          : Colors.black12.withOpacity(0.5)),
+                                ),
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )),
                           ),
                         )
                       : CustomTextfield(
@@ -719,7 +753,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             style: TextStyle(
                               fontFamily: AppFonts.regularFont,
                               fontSize: 15.sp,
-                              color: Colors.black,
+                              // color: Colors.black,
                             ),
                             children: <TextSpan>[
                               const TextSpan(
@@ -753,6 +787,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       fontFamily: AppFonts.regularFont,
                       fontWeight: FontWeight.w700,
                       fontSize: 18.sp,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   SizedBox(
@@ -771,6 +806,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         hintStyle: TextStyle(
                           fontFamily: AppFonts.regularFont,
                           fontSize: 16.sp,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.7),
                         ),
                         contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                         border: OutlineInputBorder(
@@ -781,10 +818,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           ),
                         ),
                       ),
+                      dropdownColor: Theme.of(context).scaffoldBackgroundColor,
                       style: TextStyle(
                         fontFamily: AppFonts.regularFont,
                         fontSize: 16.sp,
-                        color: Colors.black87,
+                        color: DarkThemeController.isDarkThemeEnabled.value
+                            ? Theme.of(context).primaryColor
+                            : Colors.black87,
                       ),
                       validator: (value) =>
                           value == null || selectedGenreOfFeedback == null

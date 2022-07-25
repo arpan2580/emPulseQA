@@ -43,14 +43,14 @@ class _MapsState extends State<Maps> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
         title: const Text(
           "Feedback Location",
-          style: TextStyle(color: Colors.black),
+          // style: TextStyle(color: Colors.black),
         ),
       ),
       body: GoogleMap(

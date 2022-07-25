@@ -6,10 +6,12 @@ import 'package:empulse/views/pages/otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginController extends GetxController {
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtCaptcha = TextEditingController();
+  final otpKey = GetStorage();
   Future<void> login() async {
     LoginModel loginModel = LoginModel(
         email: txtEmail.text.trim(), captcha: txtCaptcha.text.trim());
@@ -23,6 +25,7 @@ class LoginController extends GetxController {
         DialogHelper.showSuccessToast(
             description: response['message'] + ' ' + txtEmail.text);
         DialogHelper.showSuccessToast(description: response['OTP'].toString());
+        otpKey.write("otpKey", response['resend_otp_token'].toString());
         Get.to(
           () => OtpPage(
             email: txtEmail.text,

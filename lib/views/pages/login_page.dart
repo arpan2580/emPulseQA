@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       color: Colors.grey[200],
       child: SafeArea(
-        top: false,
         bottom: false,
         child: Container(
           height: Get.height,
@@ -77,6 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(height: 15.h),
                               CustomTextfield(
                                 hintText: "someone@itc.in",
+                                hStyle: false,
+                                tStyle: false,
                                 textEditingController: loginController.txtEmail,
                                 labelText: "E-mail Address",
                                 keyboardType: TextInputType.emailAddress,
@@ -167,6 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               CustomTextfield(
                                 hintText: "Enter the captcha",
+                                hStyle: false,
+                                tStyle: false,
                                 textEditingController:
                                     loginController.txtCaptcha,
                                 keyboardType: TextInputType.number,

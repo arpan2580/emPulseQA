@@ -2,7 +2,6 @@ import 'package:empulse/controllers/feedback_controller.dart';
 import 'package:empulse/controllers/user_feedback_controller.dart';
 import 'package:empulse/views/pages/profile_page.dart';
 import 'package:empulse/views/widgets/custom_feedback.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -54,14 +53,16 @@ class _UserFeedbackState extends State<UserFeedback> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
         title: Text(
           widget.name.trim().split(' ').first + "'s posts",
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         actions: const [
           // MyNotificationBtn(),
@@ -137,8 +138,13 @@ class _UserFeedbackState extends State<UserFeedback> {
                                 }
                               },
                             )
-                          : const Center(
-                              child: Text('No posts yet.'),
+                          : Center(
+                              child: Text(
+                                'No posts yet.',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
                             ),
                     ],
                   ),

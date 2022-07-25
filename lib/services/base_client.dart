@@ -16,8 +16,8 @@ class BaseClient {
       : _dio = Dio(
           BaseOptions(
             baseUrl: BaseController.baseUrl,
-            connectTimeout: 70000,
-            receiveTimeout: 70000, // 70s
+            connectTimeout: 90000,
+            receiveTimeout: 90000, // 70s
             responseType: ResponseType.json,
             contentType: 'application/json',
           ),

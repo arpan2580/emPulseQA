@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
 import 'package:empulse/controllers/comment_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/models/feedback_model.dart';
 import 'package:empulse/views/pages/photo_view.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class CustomCommentCard extends StatelessWidget {
                 BaseController.getinitials(username),
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
+                  // color: Colors.white,
                   fontFamily: AppFonts.regularFont,
                 ),
               ),
@@ -70,10 +71,12 @@ class CustomCommentCard extends StatelessWidget {
             children: [
               Text(
                 username.isEmpty ? "UserName" : username,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w900,
-                  color: Colors.black87,
+                  color: DarkThemeController.isDarkThemeEnabled.value
+                      ? Theme.of(context).primaryColor.withOpacity(0.9)
+                      : Colors.black87,
                   fontFamily: AppFonts.regularFont,
                 ),
               ),
@@ -85,13 +88,15 @@ class CustomCommentCard extends StatelessWidget {
                           color: Colors.green,
                           borderRadius: BorderRadius.all(Radius.circular(25)),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 3.0),
                           child: Text(
                             "Closed",
                             style: TextStyle(
-                                fontSize: 14, fontFamily: AppFonts.regularFont),
+                                fontSize: 14,
+                                fontFamily: AppFonts.regularFont,
+                                color: Theme.of(context).primaryColor),
                           ),
                         ),
                       ),
@@ -112,6 +117,7 @@ class CustomCommentCard extends StatelessWidget {
               style: TextStyle(
                 fontFamily: AppFonts.regularFont,
                 fontSize: 14.sp,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

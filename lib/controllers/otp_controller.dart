@@ -38,6 +38,7 @@ class OtpController extends GetxController {
           DialogHelper.showSuccessToast(description: response['message']);
           storeToken.write("token", response['token']);
           storeToken.write("refreshToken", response['refresh_token']);
+          storeToken.remove("otpKey");
           var response1 = await BaseClient().dioPost('/my-global-data', null);
           if (response1 != null && response1['success']) {
             storeToken.write("unreadNotification",

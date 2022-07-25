@@ -26,10 +26,11 @@ class CustomOpenImage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             "Choose Image Source",
             style: TextStyle(
               fontSize: 16.0,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           const SizedBox(
@@ -41,25 +42,41 @@ class CustomOpenImage extends StatelessWidget {
               Column(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.camera_alt_rounded),
+                    icon: Icon(
+                      Icons.camera_alt_rounded,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                       _controller.getImage(ImageSource.camera);
                     },
                   ),
-                  const Text("Camera"),
+                  Text(
+                    "Camera",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ],
               ),
               Column(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.image_rounded),
+                    icon: Icon(
+                      Icons.image_rounded,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                       _controller.getImage(ImageSource.gallery);
                     },
                   ),
-                  const Text("Gallery"),
+                  Text(
+                    "Gallery",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ],
               )
             ],

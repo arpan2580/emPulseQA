@@ -1,10 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/controllers/leaderboard_controller.dart';
 import 'package:empulse/views/pages/photo_view.dart';
 import 'package:empulse/views/pages/user_feedback.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -59,8 +59,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     },
                   ),
                 )
-              : const Center(
-                  child: Text('Add feedback first'),
+              : Center(
+                  child: Text(
+                    'Add feedback first',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
     );
   }
@@ -105,7 +110,7 @@ class LeaderboardUser extends StatelessWidget {
                           BaseController.getinitials(userDetails.name),
                           style: const TextStyle(
                             fontSize: 13,
-                            color: Colors.white,
+                            // color: Colors.white,
                             fontFamily: AppFonts.regularFont,
                           ),
                         ),
@@ -138,14 +143,16 @@ class LeaderboardUser extends StatelessWidget {
                     fontFamily: AppFonts.regularFont,
                     fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff000000),
+                    color: Theme.of(context).primaryColor,
+                    // color: const Color(0xff000000),
                   ),
                 ),
                 Text(
                   userDetails.email,
                   style: TextStyle(
                     fontSize: 13.sp,
-                    color: const Color.fromARGB(255, 72, 72, 72),
+                    // color: const Color.fromARGB(255, 72, 72, 72),
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
                   ),
                   // textAlign: TextAlign.justify,
                 ),
@@ -156,6 +163,7 @@ class LeaderboardUser extends StatelessWidget {
               child: Row(
                 children: [
                   dataCard(
+                    context,
                     userDetails.totalFeedbacks.toString(),
                     "Feedback",
                   ),
@@ -163,6 +171,7 @@ class LeaderboardUser extends StatelessWidget {
                     width: 10.w,
                   ),
                   dataCard(
+                    context,
                     userDetails.totalComments.toString(),
                     "Comments",
                   ),
@@ -170,6 +179,7 @@ class LeaderboardUser extends StatelessWidget {
                     width: 10.w,
                   ),
                   dataCard(
+                    context,
                     userDetails.totalLikes.toString(),
                     "Like",
                   ),
@@ -182,7 +192,7 @@ class LeaderboardUser extends StatelessWidget {
     );
   }
 
-  Widget dataCard(value, label) {
+  Widget dataCard(context, value, label) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,7 +202,8 @@ class LeaderboardUser extends StatelessWidget {
           style: TextStyle(
             fontSize: 16.sp,
             fontFamily: AppFonts.regularFont,
-            color: Colors.black,
+            // color: Colors.black,
+            color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -202,8 +213,10 @@ class LeaderboardUser extends StatelessWidget {
             fontSize: 13.sp,
             fontFamily: AppFonts.lightFont,
             fontWeight: FontWeight.normal,
-            color: const Color(0xff424242),
-            // color: Colors.black,
+            // color: const Color(0xff424242),
+            color: DarkThemeController.isDarkThemeEnabled.value
+                ? Theme.of(context).primaryColor.withOpacity(0.8)
+                : const Color(0xff424242),
           ),
         ),
       ],

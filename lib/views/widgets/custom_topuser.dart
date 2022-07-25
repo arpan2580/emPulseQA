@@ -42,20 +42,25 @@ class CustomTopuser extends StatelessWidget {
                     padding: const EdgeInsets.all(5.0),
                     child: CircleAvatar(
                       radius: 25.w,
-                      backgroundColor: Colors.grey.withOpacity(0.5),
+                      // backgroundColor: Colors.grey.withOpacity(0.5),
                       child: const Icon(
                         Icons.arrow_forward_rounded,
                         size: 30,
-                        color: Colors.black87,
+                        // color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
                     "View All",
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ],
@@ -90,7 +95,7 @@ class CustomTopuser extends StatelessWidget {
                                       style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.white,
+                                        // color: Colors.white,
                                         fontFamily: AppFonts.regularFont,
                                       ),
                                     ),
@@ -114,7 +119,8 @@ class CustomTopuser extends StatelessWidget {
                                           topUsers[index]['name']),
                                       style: const TextStyle(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        // color: Colors.white,
                                         fontFamily: AppFonts.regularFont,
                                       ),
                                     ),
@@ -137,9 +143,10 @@ class CustomTopuser extends StatelessWidget {
                       splitString(
                         topUsers[index]['name'],
                       ),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),

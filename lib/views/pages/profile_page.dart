@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/controllers/profile_controller.dart';
 import 'package:empulse/views/pages/photo_view.dart';
 import 'package:empulse/views/pages/splash_page.dart';
 import 'package:empulse/views/widgets/custom_about_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -97,7 +99,8 @@ class _CustomProfileState extends State<CustomProfile> {
                     fontFamily: AppFonts.regularFont,
                     fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff000000),
+                    // color: const Color(0xff000000),
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 Text(
@@ -107,7 +110,9 @@ class _CustomProfileState extends State<CustomProfile> {
                   // : "${widget.userDetails.email}, ${widget.userDetails.mobile}",
                   style: TextStyle(
                     fontSize: 16.sp,
-                    color: const Color.fromARGB(255, 72, 72, 72),
+                    color: DarkThemeController.isDarkThemeEnabled.value
+                        ? Theme.of(context).primaryColor.withOpacity(0.6)
+                        : const Color.fromARGB(255, 72, 72, 72),
                   ),
                   // textAlign: TextAlign.justify,
                 ),
@@ -133,7 +138,7 @@ class _CustomProfileState extends State<CustomProfile> {
                                           widget.userDetails.name),
                                       style: const TextStyle(
                                         fontSize: 27,
-                                        color: Colors.white,
+                                        // color: Colors.white,
                                         fontFamily: AppFonts.regularFont,
                                       ),
                                     ),
@@ -182,13 +187,16 @@ class _CustomProfileState extends State<CustomProfile> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontFamily: AppFonts.regularFont,
-                      color: const Color.fromARGB(255, 72, 72, 72),
+                      color: DarkThemeController.isDarkThemeEnabled.value
+                          ? Theme.of(context).primaryColor.withOpacity(0.6)
+                          : const Color.fromARGB(255, 72, 72, 72),
                     ),
                     textAlign: TextAlign.justify,
                   ),
                 ),
-                const Divider(
+                Divider(
                   thickness: 1.0,
+                  color: Theme.of(context).primaryColor.withOpacity(0.4),
                 )
               ],
             ),
@@ -228,7 +236,7 @@ class _CustomProfileState extends State<CustomProfile> {
                                                 widget.userDetails.name),
                                             style: const TextStyle(
                                               fontSize: 27,
-                                              color: Colors.white,
+                                              // color: Colors.white,
                                               fontFamily: AppFonts.regularFont,
                                             ),
                                           ),
@@ -261,6 +269,8 @@ class _CustomProfileState extends State<CustomProfile> {
                           GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                   context: context,
                                   builder: ((builder) => openImage()));
                             },
@@ -283,7 +293,7 @@ class _CustomProfileState extends State<CustomProfile> {
                           fontFamily: AppFonts.regularFont,
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xff000000),
+                          color: Theme.of(context).primaryColor,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -291,7 +301,9 @@ class _CustomProfileState extends State<CustomProfile> {
                         "${widget.userDetails.email}${(widget.userDetails.mobile != null) ? ',${widget.userDetails.mobile}' : ''}",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          color: const Color.fromARGB(255, 72, 72, 72),
+                          color: DarkThemeController.isDarkThemeEnabled.value
+                              ? Theme.of(context).primaryColor.withOpacity(0.6)
+                              : const Color.fromARGB(255, 72, 72, 72),
                           fontStyle: FontStyle.italic,
                         ),
                         textAlign: TextAlign.center,
@@ -306,7 +318,12 @@ class _CustomProfileState extends State<CustomProfile> {
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w500,
-                              color: const Color.fromARGB(255, 27, 27, 27),
+                              color:
+                                  DarkThemeController.isDarkThemeEnabled.value
+                                      ? Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.9)
+                                      : const Color.fromARGB(255, 27, 27, 27),
                               // fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -333,6 +350,7 @@ class _CustomProfileState extends State<CustomProfile> {
                                 style: TextStyle(
                                   fontFamily: AppFonts.regularFont,
                                   fontSize: 15.sp,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 decoration: InputDecoration(
                                   suffixIconConstraints: const BoxConstraints(
@@ -394,7 +412,12 @@ class _CustomProfileState extends State<CustomProfile> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Colors.grey.withOpacity(0.5)),
+                                        color: DarkThemeController
+                                                .isDarkThemeEnabled.value
+                                            ? Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.4)
+                                            : Colors.grey.withOpacity(0.5)),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   child: Row(
@@ -415,8 +438,13 @@ class _CustomProfileState extends State<CustomProfile> {
                                             style: TextStyle(
                                               fontSize: 16.sp,
                                               fontFamily: AppFonts.regularFont,
-                                              color: const Color.fromARGB(
-                                                  255, 72, 72, 72),
+                                              color: DarkThemeController
+                                                      .isDarkThemeEnabled.value
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                      .withOpacity(0.8)
+                                                  : const Color.fromARGB(
+                                                      255, 72, 72, 72),
                                             ),
                                             textAlign: TextAlign.justify,
                                           ),
@@ -446,6 +474,8 @@ class _CustomProfileState extends State<CustomProfile> {
                                             'assets/icons/edit-bio.svg',
                                             height: 30,
                                             width: 30,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ),
                                       ),
@@ -479,7 +509,7 @@ class _CustomProfileState extends State<CustomProfile> {
                       ),
                       const SizedBox(height: 10),
                       Divider(
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColor,
                         // thickness: 4,
                         indent: 20.w,
                         endIndent: 20.w,
@@ -503,45 +533,53 @@ class _CustomProfileState extends State<CustomProfile> {
                       ),
                       SizedBox(height: 30.h),
                       // SizedBox(height: 71.h),
-                      MaterialButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onPressed: () {
+
+                      customBtn(
+                        context,
+                        () {},
+                        Icon(
+                          Icons.dark_mode_rounded,
+                          color: DarkThemeController.isDarkThemeEnabled.value
+                              ? Theme.of(context).primaryColor.withOpacity(0.5)
+                              : Colors.black54,
+                        ),
+                        "DARK MODE",
+                        CupertinoSwitch(
+                          value: DarkThemeController.isDarkThemeEnabled.value,
+                          onChanged: (value) {
+                            DarkThemeController.toggleTheme(value);
+                          },
+                        ),
+                      ),
+                      Divider(
+                        thickness: 0.5,
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      ),
+                      customBtn(
+                        context,
+                        () {
                           var appTour = GetStorage();
 
                           appTour.write("app_tour", null);
 
                           Get.off(() => const SplashPage());
                         },
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.replay,
-                              color: Colors.black54,
-                            ),
-                            SizedBox(
-                              width: 15.w,
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "APP TOUR",
-                                style: TextStyle(
-                                  fontSize: 19.sp,
-                                  fontFamily: AppFonts.lightFont,
-                                  fontWeight: FontWeight.normal,
-                                  color: const Color(0xff424242),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Icon(
+                          Icons.replay,
+                          color: DarkThemeController.isDarkThemeEnabled.value
+                              ? Theme.of(context).primaryColor.withOpacity(0.5)
+                              : Colors.black54,
                         ),
+                        "APP TOUR",
+                        null,
                       ),
-                      const Divider(),
-                      MaterialButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onPressed: () {
+                      Divider(
+                        thickness: 0.5,
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      ),
+                      customBtn(
+                        context,
+                        () {
                           showGeneralDialog(
                               context: context,
                               barrierDismissible: true,
@@ -557,7 +595,8 @@ class _CustomProfileState extends State<CustomProfile> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(9.0),
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
                                     ),
                                     width:
                                         MediaQuery.of(context).size.width - 20,
@@ -569,46 +608,48 @@ class _CustomProfileState extends State<CustomProfile> {
                                 );
                               });
                         },
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0),
-                              child: Image.asset(
-                                'assets/images/aboutAppIcon.png',
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            SizedBox(width: 15.w),
-                            Text(
-                              "ABOUT APP",
-                              style: TextStyle(
-                                fontSize: 19.sp,
-                                fontFamily: AppFonts.lightFont,
-                                fontWeight: FontWeight.normal,
-                                color: const Color(0xff424242),
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 3.5),
+                          child: Image.asset(
+                            'assets/images/aboutAppIcon.png',
+                            height: 20,
+                            width: 20,
+                          ),
                         ),
+                        "ABOUT APP",
+                        null,
                       ),
-                      const Divider(),
-                      MaterialButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onPressed: () {
+                      Divider(
+                        thickness: 0.5,
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      ),
+                      customBtn(
+                        context,
+                        () {
                           showDialog(
                               barrierDismissible: false,
                               context: context,
                               builder: (builder) {
                                 return AlertDialog(
-                                  title: const Text("Confirm Logout"),
-                                  content: const Text(
-                                      "Please click on Confirm, if you want to logout"),
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  title: Text(
+                                    "Confirm Logout",
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Please click on Confirm, if you want to logout",
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         widget.controller.logout();
+                                        setState(() {});
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -624,39 +665,76 @@ class _CustomProfileState extends State<CustomProfile> {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("No"),
+                                      child: const Text(
+                                        "No",
+                                        style: TextStyle(
+                                          color: Colors.cyan,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 );
                               });
                         },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/logout.svg',
-                              height: 30,
-                              width: 30,
-                            ),
-                            SizedBox(width: 10.w),
-                            Text(
-                              "LOGOUT",
-                              style: TextStyle(
-                                fontSize: 19.sp,
-                                fontFamily: AppFonts.lightFont,
-                                fontWeight: FontWeight.normal,
-                                color: const Color(0xff424242),
-                              ),
-                            ),
-                          ],
+                        SvgPicture.asset(
+                          'assets/icons/logout.svg',
+                          height: 30,
+                          width: 30,
                         ),
+                        "LOGOUT",
+                        null,
                       ),
-                      const Divider(),
+                      Divider(
+                        thickness: 0.5,
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           );
+  }
+
+  MaterialButton customBtn(
+      BuildContext context, action, icon, text, suffixicon) {
+    return MaterialButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () {
+        action();
+      },
+      child: Row(
+        children: [
+          icon,
+          SizedBox(
+            width: (text == "LOGOUT") ? 9.w : 15.w,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 19.sp,
+                fontFamily: AppFonts.lightFont,
+                fontWeight: FontWeight.normal,
+                color: DarkThemeController.isDarkThemeEnabled.value
+                    ? Theme.of(context).primaryColor.withOpacity(0.9)
+                    : const Color(0xff424242),
+              ),
+            ),
+          ),
+          (suffixicon != null)
+              ? Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: suffixicon,
+                  ),
+                )
+              : Container(),
+        ],
+      ),
+    );
   }
 
   Widget dataCard(value, label) {
@@ -669,7 +747,8 @@ class _CustomProfileState extends State<CustomProfile> {
           style: TextStyle(
             fontSize: (widget.isNotMe) ? 20.sp : 18.sp,
             fontFamily: AppFonts.regularFont,
-            color: Colors.black,
+            // color: Colors.black,
+            color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -679,7 +758,9 @@ class _CustomProfileState extends State<CustomProfile> {
             fontSize: (widget.isNotMe) ? 16.sp : 14.sp,
             fontFamily: AppFonts.lightFont,
             fontWeight: FontWeight.normal,
-            color: const Color(0xff424242),
+            color: DarkThemeController.isDarkThemeEnabled.value
+                ? Theme.of(context).primaryColor.withOpacity(0.6)
+                : const Color(0xff424242),
             // color: Colors.black,
           ),
         ),
@@ -712,10 +793,11 @@ class _CustomProfileState extends State<CustomProfile> {
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             "Choose Image Source",
             style: TextStyle(
               fontSize: 16.0,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           const SizedBox(
@@ -732,8 +814,14 @@ class _CustomProfileState extends State<CustomProfile> {
                       Navigator.of(context).pop();
                       takePhoto(ImageSource.camera);
                     },
+                    color: Theme.of(context).primaryColor,
                   ),
-                  const Text("Camera"),
+                  Text(
+                    "Camera",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ],
               ),
               Column(
@@ -744,8 +832,14 @@ class _CustomProfileState extends State<CustomProfile> {
                       Navigator.of(context).pop();
                       takePhoto(ImageSource.gallery);
                     },
+                    color: Theme.of(context).primaryColor,
                   ),
-                  const Text("Gallery"),
+                  Text(
+                    "Gallery",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ],
               )
             ],

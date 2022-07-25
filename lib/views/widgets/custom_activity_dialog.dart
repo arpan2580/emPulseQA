@@ -1,6 +1,5 @@
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/activity_controller.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -36,7 +35,7 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
             child: CircularProgressIndicator.adaptive(),
           )
         : activityController.activityList.isNotEmpty
-            ? RefreshWidget(
+            ? RefreshIndicator(
                 onRefresh: () async {
                   await activityController.fetchActivityData(widget.feedbackId);
                 },
@@ -73,7 +72,8 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
                                         width: 2.0,
                                         height: 75.0,
                                         color: (index == 0)
-                                            ? Colors.white
+                                            ? Theme.of(context)
+                                                .scaffoldBackgroundColor
                                             : Colors.black,
                                       ),
                                 Container(
@@ -102,24 +102,29 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
                                   width: 2.0,
                                   height: 75.0,
                                   color: (index == 2)
-                                      ? Colors.white
+                                      ? Theme.of(context)
+                                          .scaffoldBackgroundColor
                                       : (activityController.activityList[0]
                                                       .resolved ==
                                                   null &&
                                               index == 1)
-                                          ? Colors.white
+                                          ? Theme.of(context)
+                                              .scaffoldBackgroundColor
                                           : (index == 0 &&
                                                   activityController
                                                       .activityList[0]
                                                       .assigned!
                                                       .isEmpty)
-                                              ? Colors.white
+                                              ? Theme.of(context)
+                                                  .scaffoldBackgroundColor
                                               : Colors.black,
                                 ),
                               ],
                             ),
                             Expanded(
                               child: Material(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 child: Container(
                                   height: (index == 1) ? 180 : null,
                                   margin: const EdgeInsets.only(left: 10.0),
@@ -196,9 +201,13 @@ class _CustomActivityDialogState extends State<CustomActivityDialog> {
                   ),
                 ),
               )
-            : const Center(
+            : Center(
                 child: Material(
-                    child: Text('No activity found for this feedback')),
+                  child: Text(
+                    'No activity found for this feedback',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                ),
               ));
   }
 }

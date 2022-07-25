@@ -14,6 +14,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../controllers/dark_theme_controller.dart';
+
 class CustomPopupMenu extends StatefulWidget {
   final int feedbackId;
   final String feedbackStatus;
@@ -45,7 +47,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   Widget build(BuildContext context) {
     return (widget.isAssignedPost && widget.feedbackStatus != '300')
         ? PopupMenuButton(
-            icon: const Icon(Icons.more_vert_rounded),
+            color: Theme.of(context).scaffoldBackgroundColor,
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: Theme.of(context).primaryColor,
+            ),
             itemBuilder: (context) {
               return [
                 popupMenuItem(
@@ -57,6 +63,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                   value: 'assign_to',
                   label: 'Assign To',
                   icon: Icons.ios_share,
+                ),
+                popupMenuItem(
+                  value: 'share',
+                  label: 'Share',
+                  icon: Icons.share,
                 ),
                 popupMenuItem(
                   value: 'open_map',
@@ -75,7 +86,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
             },
           )
         : PopupMenuButton(
-            icon: const Icon(Icons.more_vert_rounded),
+            color: Theme.of(context).scaffoldBackgroundColor,
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: Theme.of(context).primaryColor,
+            ),
             itemBuilder: (context) {
               return [
                 popupMenuItem(
@@ -113,11 +128,17 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
           Icon(
             icon,
             size: 19.0,
+            color: Theme.of(context).primaryColor.withOpacity(0.5),
           ),
           const SizedBox(
             width: 7.0,
           ),
-          Text(label),
+          Text(
+            label,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
         ],
       ),
     );
@@ -172,7 +193,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(9.0),
-                  color: Colors.white,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 width: MediaQuery.of(context).size.width - 20,
                 height: MediaQuery.of(context).size.height * 0.7,
@@ -180,14 +201,17 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                 child: Column(
                   children: [
                     Material(
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15.0),
                         child: Text(
                           "Activity Log",
                           style: TextStyle(
-                              fontFamily: AppFonts.regularFont,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp),
+                            fontFamily: AppFonts.regularFont,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.sp,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                     ),
@@ -210,6 +234,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
         return Dialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 16,
           child: SizedBox(
             height: Get.height / 3,
@@ -219,7 +244,14 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                 shrinkWrap: true,
                 children: <Widget>[
                   const SizedBox(height: 20),
-                  Center(child: Text(title)),
+                  Center(
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   Form(
                     key: _formKey,
@@ -227,7 +259,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         TypeAheadFormField<ProfileModel>(
-                          hideSuggestionsOnKeyboardHide: false,
+                          hideSuggestionsOnKeyboardHide: true,
                           suggestionsBoxController: _suggestionsBoxController,
                           debounceDuration: const Duration(milliseconds: 200),
                           suggestionsCallback: ProfileController().getUserList,
@@ -239,13 +271,24 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                                 style: TextStyle(
                                   fontFamily: "RobotoCondensed",
                                   fontSize: 16.sp,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               subtitle: (user.mobile != null)
-                                  ? Text(user.email.trim() +
-                                      ",  " +
-                                      user.mobile.toString())
-                                  : Text(user.email.trim()),
+                                  ? Text(
+                                      user.email.trim() +
+                                          ",  " +
+                                          user.mobile.toString(),
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    )
+                                  : Text(
+                                      user.email.trim(),
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
                             );
                           },
                           onSuggestionSelected: (user) {
@@ -268,17 +311,27 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
                             );
                           },
                           suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              constraints:
-                                  const BoxConstraints(maxHeight: 300)),
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: BorderRadius.circular(7),
+                            constraints: const BoxConstraints(maxHeight: 300),
+                          ),
                           textFieldConfiguration: TextFieldConfiguration(
                             controller: userId,
                             decoration: InputDecoration(
                               hintText: "Search user",
                               hintStyle: TextStyle(
-                                  fontFamily: AppFonts.regularFont,
-                                  fontSize: 16.sp,
-                                  color: Colors.black12.withOpacity(0.5)),
+                                fontFamily: AppFonts.regularFont,
+                                fontSize: 16.sp,
+                                color:
+                                    DarkThemeController.isDarkThemeEnabled.value
+                                        ? Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.5)
+                                        : Colors.black12.withOpacity(0.5),
+                              ),
+                            ),
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
                             ),
                           ),
                         ),

@@ -24,7 +24,9 @@ class _CustomSliderSwitchState extends State<CustomSliderSwitch> {
         Text(
           "Observation",
           style: TextStyle(
-            color: value == "Observation" ? Colors.green[700] : Colors.black,
+            color: value == "Observation"
+                ? Colors.green[700]
+                : Theme.of(context).primaryColor.withOpacity(0.7),
           ),
         ),
         const SizedBox(
@@ -95,7 +97,9 @@ class _CustomSliderSwitchState extends State<CustomSliderSwitch> {
         Text(
           "Action",
           style: TextStyle(
-            color: value == "Action" ? const Color(0xff108ab3) : Colors.black,
+            color: value == "Action"
+                ? const Color(0xff108ab3)
+                : Theme.of(context).primaryColor.withOpacity(0.7),
           ),
         ),
       ],

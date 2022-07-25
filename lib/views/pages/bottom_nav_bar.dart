@@ -7,7 +7,6 @@ import 'package:empulse/views/pages/leaderboard_page.dart';
 import 'package:empulse/views/pages/my_all_post.dart';
 import 'package:empulse/views/pages/profile_page.dart';
 import 'package:empulse/views/widgets/custom_notification_icon.dart';
-import 'package:empulse/views/widgets/custom_search_dialog.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +18,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../controllers/base_controller.dart';
+import '../../controllers/dark_theme_controller.dart';
 import '../../controllers/genre_controller.dart';
 import '../../models/genre.dart';
 import '../widgets/custom_search_icon.dart';
@@ -67,6 +67,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             'my_profile',
             'add_feedback',
             'notification',
+            'searchFilter',
           ],
         );
       });
@@ -107,7 +108,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           FeatureDiscovery.completeCurrentStep(context);
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           appBar: customAppbar(index),
           body: SafeArea(child: Obx(() => screens[index.value])),
 
@@ -128,47 +129,58 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       return false;
                     },
                     description: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "To submit your feedback.",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            color: Colors.black87,
+                            fontSize: 15.sp,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                FeatureDiscovery.dismissAll(context);
-                                isAppTourDone.write('app_tour', 'done');
-                              },
-                              child: Text(
-                                "Skip All",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16.sp,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  FeatureDiscovery.dismissAll(context);
+                                  isAppTourDone.write('app_tour', 'done');
+                                },
+                                child: Text(
+                                  "Skip All",
+                                  style: TextStyle(
+                                    color: Colors.deepPurple,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                FeatureDiscovery.completeCurrentStep(context);
-                              },
-                              child: const Text("Next >"),
-                            ),
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  FeatureDiscovery.completeCurrentStep(context);
+                                },
+                                child: Text(
+                                  "Next >",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    title: const Text(
+                    title: Text(
                       "Add Feedback",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                       ),
                     ),
                     tapTarget: SvgPicture.asset(
@@ -194,11 +206,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       ),
                       shape: StadiumBorder(
                           side: BorderSide(
-                              color: Colors.white.withOpacity(0.9), width: 4)),
+                        color: Colors.white.withOpacity(0.9),
+                        width: 4,
+                      )),
                     ),
                   ),
                 ),
           bottomNavigationBar: BottomAppBar(
+            color: DarkThemeController.isDarkThemeEnabled.value
+                ? const Color.fromARGB(245, 92, 89, 89)
+                : Colors.white,
             shape: const CircularNotchedRectangle(),
             notchMargin: 0,
             elevation: 25,
@@ -219,48 +236,60 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           return false;
                         },
                         description: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Displays feedback posted by all emPulse app users.",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                color: Colors.black87,
+                                fontSize: 15.sp,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.dismissAll(context);
-                                    isAppTourDone.write('app_tour', 'done');
-                                  },
-                                  child: Text(
-                                    "Skip All",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.dismissAll(context);
+                                      isAppTourDone.write('app_tour', 'done');
+                                    },
+                                    child: Text(
+                                      "Skip All",
+                                      style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.completeCurrentStep(
-                                        context);
-                                  },
-                                  child: const Text("Next >"),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.completeCurrentStep(
+                                          context);
+                                    },
+                                    child: Text(
+                                      "Next >",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        title: const Text(
+                        title: Text(
                           "Home Tab",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                           ),
                         ),
                         tapTarget: SvgPicture.asset(
@@ -279,7 +308,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 width: 23.w,
                                 height: 23.h,
                                 color: index.value != 0
-                                    ? Colors.black
+                                    ? Theme.of(context).primaryColor
                                     : const Color(0xff24aaff),
                               ),
                               onPressed: () {
@@ -306,7 +335,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     // backgroundColor: Color(0xff24aaff),
                                     color: index.value == 0
                                         ? const Color(0xff24aaff)
-                                        : Colors.black45,
+                                        : Theme.of(context).primaryColor,
                                     fontSize: 13.sp,
                                   ),
                                 ),
@@ -328,48 +357,60 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           return false;
                         },
                         description: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Displays feedback posted by you & actions for closure remarks assigned to you.",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                color: Colors.black87,
+                                fontSize: 15.sp,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.dismissAll(context);
-                                    isAppTourDone.write('app_tour', 'done');
-                                  },
-                                  child: Text(
-                                    "Skip All",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.dismissAll(context);
+                                      isAppTourDone.write('app_tour', 'done');
+                                    },
+                                    child: Text(
+                                      "Skip All",
+                                      style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.completeCurrentStep(
-                                        context);
-                                  },
-                                  child: const Text("Next >"),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.completeCurrentStep(
+                                          context);
+                                    },
+                                    child: Text(
+                                      "Next >",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        title: const Text(
+                        title: Text(
                           "My Posts Tab",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                           ),
                         ),
                         tapTarget: SvgPicture.asset(
@@ -388,7 +429,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 width: 23.w,
                                 height: 25.h,
                                 color: index.value != 1
-                                    ? Colors.black
+                                    ? Theme.of(context).primaryColor
                                     : const Color(0xff24aaff),
                               ),
                               onPressed: () {
@@ -415,7 +456,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     // backgroundColor: Color(0xff24aaff),
                                     color: index.value == 1
                                         ? const Color(0xff24aaff)
-                                        : Colors.black45,
+                                        : Theme.of(context).primaryColor,
                                     fontSize: 13.sp,
                                   ),
                                 ),
@@ -439,48 +480,60 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           return false;
                         },
                         description: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Display list of top emPulse app users.",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                color: Colors.black87,
+                                fontSize: 15.sp,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.dismissAll(context);
-                                    isAppTourDone.write('app_tour', 'done');
-                                  },
-                                  child: Text(
-                                    "Skip All",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.dismissAll(context);
+                                      isAppTourDone.write('app_tour', 'done');
+                                    },
+                                    child: Text(
+                                      "Skip All",
+                                      style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.completeCurrentStep(
-                                        context);
-                                  },
-                                  child: const Text("Next >"),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.completeCurrentStep(
+                                          context);
+                                    },
+                                    child: Text(
+                                      "Next >",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        title: const Text(
+                        title: Text(
                           "Leaderboard Tab",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                           ),
                         ),
                         tapTarget: SvgPicture.asset(
@@ -499,7 +552,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 width: 23.w,
                                 height: 23.h,
                                 color: index.value != 2
-                                    ? Colors.black
+                                    ? Theme.of(context).primaryColor
                                     : const Color(0xff24aaff),
                               ),
                               onPressed: () {
@@ -516,7 +569,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     // backgroundColor: Color(0xff24aaff),
                                     color: index.value == 2
                                         ? const Color(0xff24aaff)
-                                        : Colors.black45,
+                                        : Theme.of(context).primaryColor,
                                     fontSize: 13.sp,
                                   ),
                                 ),
@@ -538,48 +591,60 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           return false;
                         },
                         description: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "To update your status, photo and view your participation in emPulse.",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                color: Colors.black87,
+                                fontSize: 15.sp,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.dismissAll(context);
-                                    isAppTourDone.write('app_tour', 'done');
-                                  },
-                                  child: Text(
-                                    "Skip All",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.sp,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.dismissAll(context);
+                                      isAppTourDone.write('app_tour', 'done');
+                                    },
+                                    child: Text(
+                                      "Skip All",
+                                      style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    FeatureDiscovery.completeCurrentStep(
-                                        context);
-                                  },
-                                  child: const Text("Next >"),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      FeatureDiscovery.completeCurrentStep(
+                                          context);
+                                    },
+                                    child: Text(
+                                      "Next >",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        title: const Text(
+                        title: Text(
                           "My Profile Tab",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                           ),
                         ),
                         tapTarget: SvgPicture.asset(
@@ -598,7 +663,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 width: 23.w,
                                 height: 23.h,
                                 color: index.value != 3
-                                    ? Colors.black
+                                    ? Theme.of(context).primaryColor
                                     : const Color(0xff24aaff),
                               ),
                               onPressed: () {
@@ -615,7 +680,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     // backgroundColor: Color(0xff24aaff),
                                     color: index.value == 3
                                         ? const Color(0xff24aaff)
-                                        : Colors.black45,
+                                        : Theme.of(context).primaryColor,
                                     fontSize: 13.sp,
                                   ),
                                 ),
@@ -657,10 +722,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   AppBar customAppbar(index) {
     return AppBar(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       elevation: 0.5,
       title: Image(
-        image: const AssetImage('assets/images/Logo_empulse.png'),
+        image: AssetImage(DarkThemeController.isDarkThemeEnabled.value
+            ? 'assets/images/Logo-light.png'
+            : 'assets/images/Logo_empulse.png'),
         height: 50.h,
       ),
       // leadingWidth: 40.w,
@@ -679,48 +746,59 @@ class _BottomNavBarState extends State<BottomNavBar> {
             return true;
           },
           description: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Search & Filter feedbacks.",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  color: Colors.black87,
+                  fontSize: 15.sp,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      FeatureDiscovery.dismissAll(context);
-                      isAppTourDone.write('app_tour', 'done');
-                    },
-                    child: Text(
-                      "Skip All",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16.sp,
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.dismissAll(context);
+                        isAppTourDone.write('app_tour', 'done');
+                      },
+                      child: Text(
+                        "Skip All",
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      FeatureDiscovery.completeCurrentStep(context);
-                      isAppTourDone.write("app_tour", "done");
-                    },
-                    child: const Text("Done"),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.completeCurrentStep(context);
+                        isAppTourDone.write("app_tour", "done");
+                      },
+                      child: Text(
+                        "Done",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          title: const Text(
+          title: Text(
             "Search and Filter Tab",
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.black87,
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              fontSize: 18.sp,
             ),
           ),
           tapTarget: SvgPicture.asset(
@@ -739,58 +817,62 @@ class _BottomNavBarState extends State<BottomNavBar> {
           featureId: 'notification',
           backgroundColor: Colors.purple.shade100,
           barrierDismissible: false,
-          onComplete: () async {
-            isAppTourDone.write('app_tour', 'done');
-            return true;
-          },
           onBackgroundTap: () async {
-            isAppTourDone.write('app_tour', 'done');
             FeatureDiscovery.completeCurrentStep(context);
-            return true;
+            return false;
           },
           description: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Displays in-app notifications.",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  color: Colors.black87,
+                  fontSize: 15.sp,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      FeatureDiscovery.dismissAll(context);
-                      isAppTourDone.write('app_tour', 'done');
-                    },
-                    child: Text(
-                      "Skip All",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16.sp,
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.dismissAll(context);
+                        isAppTourDone.write('app_tour', 'done');
+                      },
+                      child: Text(
+                        "Skip All",
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      FeatureDiscovery.completeCurrentStep(context);
-                      isAppTourDone.write("app_tour", "done");
-                    },
-                    child: const Text("Done"),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.completeCurrentStep(context);
+                      },
+                      child: Text(
+                        "Next >",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          title: const Text(
+          title: Text(
             "Notification Tab",
             style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
+              color: Colors.black87,
+              fontSize: 18.sp,
             ),
           ),
           tapTarget: SvgPicture.asset(

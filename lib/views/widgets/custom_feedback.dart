@@ -48,11 +48,14 @@ class _CustomFeedbackState extends State<CustomFeedback> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 7.0),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 1, color: Colors.black12),
+            bottom: BorderSide(
+                width: 1,
+                // color: Colors.black12,
+                color: Theme.of(context).primaryColor.withOpacity(0.2)),
           ),
-          color: Colors.white,
+          // color: Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +79,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                 widget.feedback[widget.index].name),
                             style: const TextStyle(
                               fontSize: 16,
-                              color: Colors.white,
+                              // color: Colors.white,
                               fontFamily: AppFonts.regularFont,
                             ),
                           ),
@@ -96,6 +99,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                           fontFamily: AppFonts.regularFont,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       Text(
@@ -103,6 +107,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                         style: TextStyle(
                           fontFamily: AppFonts.regularFont,
                           fontSize: 12.sp,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ],
@@ -285,15 +290,17 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                             color: Colors.red,
                                             size: 25.0,
                                           )
-                                        : const Icon(
+                                        : Icon(
                                             Icons.favorite_border_rounded,
                                             size: 25.0,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           );
                                   },
                                   countBuilder: (count, isLiked, text) {
                                     // final color =
                                     //     isLiked ? Colors.black : Colors.grey;
-                                    const color = Colors.black54;
+                                    var color = Theme.of(context).primaryColor;
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 2.0),
                                       child: GestureDetector(
@@ -429,6 +436,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                     'assets/icons/Comments.svg',
                                     height: 31.h,
                                     width: 31.w,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Padding(
@@ -439,7 +447,8 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                           widget.feedback[widget.index].id;
                                       Get.to(() => FeedbackComment(
                                                 feedbackId: widget
-                                                    .feedback[widget.index].id,
+                                                    .feedback[widget.index].id
+                                                    .toString(),
                                                 isClose: (widget.assignedPost &&
                                                         widget
                                                                 .feedback[widget
@@ -459,7 +468,8 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                       () => RichText(
                                         text: TextSpan(
                                           style: TextStyle(
-                                            color: Colors.black54,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                             fontSize: 14.sp,
                                             fontFamily: AppFonts.regularFont,
                                           ),
@@ -508,7 +518,10 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                             ),
                             Row(
                               children: [
-                                const Icon(Icons.schedule),
+                                Icon(
+                                  Icons.schedule,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                                 Wrap(
                                   children: [
                                     Padding(
@@ -516,7 +529,8 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                       child: Text(
                                         widget.feedback[widget.index].created,
                                         style: TextStyle(
-                                          color: Colors.black54,
+                                          // color: Colors.black54,
+                                          color: Theme.of(context).primaryColor,
                                           fontSize: 14.sp,
                                           fontFamily: AppFonts.regularFont,
                                         ),
@@ -604,7 +618,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                         style: TextStyle(
                           fontFamily: AppFonts.regularFont,
                           fontSize: 14.sp,
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColor,
                         ),
                         children: <TextSpan>[
                           const TextSpan(
@@ -648,7 +662,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                         style: TextStyle(
                           fontFamily: AppFonts.regularFont,
                           fontSize: 14.sp,
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColor,
                         ),
                         children: <TextSpan>[
                           (widget.feedback[widget.index].outletName != null)
@@ -695,6 +709,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                       style: TextStyle(
                         fontFamily: AppFonts.regularFont,
                         fontSize: 14.sp,
+                        color: Theme.of(context).primaryColor,
                       ),
                       children: <TextSpan>[
                         (widget.feedback[widget.index].genre != null)
@@ -703,15 +718,15 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                     "On ${widget.feedback[widget.index].genre}: ",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  // color: Colors.black,
                                 ),
                               )
                             : const TextSpan(),
                         TextSpan(
                           text: widget.feedback[widget.index].feedback,
                           style: const TextStyle(
-                            color: Colors.black54,
-                          ),
+                              // color: Colors.black54,
+                              ),
                         ),
                       ],
                     ),
@@ -770,15 +785,17 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                             color: Colors.red,
                                             size: 25.0,
                                           )
-                                        : const Icon(
+                                        : Icon(
                                             Icons.favorite_border_rounded,
                                             size: 25.0,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           );
                                   },
                                   countBuilder: (count, isLiked, text) {
                                     // final color =
                                     //     isLiked ? Colors.black : Colors.grey;
-                                    const color = Colors.black54;
+                                    var color = Theme.of(context).primaryColor;
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 2.0),
                                       child: GestureDetector(
@@ -914,6 +931,7 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                     'assets/icons/Comments.svg',
                                     height: 31.h,
                                     width: 31.w,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Padding(
@@ -944,7 +962,8 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                       () => RichText(
                                         text: TextSpan(
                                           style: TextStyle(
-                                            color: Colors.black54,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                             fontSize: 14.sp,
                                             fontFamily: AppFonts.regularFont,
                                           ),
@@ -984,7 +1003,10 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                             ),
                             Row(
                               children: [
-                                const Icon(Icons.schedule),
+                                Icon(
+                                  Icons.schedule,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                                 Wrap(
                                   children: [
                                     Padding(
@@ -992,7 +1014,8 @@ class _CustomFeedbackState extends State<CustomFeedback> {
                                       child: Text(
                                         widget.feedback[widget.index].created,
                                         style: TextStyle(
-                                          color: Colors.black54,
+                                          // color: Colors.black54,
+                                          color: Theme.of(context).primaryColor,
                                           fontSize: 14.sp,
                                           fontFamily: AppFonts.regularFont,
                                         ),

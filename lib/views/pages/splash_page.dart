@@ -10,10 +10,8 @@ import 'package:empulse/views/pages/notification_page.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:uni_links/uni_links.dart';
 
 import '../../controllers/notification_controller.dart';
 
@@ -27,9 +25,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   late Widget _defaultHome = const LoginPage();
   final isLoggedIn = GetStorage();
-
-  StreamSubscription? _sub;
-  bool openFromLink = false;
 
   @override
   void initState() {
@@ -108,66 +103,35 @@ class _SplashPageState extends State<SplashPage> {
         }
       },
     );
-
-    if (isLoggedIn.read("refreshToken") != null) {
-      BaseController().fetchGlobalData().then((value) {
-        initUniLinks();
-        if (mounted) {
-          setState(() {
-            _defaultHome = const BottomNavBar(index: 0);
-          });
-          Get.offAll(
-            () => FeatureDiscovery(
-              recordStepsInSharedPreferences: false,
-              child: _defaultHome,
-            ),
-          );
-        }
-      });
-    } else {
-      Get.offAll(
-        () => FeatureDiscovery(
-          recordStepsInSharedPreferences: false,
-          child: _defaultHome,
-        ),
-      );
-    }
-  }
-
-  Future<void> initUniLinks() async {
-    dynamic uri;
-    try {
-      final initialLink = await getInitialLink();
-      if (initialLink != null) {
-        uri = Uri.parse(initialLink);
+    Future.delayed(Duration.zero, () {
+      if (isLoggedIn.read("refreshToken") != null) {
+        BaseController().fetchGlobalData().then((value) {
+          if (mounted) {
+            setState(() {
+              _defaultHome = const BottomNavBar(index: 0);
+            });
+            Get.offAll(
+              () => FeatureDiscovery(
+                recordStepsInSharedPreferences: false,
+                child: _defaultHome,
+              ),
+            );
+          }
+        });
+      } else {
+        Get.offAll(
+          () => FeatureDiscovery(
+            recordStepsInSharedPreferences: false,
+            child: _defaultHome,
+          ),
+        );
       }
-      // else {
-      _sub = linkStream.listen((String? link) {
-        if (link != null) {
-          uri = Uri.parse(link);
-        }
-      }, onError: (err) {});
-      // }
-      setState(() {
-        openFromLink = true;
-      });
-      if (uri != null) {
-        print(uri.pathSegments.last.toString());
-        Get.to(() => FeedbackComment(
-              feedbackId: uri.pathSegments.last.toString(),
-              isClose: false,
-            ));
-      }
-    } on PlatformException catch (e) {
-      print("platform exception: $e");
-    } on MissingPluginException catch (e) {
-      print("plugin exception: $e");
-    }
+    });
   }
 
   @override
   void dispose() {
-    _sub?.cancel();
+    // _sub?.cancel();
     super.dispose();
   }
 

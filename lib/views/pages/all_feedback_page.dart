@@ -2,12 +2,13 @@ import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/feedback_controller.dart';
 import 'package:empulse/views/widgets/custom_feedback.dart';
 import 'package:empulse/views/widgets/custom_topuser.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
+
+import '../../controllers/dark_theme_controller.dart';
 
 class AllFeedbackPage extends StatefulWidget {
   final bool isSearch;
@@ -87,10 +88,11 @@ class _AllFeedbackPageState extends State<AllFeedbackPage> {
                                     child: Text(
                                       "TOP USERS",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: AppFonts.regularFont,
-                                        fontSize: 18.sp,
-                                      ),
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: AppFonts.regularFont,
+                                          fontSize: 18.sp,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     ),
                                   ),
                                   Padding(
@@ -98,13 +100,17 @@ class _AllFeedbackPageState extends State<AllFeedbackPage> {
                                     child: Container(
                                       height: 120.h,
                                       width: Get.width,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(20),
                                           bottomLeft: Radius.circular(20),
                                         ),
-                                        color:
-                                            Color.fromARGB(245, 245, 245, 245),
+                                        color: DarkThemeController
+                                                .isDarkThemeEnabled.value
+                                            ? const Color.fromARGB(
+                                                245, 97, 97, 97)
+                                            : const Color.fromARGB(
+                                                245, 245, 245, 245),
                                       ),
                                       // color: Colors.grey,
                                       child: Padding(
@@ -194,8 +200,13 @@ class _AllFeedbackPageState extends State<AllFeedbackPage> {
                     ),
                   ),
                 )
-              : const Center(
-                  child: Text('No Feedback found'),
+              : Center(
+                  child: Text(
+                    'No Feedback found',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
     );
   }

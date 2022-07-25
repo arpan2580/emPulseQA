@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
 import 'package:empulse/controllers/comment_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/controllers/feedback_controller.dart';
 import 'package:empulse/controllers/image_controller.dart';
 import 'package:empulse/views/dialogs/dialog_helper.dart';
@@ -12,7 +13,6 @@ import 'package:empulse/views/widgets/custom_comment_card.dart';
 import 'package:empulse/views/widgets/custom_comment_image.dart';
 import 'package:empulse/views/widgets/custom_feedback.dart';
 import 'package:empulse/views/widgets/jumping_dots.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,14 +106,16 @@ class _FeedbackCommentState extends State<FeedbackComment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
-        title: const Text(
+        title: Text(
           "Comments",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         actions: const [
           // MyNotificationBtn(),
@@ -321,11 +323,17 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                                                   vertical: 25.0),
                                               child: JumpingDots(),
                                             )
-                                          : const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 25.0),
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 25.0),
                                               child: Center(
-                                                child: Text("No Comments"),
+                                                child: Text(
+                                                  "No Comments",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
                                               ),
                                             );
                                     });
@@ -343,7 +351,10 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                 commentController.ownName.isNotEmpty ||
                 _cameraController.isImageSelected.value ||
                 _cameraController1.isImageSelected.value
-            ? customCommentTypeField()
+            ? Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: customCommentTypeField(),
+              )
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -362,6 +373,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
             children: [
               Divider(
                 thickness: 1.h,
+                color: Theme.of(context).primaryColor.withOpacity(0.6),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -370,11 +382,12 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                           commentController.feedbackDetails[0].status !=
                               '300' &&
                           widget.isClose
-                      ? const Text(
+                      ? Text(
                           "Click on this to mark the post as closed",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: AppFonts.regularFont,
+                            color: Theme.of(context).primaryColor,
                           ),
                         )
                       : Container(),
@@ -382,13 +395,19 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                           commentController.feedbackDetails[0].status !=
                               '300' &&
                           widget.isClose
-                      ? Checkbox(
-                          value: value,
-                          onChanged: (value) {
-                            setState(() {
-                              this.value = value!;
-                            });
-                          },
+                      ? Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor:
+                                Theme.of(context).primaryColor,
+                          ),
+                          child: Checkbox(
+                            value: value,
+                            onChanged: (value) {
+                              setState(() {
+                                this.value = value!;
+                              });
+                            },
+                          ),
                         )
                       : Container(),
                 ],
@@ -477,6 +496,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
             children: [
               Divider(
                 thickness: 1.h,
+                color: Theme.of(context).primaryColor.withOpacity(0.6),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -485,11 +505,12 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                           commentController.feedbackDetails[0].status !=
                               '300' &&
                           widget.isClose
-                      ? const Text(
+                      ? Text(
                           "Click on this to mark the post as closed",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: AppFonts.regularFont,
+                            color: Theme.of(context).primaryColor,
                           ),
                         )
                       : Container(),
@@ -497,13 +518,19 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                           commentController.feedbackDetails[0].status !=
                               '300' &&
                           widget.isClose
-                      ? Checkbox(
-                          value: value,
-                          onChanged: (value) {
-                            setState(() {
-                              this.value = value!;
-                            });
-                          },
+                      ? Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor:
+                                Theme.of(context).primaryColor,
+                          ),
+                          child: Checkbox(
+                            value: value,
+                            onChanged: (value) {
+                              setState(() {
+                                this.value = value!;
+                              });
+                            },
+                          ),
                         )
                       : Container(),
                 ],
@@ -544,7 +571,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                               commentController.ownName.value.toString()),
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.white,
+                            // color: Colors.white,
                             fontFamily: AppFonts.regularFont,
                           ),
                         ),
@@ -585,6 +612,7 @@ class _FeedbackCommentState extends State<FeedbackComment> {
               style: TextStyle(
                 fontFamily: AppFonts.regularFont,
                 fontSize: 14.sp,
+                color: Theme.of(context).primaryColor,
               ),
               focusNode: focusNode,
             ),
@@ -597,7 +625,10 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                   isExpanded = !isExpanded;
                 });
               },
-              icon: SvgPicture.asset('assets/icons/camera_icon.svg'),
+              icon: SvgPicture.asset(
+                'assets/icons/camera_icon.svg',
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           SizedBox(
@@ -671,7 +702,9 @@ class _FeedbackCommentState extends State<FeedbackComment> {
               style: TextStyle(
                 fontFamily: AppFonts.regularFont,
                 fontSize: 16.sp,
-                color: const Color(0xff0056f5),
+                color: DarkThemeController.isDarkThemeEnabled.value
+                    ? Colors.cyan
+                    : const Color(0xff0056f5),
               ),
             ),
           ),
@@ -687,19 +720,21 @@ class _FeedbackCommentState extends State<FeedbackComment> {
         children: [
           Row(
             children: [
-              const Text(
+              Text(
                 "Replying to ",
                 style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontSize: 12.0,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               Text(
                 userName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontSize: 12.0,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               SizedBox(
@@ -714,11 +749,12 @@ class _FeedbackCommentState extends State<FeedbackComment> {
                     userName = '';
                   });
                 },
-                child: const Text(
+                child: Text(
                   "~ Cancel",
                   style: TextStyle(
                     fontFamily: AppFonts.regularFont,
                     fontSize: 12.0,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),

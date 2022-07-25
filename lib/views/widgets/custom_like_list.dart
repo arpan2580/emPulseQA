@@ -2,10 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
 import 'package:empulse/controllers/feedback_react_list_controller.dart';
-import 'package:empulse/views/pages/photo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 
@@ -25,12 +23,12 @@ class _CustomLikeListState extends State<CustomLikeList> {
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width - 50,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Obx(
         () => Column(
@@ -46,14 +44,15 @@ class _CustomLikeListState extends State<CustomLikeList> {
                   fontSize: 18.sp,
                   fontFamily: AppFonts.regularFont,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black.withOpacity(0.7),
+                  color: Theme.of(context).primaryColor.withOpacity(0.7),
                 ),
               ),
             ),
-            const Divider(
+            Divider(
               thickness: 1.0,
               indent: 10,
               endIndent: 10,
+              color: Theme.of(context).primaryColor.withOpacity(0.3),
             ),
             Expanded(
               child: ListView.builder(
@@ -78,21 +77,21 @@ class _CustomLikeListState extends State<CustomLikeList> {
                                               .toString()),
                                       style: TextStyle(
                                         fontSize: 16.sp,
-                                        color: Colors.white,
+                                        // color: Colors.white,
                                         fontFamily: AppFonts.regularFont,
                                       ),
                                     ),
                                   )
                                 : GestureDetector(
                                     onTap: () {
-                                      Get.to(
-                                        () => PhotoView(
-                                          imgList: reactListController
-                                              .reactList[index].profileImage,
-                                          index: 0,
-                                          isProfile: true,
-                                        ),
-                                      );
+                                      // Get.to(
+                                      //   () => PhotoView(
+                                      //     imgList: reactListController
+                                      //         .reactList[index].profileImage,
+                                      //     index: 0,
+                                      //     isProfile: true,
+                                      //   ),
+                                      // );
                                     },
                                     child: CircleAvatar(
                                       radius: 20.w,
@@ -114,7 +113,9 @@ class _CustomLikeListState extends State<CustomLikeList> {
                                   fontSize: 15.sp,
                                   fontFamily: AppFonts.regularFont,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.6),
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8),
                                 ),
                               ),
                             ),

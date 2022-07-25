@@ -7,6 +7,8 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 
+import '../../controllers/dark_theme_controller.dart';
+
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
@@ -48,59 +50,73 @@ class _NotificationPageState extends State<NotificationPage> {
     // final storedToken = GetStorage();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
-        title: const Text(
+        title: Text(
           "Notifications",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         actions: [
           // MyNotificationBtn(),
-          PopupMenuButton(itemBuilder: (context) {
-            return [
-              PopupMenuItem(
-                child: TextButton.icon(
-                  onPressed: () {
-                    notificationController.readAllNotifications();
-                    setState(() {});
-                  },
-                  icon: const Icon(
-                    Icons.done_all_rounded,
-                  ),
-                  label: const Text('Mark all as read'),
-                ),
-                onTap: () {
-                  notificationController.readAllNotifications();
-                  setState(() {});
-                },
-              ),
-              PopupMenuItem(
-                child: TextButton.icon(
-                  onPressed: () {
-                    notificationController.deleteAllNotifications();
-                    setState(() {});
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever_rounded,
-                    color: Colors.red,
-                  ),
-                  label: const Text(
-                    'Delete all',
-                    style: TextStyle(
-                      color: Colors.red,
+          PopupMenuButton(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        notificationController.readAllNotifications();
+                        setState(() {});
+                      },
+                      icon: Icon(
+                        Icons.done_all_rounded,
+                        color: DarkThemeController.isDarkThemeEnabled.value
+                            ? Theme.of(context).primaryColor.withOpacity(0.7)
+                            : Colors.deepPurple,
+                      ),
+                      label: Text(
+                        'Mark all as read',
+                        style: TextStyle(
+                          color: DarkThemeController.isDarkThemeEnabled.value
+                              ? Theme.of(context).primaryColor.withOpacity(0.7)
+                              : Colors.deepPurple,
+                        ),
+                      ),
                     ),
+                    onTap: () {
+                      notificationController.readAllNotifications();
+                      setState(() {});
+                    },
                   ),
-                ),
-                onTap: () {
-                  notificationController.deleteAllNotifications();
-                  setState(() {});
-                },
-              ),
-            ];
-          }),
+                  PopupMenuItem(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        notificationController.deleteAllNotifications();
+                        setState(() {});
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever_rounded,
+                        color: Colors.red,
+                      ),
+                      label: const Text(
+                        'Delete all',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      notificationController.deleteAllNotifications();
+                      setState(() {});
+                    },
+                  ),
+                ];
+              }),
         ],
       ),
       body: Obx(
@@ -198,8 +214,13 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ],
                   )
-                : const Center(
-                    child: Text('No Notification found'),
+                : Center(
+                    child: Text(
+                      'No Notification found',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
       ),
     );

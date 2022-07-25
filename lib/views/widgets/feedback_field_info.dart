@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget feedbackInfo() {
+Widget feedbackInfo(context) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
+        Text(
           "Field Info",
           style: TextStyle(
-            fontSize: 25,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         const Divider(
@@ -134,9 +136,9 @@ Widget feedbackInfo() {
 Widget fieldValue(String? value) {
   return Text(
     value!,
-    style: const TextStyle(
+    style: TextStyle(
       color: Colors.grey,
-      fontSize: 18,
+      fontSize: 16.sp,
     ),
   );
 }
@@ -144,9 +146,9 @@ Widget fieldValue(String? value) {
 Widget fieldDesc(String? value) {
   return Text(
     value!,
-    style: const TextStyle(
+    style: TextStyle(
       color: Colors.grey,
-      fontSize: 18,
+      fontSize: 16.sp,
     ),
   );
 }

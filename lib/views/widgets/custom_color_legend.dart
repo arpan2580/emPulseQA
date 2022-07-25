@@ -1,4 +1,5 @@
 import 'package:empulse/consts/app_fonts.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/views/widgets/my_like_list.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class ColorLegendDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -21,7 +23,7 @@ class ColorLegendDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Align(
+          Align(
             alignment: Alignment.topLeft,
             child: Text(
               "Actionable Post Status",
@@ -30,6 +32,7 @@ class ColorLegendDialog extends StatelessWidget {
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
@@ -54,38 +57,40 @@ class ColorLegendDialog extends StatelessWidget {
           // ),
           // const SizedBox(height: 10),
           Row(
-            children: const [
-              CustomStatus(
+            children: [
+              const CustomStatus(
                 color: Color(0xffffa200),
                 svgIcon: "MaterialIcon.svg",
                 isObservation: false,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 "Action in progress",
                 style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
+                  color: Theme.of(context).primaryColor,
                 ),
               )
             ],
           ),
           const SizedBox(height: 10),
           Row(
-            children: const [
-              CustomStatus(
+            children: [
+              const CustomStatus(
                 color: Color(0xff00ab06),
                 svgIcon: "Icon.svg",
                 isObservation: false,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 "Closed",
                 style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
+                  color: Theme.of(context).primaryColor,
                 ),
               )
             ],
@@ -96,7 +101,7 @@ class ColorLegendDialog extends StatelessWidget {
             // color: Colors.black,
           ),
           const SizedBox(height: 10),
-          const Align(
+          Align(
             alignment: Alignment.topLeft,
             child: Text(
               "Observation Post Status",
@@ -105,24 +110,26 @@ class ColorLegendDialog extends StatelessWidget {
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
           const SizedBox(height: 10),
           Row(
-            children: const [
-              CustomStatus(
+            children: [
+              const CustomStatus(
                 color: Color(0xffa300a3),
                 svgIcon: "observation.svg",
                 isObservation: true,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 "Observation post",
                 style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
+                  color: Theme.of(context).primaryColor,
                 ),
               )
             ],
@@ -132,7 +139,14 @@ class ColorLegendDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Got It"),
+          child: Text(
+            "Got It",
+            style: TextStyle(
+              color: DarkThemeController.isDarkThemeEnabled.value
+                  ? Colors.cyan
+                  : Colors.deepPurple,
+            ),
+          ),
         ),
       ],
     );

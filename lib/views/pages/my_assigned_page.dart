@@ -1,7 +1,6 @@
 import 'package:empulse/controllers/assigned_feedback_controller.dart';
 import 'package:empulse/controllers/feedback_controller.dart';
 import 'package:empulse/views/widgets/custom_feedback.dart';
-import 'package:empulse/views/widgets/refresh_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
@@ -107,8 +106,13 @@ class _MyAssignedPageState extends State<MyAssignedPage> {
                     ),
                   ),
                 )
-              : const Center(
-                  child: Text('You have no assigned feedback'),
+              : Center(
+                  child: Text(
+                    'You have no assigned feedback',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
     );
   }

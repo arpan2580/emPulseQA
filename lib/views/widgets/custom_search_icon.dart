@@ -57,10 +57,14 @@ class CustomSearchIcon extends StatelessWidget {
                       },
                     );
                   },
-                  icon: SvgPicture.asset(
-                    'assets/icons/Search.svg',
-                    height: 29.h,
-                    width: 29.w,
+                  icon: Padding(
+                    padding: const EdgeInsets.only(top: 3.5),
+                    child: SvgPicture.asset(
+                      'assets/icons/Search.svg',
+                      height: 29.h,
+                      width: 29.w,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 Positioned(

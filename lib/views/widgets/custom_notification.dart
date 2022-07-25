@@ -1,5 +1,6 @@
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/controllers/notification_controller.dart';
 import 'package:empulse/views/pages/feedback_comments.dart';
 import 'package:flutter/material.dart';
@@ -35,15 +36,21 @@ class _CustomNotificationState extends State<CustomNotification> {
       },
       child: Container(
         decoration: (widget.notification[widget.index].status == "0")
-            ? const BoxDecoration(
+            ? BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topLeft,
-                  colors: [
-                    Color.fromARGB(255, 209, 209, 209),
-                    // Colors.white,
-                    Color(0xfff2f2f2)
-                  ],
+                  colors: DarkThemeController.isDarkThemeEnabled.value
+                      ? [
+                          const Color.fromARGB(255, 122, 122, 122),
+                          // Colors.white,
+                          const Color.fromARGB(255, 77, 77, 77)
+                        ]
+                      : [
+                          const Color.fromARGB(255, 209, 209, 209),
+                          // Colors.white,
+                          const Color(0xfff2f2f2)
+                        ],
                 ),
               )
             : null,
@@ -63,7 +70,9 @@ class _CustomNotificationState extends State<CustomNotification> {
                             BaseController.getinitials(
                                 widget.notification[widget.index].name),
                             style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
+                              fontSize: 20,
+                              // color: Colors.white,
+                            ),
                           ),
                         )
                       : CircleAvatar(
@@ -126,10 +135,11 @@ class _CustomNotificationState extends State<CustomNotification> {
               padding: const EdgeInsets.only(right: 8.0),
               child: Text(
                 widget.notification[widget.index].name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: AppFonts.regularFont,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -142,9 +152,10 @@ class _CustomNotificationState extends State<CustomNotification> {
                     "${widget.notification[widget.index].message}",
                     // maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: AppFonts.regularFont,
                       fontSize: 14.0,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   SizedBox(
@@ -152,9 +163,10 @@ class _CustomNotificationState extends State<CustomNotification> {
                   ),
                   Text(
                     "${widget.notification[widget.index].created}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: AppFonts.regularFont,
                       fontSize: 13.0,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ],

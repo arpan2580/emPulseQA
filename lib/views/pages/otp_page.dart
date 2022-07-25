@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -8,9 +9,14 @@ import 'package:empulse/views/widgets/custom_textfield.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+
+import '../../consts/app_fonts.dart';
+import '../../controllers/resend_otp_controller.dart';
 
 class OtpPage extends StatefulWidget {
   final String email;
@@ -25,16 +31,34 @@ class _OtpPageState extends State<OtpPage> {
   // late String _otp;
   String deviceToken = '';
   var otpController = Get.put(OtpController());
+  var resendOtpController = Get.put(ResendOtpController());
+  RxInt timerCountdown = 60.obs;
 
   String? osType, osVersion, deviceName, deviceModel;
 
   final storeUserMail = GetStorage();
 
+  bool isCountdownEnd = false;
+  late Timer _timer;
+  void otpCountdown() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timerCountdown.value > 0) {
+        // setState(() {
+        timerCountdown.value = timerCountdown.value - 1;
+        // });
+      } else {
+        isCountdownEnd = true;
+        _timer.cancel();
+        // setState(() {});
+      }
+    });
+  }
+
   Future<void> getDeviceToken() async {
     final FirebaseMessaging fcm = FirebaseMessaging.instance;
     final token = await fcm.getToken();
     deviceToken = token.toString();
-    print("Token Value $deviceToken");
+    // print("Token Value $deviceToken");
   }
 
   Future<void> getDeviceDetails() async {
@@ -68,6 +92,13 @@ class _OtpPageState extends State<OtpPage> {
     super.initState();
     getDeviceToken();
     getDeviceDetails();
+    otpCountdown();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -75,7 +106,6 @@ class _OtpPageState extends State<OtpPage> {
     return Container(
       color: Colors.grey[200],
       child: SafeArea(
-        top: false,
         bottom: false,
         child: Container(
           decoration: const BoxDecoration(
@@ -111,6 +141,8 @@ class _OtpPageState extends State<OtpPage> {
                             CustomTextfield(
                               textEditingController: otpController.txtOtp,
                               hintText: "Type your OTP here",
+                              hStyle: false,
+                              tStyle: false,
                               keyboardType: TextInputType.number,
                               // keyboardType:
                               //     const TextInputType.numberWithOptions(
@@ -149,7 +181,37 @@ class _OtpPageState extends State<OtpPage> {
                                   // otpController.txtOtp.clear();
                                 }
                               },
-                            )
+                            ),
+                            SizedBox(height: 29.h),
+                            !isCountdownEnd
+                                ? SizedBox(
+                                    child: Obx(
+                                      () => Text(
+                                        "You can regenerate the OTP after ${timerCountdown.toString()}s",
+                                      ),
+                                    ),
+                                  )
+                                : TextButton(
+                                    onPressed: () {
+                                      resendOtpController.resendOtp(
+                                          storeUserMail.read("otpKey"));
+                                      timerCountdown = 60.obs;
+                                      isCountdownEnd = false;
+                                      otpCountdown();
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      "Resend OTP",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.regularFont,
+                                        fontSize: 14.sp,
+                                        color:
+                                            const Color.fromARGB(255, 4, 4, 4),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                       ),

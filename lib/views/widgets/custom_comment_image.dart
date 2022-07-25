@@ -24,6 +24,7 @@ class EmptyImageContainer extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
         controller.isImageSelected.isFalse
             ? showModalBottomSheet(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 context: context,
                 builder: ((builder) => CustomOpenImage(
                       context: context,

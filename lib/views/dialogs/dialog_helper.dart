@@ -1,33 +1,8 @@
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:empulse/consts/app_themes.dart';
 
 class DialogHelper {
-  // show error dialog
-  static void showErrorDialog(
-      {String title = 'Error', String description = 'Something went wrong!'}) {
-    Get.defaultDialog(
-      title: title,
-      middleText: description,
-      textConfirm: 'Ok',
-      confirm: ElevatedButton(
-        onPressed: () {
-          if (Get.isDialogOpen == true) {
-            Get.back();
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          primary: AppThemes.secondaryColor,
-        ),
-        child: const Text('Ok'),
-      ),
-      radius: 20,
-    );
-  }
-
-  // show toast
-
   // show snack bar
   static void showErrorToast(
       {String title = 'Error', String description = 'Something went wrong!'}) {

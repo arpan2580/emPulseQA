@@ -38,7 +38,7 @@ class BaseController {
 
   static Future<dynamic> tokenGeneration() async {
     var refreshToken = storeToken.read('refreshToken');
-    print('refresh: ' + refreshToken.toString());
+    // print('refresh: ' + refreshToken.toString());
 
     if (refreshToken != null && refreshToken != '') {
       var response = await BaseClient().dioPost('/refresh-token', null, true);

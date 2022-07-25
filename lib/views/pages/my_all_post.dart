@@ -1,5 +1,6 @@
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/views/pages/my_assigned_page.dart';
 import 'package:empulse/views/pages/my_feedback_page.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +53,13 @@ class _MyAllPostState extends State<MyAllPost> {
                         child: Container(
                           decoration: BoxDecoration(
                             border: (index == 0)
-                                ? const Border(
+                                ? Border(
                                     bottom: BorderSide(
-                                        width: 2.0, color: Color(0xff6200ee)),
+                                        width: 2.0,
+                                        color: DarkThemeController
+                                                .isDarkThemeEnabled.value
+                                            ? Colors.cyan
+                                            : const Color(0xff6200ee)),
                                   )
                                 : Border(
                                     bottom: BorderSide(
@@ -71,7 +76,10 @@ class _MyAllPostState extends State<MyAllPost> {
                                   fontWeight: (index == 0)
                                       ? FontWeight.bold
                                       : FontWeight.w400,
-                                  color: const Color(0xff6200ee),
+                                  color: DarkThemeController
+                                          .isDarkThemeEnabled.value
+                                      ? Colors.cyan
+                                      : const Color(0xff6200ee),
                                   fontFamily: AppFonts.regularFont,
                                   // fontSize: (index == 0) ? 16.sp : 14.sp,
                                 ),
@@ -91,9 +99,13 @@ class _MyAllPostState extends State<MyAllPost> {
                         child: Container(
                           decoration: BoxDecoration(
                             border: (index == 1)
-                                ? const Border(
+                                ? Border(
                                     bottom: BorderSide(
-                                        width: 2.0, color: Color(0xff6200ee)),
+                                        width: 2.0,
+                                        color: DarkThemeController
+                                                .isDarkThemeEnabled.value
+                                            ? Colors.cyan
+                                            : const Color(0xff6200ee)),
                                   )
                                 : Border(
                                     bottom: BorderSide(
@@ -110,7 +122,10 @@ class _MyAllPostState extends State<MyAllPost> {
                                   fontWeight: (index == 1)
                                       ? FontWeight.bold
                                       : FontWeight.w400,
-                                  color: const Color(0xff6200ee),
+                                  color: DarkThemeController
+                                          .isDarkThemeEnabled.value
+                                      ? Colors.cyan
+                                      : const Color(0xff6200ee),
                                   fontFamily: AppFonts.regularFont,
                                   // fontSize: (index == 1) ? 16.sp : 14.sp,
                                 ),

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:empulse/consts/app_themes.dart';
 import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/services/notification_service.dart';
+import 'package:empulse/views/pages/feedback_comments.dart';
 import 'package:empulse/views/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'controllers/base_controller.dart';
 
@@ -39,16 +41,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  StreamSubscription? _sub;
+  bool openFromLink = false;
+
   @override
   void initState() {
     super.initState();
     NotificationService.requestPermission();
     WidgetsBinding.instance.addObserver(this);
+    // Future.delayed(Duration.zero, () async {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initUniLinks();
+    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _sub!.cancel();
     super.dispose();
   }
 
@@ -60,29 +70,66 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final isResumed = state == AppLifecycleState.resumed;
     final isClosed = state == AppLifecycleState.detached;
     if (isBackground || isClosed) {
-      print("resumed");
+      // print("resumed");
     }
     if (isResumed) {
-      print("resumed");
+      // print("resumed");
       // if (mounted) {
-      setState(() {
-        BaseController.unreadNotification.value =
-            storageCount.read('unreadNotification');
-      });
+      // setState(() {
+      BaseController.unreadNotification.value =
+          storageCount.read('unreadNotification');
+      // });
       // }
+    }
+  }
+
+  Future<void> initUniLinks() async {
+    dynamic uri;
+    try {
+      final initialLink = await getInitialLink();
+      if (initialLink != null) {
+        uri = Uri.parse(initialLink);
+      }
+      // print('initial:' + uri.toString());
+      // else {
+      _sub = linkStream.listen((String? link) {
+        if (link != null) {
+          uri = Uri.parse(link);
+        }
+      }, onError: (err) {});
+      // }
+      // print('on app:' + uri.toString());
+      // setState(() {
+      openFromLink = true;
+      // });
+      if (uri != null) {
+        // print(uri.pathSegments.last.toString());
+        Get.offAll(() => FeedbackComment(
+              feedbackId: uri.pathSegments.last.toString(),
+              isClose: false,
+            ));
+      }
+    } on PlatformException catch (e) {
+      print("platform exception: $e");
+    } on MissingPluginException catch (e) {
+      print("plugin exception: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (child, context) => GetMaterialApp(
-        title: 'empulse',
-        debugShowCheckedModeBanner: false,
-        theme: DarkThemeController().isDarkThemeEnabled.value
-            ? ThemeData.dark()
-            : ThemeData.light(),
-        home: const SplashPage(),
+      builder: (child, context) => Obx(
+        () => GetMaterialApp(
+          title: 'empulse',
+          debugShowCheckedModeBanner: false,
+          themeMode: DarkThemeController.isDarkThemeEnabled.value
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          home: const SplashPage(),
+        ),
       ),
       designSize: const Size(418, 881),
     );

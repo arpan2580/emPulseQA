@@ -1,4 +1,4 @@
-import 'dart:io' as Io;
+import 'dart:io' as io;
 import 'package:empulse/views/dialogs/toast_msg.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
@@ -24,7 +24,7 @@ class ImageController extends GetxController {
       ImageProperties properties =
           await FlutterNativeImage.getImageProperties(pickedFile.path);
       if (properties.width! > properties.height!) {
-        Io.File compressedImage = await FlutterNativeImage.compressImage(
+        io.File compressedImage = await FlutterNativeImage.compressImage(
             pickedFile.path.toString(),
             targetWidth: 1000,
             targetHeight:
@@ -33,7 +33,7 @@ class ImageController extends GetxController {
         selectedImagePath.value = compressedImage.path;
         isImageSelected = RxBool(true);
       } else {
-        Io.File compressedImage = await FlutterNativeImage.compressImage(
+        io.File compressedImage = await FlutterNativeImage.compressImage(
           pickedFile.path.toString(),
           targetWidth: (properties.width! * 1600 / properties.height!).round(),
           targetHeight: 1600,

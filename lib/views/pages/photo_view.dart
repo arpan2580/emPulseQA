@@ -1,6 +1,5 @@
 import 'package:empulse/consts/app_fonts.dart';
 import 'package:empulse/controllers/base_controller.dart';
-import 'package:empulse/views/widgets/custom_notification_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -8,6 +7,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+
+import '../../controllers/dark_theme_controller.dart';
 
 class PhotoView extends StatefulWidget {
   final dynamic imgList;
@@ -40,18 +41,20 @@ class _PhotoViewState extends State<PhotoView> {
         PageController(initialPage: activeImg.value);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0.5,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
         title: Image(
-          image: const AssetImage('assets/images/Logo_empulse.png'),
+          image: AssetImage(DarkThemeController.isDarkThemeEnabled.value
+              ? 'assets/images/Logo-light.png'
+              : 'assets/images/Logo_empulse.png'),
           height: 50.h,
         ),
         // leadingWidth: 40.w,
         actions: const [
-          CustomNotificationIcon(),
+          // CustomNotificationIcon(),
         ],
       ),
       body: SizedBox(
@@ -78,7 +81,7 @@ class _PhotoViewState extends State<PhotoView> {
                 activeImg.value = currentImg;
               },
               backgroundDecoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               // enableRotation: true,
               loadingBuilder: (context, event) => const Center(

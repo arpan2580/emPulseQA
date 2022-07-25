@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:empulse/controllers/base_controller.dart';
+import 'package:empulse/controllers/dark_theme_controller.dart';
 import 'package:empulse/models/profile_model.dart';
 import 'package:empulse/services/base_client.dart';
 import 'package:empulse/views/dialogs/dialog_helper.dart';
@@ -146,6 +147,8 @@ class ProfileController extends GetxController {
     storedToken.remove("baseVersionAppUrl");
     storedToken.remove("privacyUrl");
     storedToken.remove("supportUrl");
+    storedToken.remove("darkTheme");
+    DarkThemeController.isDarkThemeEnabled.value = false;
     Get.offAll(() => const LoginPage());
   }
 }
